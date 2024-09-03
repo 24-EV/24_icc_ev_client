@@ -42,13 +42,13 @@ export function SocketProvider({ children }) {
 
         setLoading(false);
       } catch (error) {
-        console.error('데이터 처리 오류', error);
+        console.error('데이터 처리 오류!!!!', error);
       }
     });
 
     return () => {
       socket.disconnect();
-    };
+    }
   }, []);
 
   return (
