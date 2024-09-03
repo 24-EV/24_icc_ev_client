@@ -1,0 +1,6 @@
+{
+    "throttle" : 50,
+    "rpm" : 4000,
+    "torque" : 50,
+    "motor_temperature" : 70 
+}
