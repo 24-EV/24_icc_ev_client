@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import RechartsExample from '../components/Chart';
 import Loading from '../components/Loading';
 import { Background } from '../components/Styles';
-// import { SocketContext } from '../context/SocketContext'; // 올바른 import 문
+import { SocketContext } from '../context/SocketContext'; // 올바른 import 문
 
 const MAX_QUEUE_SIZE = 60;
 
@@ -37,15 +37,8 @@ class Queue {
   }
 }
 
-function Vehicle({ data }) {
-  if (data) {
-    return (
-      <div>
-          <Loading />
-      </div>
-
-    )
-  }
+function Vehicle() {
+  const [loading, vehicleData] = useContext(SocketContext);
 
   const vehicle_data = [
     // Example data for chart
@@ -104,20 +97,20 @@ function Vehicle({ data }) {
   if (vehicle_data_queue.size() === MAX_QUEUE_SIZE) {
     vehicle_data_queue.dequeue();
   }
-  vehicle_data_queue.enqueue(data);
+  vehicle_data_queue.enqueue(vehicleData  );
 
   return (
     <div className="vehicle-container">
       <h1>Vehicle</h1>
       <div className="velocity-container">
         <h3>속력</h3>
-        <h1>{data.velocity} km/h</h1>
+        <h1>{vehicleData.velocity} km/h</h1>
         <RechartsExample chartName="속력 차트 예시" data={vehicle_data} />
         <div>그래프 들어갈 자리</div>
       </div>
       <div className="rtc-module-container">
         <h3>RTC Module</h3>
-        <h1>{data.rtc_module}</h1>
+        <h1>{vehicleData.rtc_module}</h1>
       </div>
     </div>
   );
