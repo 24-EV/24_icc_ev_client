@@ -13,8 +13,8 @@ export function SocketProvider({ children }) {
   const [rtc_module, setRtc_module] = useState(null);
 
   useEffect(() => {
-    // 소켓 연결
     const socket = io('http://127.0.0.1:2004');
+    // 소켓 연결
 
     // 소켓 연결 성공 시
     socket.on('connect', () => {
@@ -37,9 +37,7 @@ export function SocketProvider({ children }) {
     socket.on('dataReceived', (message) => {
       console.log('서버로부터 받은 데이터 : ', message);
       try {
-        // 데이터가 올바르게 존재하는지 확인한 후 접근
-        if (message && message.data && message.data[0] && message.data[0].data && message.data[0].data[0]) {
-          const _data = message.data[0].data[0];
+          const _data = message;
 
           setVehicleData({ velocity: _data.RPM, rtc_module: _data.RTC });
           setHvData({ voltage: _data.BATTERY_VOLTAGE, current: _data.MOTOR_CURRENT, battery_temperature: _data.PCB_TEMP });
@@ -48,9 +46,6 @@ export function SocketProvider({ children }) {
           setGpsData({ lat: _data.lat, lng: _data.lng });
 
           setLoading(false);
-        } else {
-          console.error('데이터 구조가 예상과 다릅니다.');
-        }
       } catch (error) {
         console.error('데이터 처리 오류!!!!', error);
       }

@@ -1,25 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { SocketContext } from '../context/SocketContext';
 
-function GPS({ data }) {
+function GPS() {
     const [map, setMap] = useState(null);
     const [marker, setMarker] = useState(null);
     const [dragState, setDragState] = useState(true);
-
+   
+    const { gpsData } = useContext(SocketContext);
+    
     const kakao = window.kakao;
 
-    let linePath = [
-        new kakao.maps.LatLng(data.lat, data.lng),
-    ]
+    let linePath = gpsData ? [
+        new kakao.maps.LatLng(gpsData.lat, gpsData.lng),
+    ] : [];
 
     const polyline = new kakao.maps.Polyline({
-        path: linePath, // 선을 구성하는 좌표배열 입니다
-        strokeWeight: 5, // 선의 두께 입니다
-        strokeColor: "#FFAE00", // 선의 색깔입니다
-        strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        strokeStyle: "solid", // 선의 스타일입니다
+        path: linePath, // 선을 구성하는 좌표 배열
+        strokeWeight: 5, // 선의 두께
+        strokeColor: "#FFAE00", // 선의 색깔
+        strokeOpacity: 0.7, // 선의 불투명도 (1에서 0 사이의 값)
+        strokeStyle: "solid", // 선의 스타일
     });
 
-
+    // 지도를 초기화하는 useEffect
     useEffect(() => {
         const container = document.getElementById('map');
         const options = {
@@ -37,13 +40,14 @@ function GPS({ data }) {
         newMarker.setMap(kakaoMap);
         setMarker(newMarker);
 
-    }, []);
+    }, []); // 빈 배열을 넣어 한 번만 실행되도록 설정
 
+    // polyline을 생성하는 함수
     const makeLine = useCallback(
-        function (position) {
+        (position) => {
             let linePath = position;
 
-            let polyline = new kakao.maps.polyline({
+            let polyline = new kakao.maps.Polyline({
                 path: linePath,
                 strokeWeight: 5,
                 strokeColor: "0000ff",
@@ -52,12 +56,15 @@ function GPS({ data }) {
             });
 
             polyline.setMap(map);
-    }, [map]);
+        },
+        [map]
+    );
 
+    // GPS 데이터를 기반으로 마커와 맵을 업데이트하는 useEffect
     useEffect(() => {
-        if (map && marker && data && data.lat && data.lng) {
+        if (map && marker && gpsData && gpsData.lat && gpsData.lng) {
             const kakao = window.kakao;
-            const newPosition = new kakao.maps.LatLng(data.lat, data.lng);
+            const newPosition = new kakao.maps.LatLng(gpsData.lat, gpsData.lng);
 
             marker.setPosition(newPosition);
 
@@ -65,7 +72,7 @@ function GPS({ data }) {
                 map.setCenter(newPosition);
             }
         }
-    }, [data, map, marker]);
+    }, [gpsData, map, marker, dragState]);
 
     const handleButtonClick = () => {
         if (map && marker) {
@@ -86,6 +93,7 @@ function GPS({ data }) {
             <span>
                 {dragState ? "ON" : "OFF"}
             </span>
+            {!gpsData && <div>데이터가 없습니다.</div>}
         </div>
     );
 }
