@@ -13,7 +13,13 @@ export function SocketProvider({ children }) {
   const [rtc_module, setRtc_module] = useState(null);
 
   useEffect(() => {
-    const socket = io(`${process.env.REACT_APP_SERVER_URL}`);
+    const socket = io(`${process.env.REACT_APP_SERVER_URL}`,{
+      reconnection: true,
+      reconnectionAttempts: 20,
+      reconnectionDelay: 100,
+      reconnectionDelayMax: 5000,
+      transports: ['websocket', 'polling']
+    });
     // 소켓 연결
 
     // 소켓 연결 성공 시
