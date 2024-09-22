@@ -86,7 +86,7 @@ function GPS() {
     return (
         <div className='gps-container'>
             <h1>GPS</h1>
-            <div id="map" style={{ width: '700px', height: '700px' }}></div>
+            <div id="map" style={{ width: '300px', height: '300px' }}></div>
             <button onClick={handleButtonClick}>
                 지도 마커 기준 고정
             </button>
