@@ -24,13 +24,8 @@ function Motor() {
       </div>
 
       <div style={commonStyles.dataContainer}>
-        <h3 style={commonStyles.label}>토크</h3>
-        <h1 style={commonStyles.data}>{motorData.torque} N·m</h1>
-      </div>
-
-      <div style={commonStyles.dataContainer}>
-        <h3 style={commonStyles.label}>모터 온도</h3>
-        <h1 style={commonStyles.data}>{motorData.motor_temperature} ℃</h1>
+        <h3 style={commonStyles.label}>컨트롤러 온도</h3>
+        <h1 style={commonStyles.data}>{motorData.controller_temperature} ℃</h1>
       </div>
     </div>
   );

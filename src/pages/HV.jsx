@@ -24,8 +24,8 @@ function HV() {
       </div>
 
       <div style={commonStyles.dataContainer}>
-        <h3 style={commonStyles.label}>배터리 온도</h3>
-        <h1 style={commonStyles.data}>{hvData.battery_temperature} ℃</h1>
+        <h3 style={commonStyles.label}>배터리 잔량</h3>
+        <h1 style={commonStyles.data}>{hvData.battery_percent} ℃</h1>
       </div>
     </div>
   );

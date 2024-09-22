@@ -46,11 +46,11 @@ export function SocketProvider({ children }) {
       try {
           const _data = message;
 
-          setVehicleData({ velocity: _data.RPM, rtc_module: _data.RTC });
-          setHvData({ voltage: _data.BATTERY_VOLTAGE, current: _data.MOTOR_CURRENT, battery_temperature: _data.PCB_TEMP });
-          setMotorData({ throttle: _data.THROTTLE_SIGNAL, rpm: _data.RPM, motor_temperature: _data.CONTROLLER_TEMPERATURE });
-          setRtc_module(_data.RTC);
-          setGpsData({ lat: _data.lat, lng: _data.lng });
+          setVehicleData({ velocity: _data.SPEED });
+          setHvData({ voltage: _data.BATTERY_VOLTAGE, current: _data.MOTOR_CURRENT, battery_percent: _data.BATTERY_PERCENT });
+          setMotorData({ throttle: _data.THROTTLE_SIGNAL, rpm: _data.RPM, controller_temperature: _data.CONTROLLER_TEMPERATURE });
+          setRtc_module({ timestamp : _data.timestamp });
+          setGpsData({ lat: _data.lat || 0, lng: _data.lng || 0});
 
           setLoading(false);
       } catch (error) {

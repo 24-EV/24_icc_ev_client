@@ -12,6 +12,7 @@ function GPS() {
     const loadKakaoMap = () => {
       if (window.kakao && window.kakao.maps) {
         window.kakao.maps.load(() => {
+          console.log("Kakao Maps 로드 완료");
           const container = document.getElementById('map');
           const options = {
             center: new window.kakao.maps.LatLng(33.450701, 126.570667),
@@ -19,7 +20,7 @@ function GPS() {
           };
           const kakaoMap = new window.kakao.maps.Map(container, options);
           setMap(kakaoMap);
-
+  
           const newMarker = new window.kakao.maps.Marker({
             position: options.center,
             draggable: dragState,
@@ -27,13 +28,16 @@ function GPS() {
           newMarker.setMap(kakaoMap);
           setMarker(newMarker);
         });
+      } else {
+        console.error("Kakao Maps API가 로드되지 않았습니다.");
       }
     };
-
+  
     if (window.kakao && window.kakao.maps) {
       loadKakaoMap();
     }
   }, [dragState]);
+  
 
   useEffect(() => {
     if (map && marker && gpsData && gpsData.lat && gpsData.lng) {

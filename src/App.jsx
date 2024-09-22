@@ -8,9 +8,10 @@ import GPS from './pages/GPS';
 import Settings from './pages/Settings';
 import { SocketProvider } from './context/SocketContext';
 import './App.css';
+import RealTime from './components/RealTime';
 
 function App() {
-  useEffect(() => {
+  useEffect(function() {
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false`;
     kakaoMapScript.async = true;
@@ -39,6 +40,7 @@ function App() {
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>
+          <RealTime />
           <BottomAppBar />
         </Router>
       </div>

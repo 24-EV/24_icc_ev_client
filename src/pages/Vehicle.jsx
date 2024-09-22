@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { SocketContext } from '../context/SocketContext';
 import commonStyles from '../styles/style'; // 공통 스타일 불러오기
+import RealTime from '../components/RealTime';
 
 function Vehicle() {
   const { vehicleData } = useContext(SocketContext);
+  const { rtc_module } = useContext(SocketContext);
 
   if (!vehicleData) {
     return <div style={commonStyles.noData}>데이터가 없습니다.</div>;
@@ -21,7 +23,8 @@ function Vehicle() {
 
       <div style={commonStyles.dataContainer}>
         <h3 style={commonStyles.label}>RTC Module</h3>
-        <h1 style={commonStyles.data}>{vehicleData.rtc_module}</h1>
+        <h1 style={commonStyles.data}>{rtc_module.timestamp}</h1>
+        <RealTime />
       </div>
     </div>
   );
