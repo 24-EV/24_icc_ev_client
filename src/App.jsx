@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import BottomAppBar from './components/BottomAppBar';
 import Vehicle from './pages/Vehicle';
 import HV from './pages/HV';
@@ -31,21 +30,14 @@ function App() {
       <div className="app-container">
         <Router>
           <div className="app-content">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="motion-content"
-            >
-              <Routes>
-                <Route path="/" element={<Vehicle />} />
-                <Route path="/vehicle" element={<Vehicle />} />
-                <Route path="/hv" element={<HV />} />
-                <Route path="/motor" element={<Motor />} />
-                <Route path="/gps" element={<GPS />} />
-                <Route path="/settings" element={<Settings />} />
-              </Routes>
-            </motion.div>
+            <Routes>
+              <Route path="/" element={<Vehicle />} />
+              <Route path="/vehicle" element={<Vehicle />} />
+              <Route path="/hv" element={<HV />} />
+              <Route path="/motor" element={<Motor />} />
+              <Route path="/gps" element={<GPS />} />
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
           </div>
           <BottomAppBar />
         </Router>
