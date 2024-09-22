@@ -38,7 +38,7 @@ const commonStyles = {
       color: '#000',
     },
     input: {
-      width: '100%',
+      width: '300px',
       padding: '10px',
       borderRadius: '5px',
       border: '1px solid #ccc',
@@ -46,7 +46,7 @@ const commonStyles = {
       boxSizing: 'border-box',
     },
     button: {
-      width: '100%',
+      width: '300px',
       padding: '10px 20px',
       backgroundColor: '#4CAF50',
       color: 'white',
@@ -66,13 +66,13 @@ const commonStyles = {
       marginTop: '20px',
     },
     map: {
-      width: '100%',  // 지도 너비를 버튼과 동일하게 설정
+      width: '400px',  // 지도 너비를 버튼과 동일하게 설정
       height: '300px',
       borderRadius: '10px',
       marginBottom: '20px',  // 지도와 아래 버튼 사이 마진 추가
     },
     gpsButton: {
-      width: '100%',
+      width: '300px',
       padding: '10px 20px',
       backgroundColor: '#4CAF50',
       color: 'white',

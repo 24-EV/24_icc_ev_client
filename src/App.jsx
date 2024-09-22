@@ -13,7 +13,7 @@ import RealTime from './components/RealTime';
 function App() {
   useEffect(function() {
     const kakaoMapScript = document.createElement('script');
-    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}&autoload=false`;
+    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}`;
     kakaoMapScript.async = true;
     document.head.appendChild(kakaoMapScript);
 

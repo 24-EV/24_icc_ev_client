@@ -50,17 +50,19 @@ function Settings() {
       <div style={commonStyles.dataContainer}>
         <label style={commonStyles.label}>
           시작 날짜:
+          <br></br>
           <input
             type="datetime-local"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             style={commonStyles.input}
-          />
+            />
         </label>
       </div>
       <div style={commonStyles.dataContainer}>
         <label style={commonStyles.label}>
           종료 날짜:
+          <br></br>
           <input
             type="datetime-local"
             value={endDate}
