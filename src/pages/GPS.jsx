@@ -70,7 +70,6 @@ function GPS() {
 
       <div style={{ marginTop: '20px', fontSize: '16px', color: gpsData ? '#4CAF50' : '#FF0000' }}>
         {gpsData ? 'GPS 데이터를 성공적으로 수신했습니다.' : 'GPS 데이터를 수신하지 못했습니다.'}
-        <p>api 키 : {process.env.REACT_APP_KAKAO_MAP_KEY}</p>
       </div>
     </div>
   );
