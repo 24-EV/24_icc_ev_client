@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
+import React, { useState } from 'react';
+import commonStyles from '../styles/style';  // 공통 스타일 가져오기
 
 function Settings() {
   const [startDate, setStartDate] = useState('');  // 시작 날짜 상태
@@ -15,7 +15,7 @@ function Settings() {
 
     try {
       setLoading(true); // 로딩 상태 시작
-      const response = await fetch('http://localhost:2004/export-excel', {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/export-excel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,29 +45,31 @@ function Settings() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Excel 데이터 다운로드</h1>
-      <div style={{ marginBottom: '10px' }}>
-        <label>
+    <div style={commonStyles.container}>
+      <h1 style={commonStyles.title}>Excel 데이터 다운로드</h1>
+      <div style={commonStyles.dataContainer}>
+        <label style={commonStyles.label}>
           시작 날짜:
-          <input 
-            type="datetime-local" 
-            value={startDate} 
-            onChange={(e) => setStartDate(e.target.value)} 
+          <input
+            type="datetime-local"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            style={commonStyles.input}
           />
         </label>
       </div>
-      <div style={{ marginBottom: '10px' }}>
-        <label>
+      <div style={commonStyles.dataContainer}>
+        <label style={commonStyles.label}>
           종료 날짜:
-          <input 
-            type="datetime-local" 
-            value={endDate} 
-            onChange={(e) => setEndDate(e.target.value)} 
+          <input
+            type="datetime-local"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            style={commonStyles.input}
           />
         </label>
       </div>
-      <button onClick={downloadExcel} disabled={loading}>
+      <button onClick={downloadExcel} disabled={loading} style={commonStyles.button}>
         {loading ? '다운로드 중...' : 'Excel 다운로드'}
       </button>
     </div>

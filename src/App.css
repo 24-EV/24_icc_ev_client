@@ -1,5 +1,30 @@
-@media (max-width: 767px) {
-    body {
-        width: 750px;
-    }
-}
+/* 전체 화면을 덮는 컨테이너 */
+.app-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: purple;
+    overflow: hidden; /* 스크롤 방지 */
+  }
+  
+  /* 컨텐츠 영역 */
+  .app-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 스크롤 방지 */
+  }
+  
+  /* 애니메이션을 위한 컨텐츠 래퍼 */
+  .motion-content {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

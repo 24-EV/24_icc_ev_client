@@ -13,7 +13,7 @@ export function SocketProvider({ children }) {
   const [rtc_module, setRtc_module] = useState(null);
 
   useEffect(() => {
-    const socket = io('http://127.0.0.1:2004');
+    const socket = io(`${process.env.REACT_APP_SERVER_URL}`);
     // 소켓 연결
 
     // 소켓 연결 성공 시

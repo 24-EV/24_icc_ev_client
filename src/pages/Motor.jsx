@@ -1,36 +1,39 @@
-import React, { useContext, useEffect, useState } from 'react';
-
-import Loading from '../components/Loading';
+import React, { useContext } from 'react';
 import { SocketContext } from '../context/SocketContext';
+import commonStyles from '../styles/style';  // 공통 스타일 가져오기
 
 function Motor() {
-  const {motorData} = useContext(SocketContext);
+  const { motorData } = useContext(SocketContext);
 
   if (!motorData) {
-    return <div>데이터가 없습니다.</div>;
+    return <div style={commonStyles.noData}>데이터가 없습니다.</div>;
   }
 
   return (
-    <div className='motor-container'>
-      <h1>Motor</h1>
-      <div className='throttle-container'>
-        <h3>Throttle</h3>
-        <h1>{motorData.throttle} / 255</h1>
+    <div style={commonStyles.container}>
+      <h1 style={commonStyles.title}>Motor</h1>
+
+      <div style={commonStyles.dataContainer}>
+        <h3 style={commonStyles.label}>Throttle</h3>
+        <h1 style={commonStyles.data}>{motorData.throttle} / 255</h1>
       </div>
-      <div className='rpm-container'>
-        <h3>RPM</h3>
-        <h1>{motorData.rpm} RPM</h1>
+
+      <div style={commonStyles.dataContainer}>
+        <h3 style={commonStyles.label}>RPM</h3>
+        <h1 style={commonStyles.data}>{motorData.rpm} RPM</h1>
       </div>
-      <div className='torque-container'>
-        <h3>토크</h3>
-        <h1>{motorData.torque} N·m</h1>
+
+      <div style={commonStyles.dataContainer}>
+        <h3 style={commonStyles.label}>토크</h3>
+        <h1 style={commonStyles.data}>{motorData.torque} N·m</h1>
       </div>
-      <div className='motor_temperature-container'>
-        <h3>모터 온도</h3>
-        <h1>{motorData.motor_temperature} ℃</h1>
+
+      <div style={commonStyles.dataContainer}>
+        <h3 style={commonStyles.label}>모터 온도</h3>
+        <h1 style={commonStyles.data}>{motorData.motor_temperature} ℃</h1>
       </div>
     </div>
-  )
+  );
 }
 
 export default Motor;
