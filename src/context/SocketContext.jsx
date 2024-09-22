@@ -14,11 +14,12 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     const socket = io(`${process.env.REACT_APP_SERVER_URL}`,{
+    // const socket = io('http://localhost:2004',{
       reconnection: true,
       reconnectionAttempts: 20,
       reconnectionDelay: 100,
       reconnectionDelayMax: 5000,
-      transports: ['websocket', 'polling']
+      transports: ['websocket']
     });
     // 소켓 연결
 
