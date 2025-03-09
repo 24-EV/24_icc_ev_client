@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios';  // axios 임포트
 import commonStyles from '../styles/style';  // 공통 스타일 가져오기
 
-function Settings() {
+function SettingPage() {
   const [startDate, setStartDate] = useState('');  // 시작 날짜 상태
   const [endDate, setEndDate] = useState('');      // 종료 날짜 상태
   const [loading, setLoading] = useState(false);   // 로딩 상태
@@ -15,27 +16,22 @@ function Settings() {
 
     try {
       setLoading(true); // 로딩 상태 시작
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/export-excel`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ startDate, endDate }),
+      
+      // const response = await axios.post('http://43.203.166.209:2004/export-excel', {
+      const response = await axios.post('http:/localhost:2004/export-excel', {
+        startDate,
+        endDate
+      }, {
+        responseType: 'blob' // 서버로부터 Blob 형식의 응답을 받음
       });
 
-      if (response.ok) {
-        const blob = await response.blob(); // 서버로부터 파일 데이터 받음
-        const url = window.URL.createObjectURL(blob); // Blob을 URL로 변환
-        const a = document.createElement('a');  // 다운로드를 위한 링크 태그 생성
-        a.href = url;
-        a.download = `data_${startDate}_${endDate}.xlsx`;  // 파일 이름 설정
-        document.body.appendChild(a);
-        a.click();  // 파일 다운로드 트리거
-        a.remove(); // 링크 제거
-      } else {
-        console.error('Excel 파일 다운로드 실패');
-        alert('Excel 파일 다운로드에 실패했습니다.');
-      }
+      const url = window.URL.createObjectURL(new Blob([response.data])); // Blob을 URL로 변환
+      const a = document.createElement('a');  // 다운로드를 위한 링크 태그 생성
+      a.href = url;
+      a.download = `data_${startDate}_${endDate}.xlsx`;  // 파일 이름 설정
+      document.body.appendChild(a);
+      a.click();  // 파일 다운로드 트리거
+      a.remove(); // 링크 제거
     } catch (error) {
       console.error('파일 다운로드 중 오류 발생:', error);
       alert('파일 다운로드 중 오류가 발생했습니다.');
@@ -78,4 +74,4 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default SettingPage;

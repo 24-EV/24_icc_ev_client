@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState } from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { DirectionsCar, BatteryChargingFull, CarRepair, LocationOn, Settings } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { styled } from '@mui/system';
 
 const CustomBottomNavigation = styled(BottomNavigation)({
@@ -15,8 +15,34 @@ const CustomBottomNavigation = styled(BottomNavigation)({
 });
 
 function BottomAppBar({ data }) {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+
+
+  // 새로고침시에도 바텀앱바 버튼 유지되도록 함
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/vehicle':
+        setValue(0);
+        break;
+      case '/hv':
+        setValue(1);
+        break;
+      case '/motor':
+        setValue(2);
+        break;
+      case '/gps':
+        setValue(3);
+        break;
+      case '/settings':
+        setValue(4);
+        break;
+      default:
+        setValue(0); // 기본값
+        break;
+    }
+  }, [location.pathname]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

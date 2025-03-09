@@ -8,7 +8,7 @@ const commonStyles = {
       height: '100vh',
       margin: '0',  // 여백 없앰
       padding: '20px',  // 필요한 경우 내부 여백 추가 (여백이 문제면 줄여볼 수 있음)
-      backgroundColor: '#fff',
+      backgroundColor: '#e8f4f8',
       color: '#333',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       borderRadius: '0',  // 전체 화면을 덮도록 설정

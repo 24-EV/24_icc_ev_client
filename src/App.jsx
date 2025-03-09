@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import BottomAppBar from './components/BottomAppBar';
-import Vehicle from './pages/Vehicle';
-import HV from './pages/HV';
-import Motor from './pages/Motor';
-import GPS from './pages/GPS';
-import Settings from './pages/Settings';
+import TestPage from './pages/TestPage';
+import VehiclePage from './pages/VehiclePage';
+import HVPage from './pages/HVPage';
+import MotorPage from './pages/MotorPage';
+import GPSPage from './pages/GPSPage';
+import SettingPage from './pages/SettingPage';
 import { SocketProvider } from './context/SocketContext';
 import './App.css';
 import RealTime from './components/RealTime';
@@ -32,12 +33,12 @@ function App() {
         <Router>
           <div className="app-content">
             <Routes>
-              <Route path="/" element={<Vehicle />} />
-              <Route path="/vehicle" element={<Vehicle />} />
-              <Route path="/hv" element={<HV />} />
-              <Route path="/motor" element={<Motor />} />
-              <Route path="/gps" element={<GPS />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/" element={<TestPage />} />
+              <Route path="/vehicle" element={<VehiclePage />} />
+              <Route path="/hv" element={<HVPage />} />
+              <Route path="/motor" element={<MotorPage />} />
+              <Route path="/gps" element={<GPSPage />} />
+              <Route path="/settings" element={<SettingPage />} />
             </Routes>
           </div>
           <RealTime />
