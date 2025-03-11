@@ -13,8 +13,8 @@ export function SocketProvider({ children }) {
   const [realTimeClock, setRealTimeClock] = useState(null); // RTC(Real Time Clock) 모듈
 
   useEffect(() => {
-    // const socket = io(`${process.env.REACT_APP_SERVER_URL_EC2}`,{
-    const socket = io('http://localhost:2004',{
+    const socket = io(`${process.env.REACT_APP_SERVER_URL}`,{
+    // const socket = io('http://localhost:2004',{
       reconnection: true,
       reconnectionAttempts: 20,
       reconnectionDelay: 100,
