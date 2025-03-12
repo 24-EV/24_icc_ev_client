@@ -8,7 +8,7 @@
 
 클라이언트 : https://github.com/nitepp04/24_icc_ev_client
 
-백엔드 : https://github.com/nitepp04/24_icc_ev_server
+서버 : https://github.com/nitepp04/24_icc_ev_server
 
 펌웨어 : https://github.com/nitepp04/24_icc_ev_firmware
 
