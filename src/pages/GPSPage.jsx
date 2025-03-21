@@ -11,7 +11,7 @@ function GPSPage() {
   // 카카오맵 API 로드
   useEffect(() => {
     const kakaoMapScript = document.createElement('script');
-    kakaoMapScript.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false`;
+    kakaoMapScript.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAP_API_KEY}&autoload=false`;
     kakaoMapScript.async = true;
     document.head.appendChild(kakaoMapScript);
 

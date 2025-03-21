@@ -35,7 +35,7 @@ function BottomAppBar({ data }) {
       case '/gps':
         setValue(3);
         break;
-      case '/settings':
+      case '/settings': 
         setValue(4);
         break;
       default:

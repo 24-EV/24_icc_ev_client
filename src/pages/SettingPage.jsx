@@ -17,8 +17,8 @@ function SettingPage() {
     try {
       setLoading(true); // 로딩 상태 시작
       
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/export-excel`, {
-      // const response = await axios.post('http:/localhost:2004/export-excel', {
+      // const response = await axios.post(`${process.env.VITE_SERVER_URL}/api/export-excel`, {
+      const response = await axios.post('http://localhost:2004/api/export-excel', {
         startDate,
         endDate
       }, {

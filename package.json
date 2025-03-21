@@ -1,14 +1,13 @@
 {
-  "name": "icc_motor_react_1",
+  "name": "icc_motor_react",
   "version": "1.0.0",
   "description": "Getting Started with Create React App",
-  "main": "index.js",
- "scripts": {
-  "start": "react-scripts start",
-  "build": "react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject"
-},
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -31,13 +30,16 @@
     "@mui/material": "^6.4.1",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.5",
-    "react-scripts": "^5.0.1",
     "recharts": "^2.15.0",
     "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.14",
     "web-vitals": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.2.2"
   }
 }
