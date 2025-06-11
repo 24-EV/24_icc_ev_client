@@ -41,6 +41,8 @@ import hvStyles from "../styles/HVPageStyle";
 function HVPage() {
   const { hvData } = useContext(SocketContext);
 
+  console.log(hvData);
+
   if (!hvData) {
     return <div style={hvStyles.noData}>데이터가 없습니다.</div>;
   }
@@ -66,11 +68,11 @@ function HVPage() {
         </div>
       </div>
       <div style={hvStyles.dataContainer}>
-        <Chart
+        {/* <Chart
           data={hvData}
           dataKeys={["voltage", "current", "battery_percent"]}
           colors={["purple", "orange", "cyan"]}
-        />
+        /> */}
       </div>
     </div>
   );

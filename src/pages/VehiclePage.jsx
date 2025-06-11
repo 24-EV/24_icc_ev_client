@@ -109,11 +109,11 @@ function VehiclePage() {
         <h1 style={vehicleStyles.data}>{vehicleData.velocity} km/h</h1>
       </div>
       <div style={vehicleStyles.dataContainer}>
-        <Chart
+        {/* <Chart
           data={vehicleData}
           dataKeys={["velocity"]}
           colors={["cornflowerblue"]}
-        />
+        /> */}
       </div>
       <div style={vehicleStyles.dataContainer}>
         <h3>RTC Module</h3>
