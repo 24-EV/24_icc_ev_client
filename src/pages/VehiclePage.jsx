@@ -89,10 +89,10 @@
 
 // export default VehiclePage;
 
-import React, { useContext } from 'react';
-import { SocketContext } from '../context/SocketContext';
-import Chart from '../components/Chart';
-import vehicleStyles from '../styles/VehiclePageStyle';
+import React, { useContext } from "react";
+import { SocketContext } from "../context/SocketContext";
+import Chart from "../components/Chart";
+import vehicleStyles from "../styles/VehiclePageStyle";
 
 function VehiclePage() {
   const { vehicleData } = useContext(SocketContext);
@@ -109,11 +109,11 @@ function VehiclePage() {
         <h1 style={vehicleStyles.data}>{vehicleData.velocity} km/h</h1>
       </div>
       <div style={vehicleStyles.dataContainer}>
-      <Chart
-        data={vehicleData}
-        dataKeys={['velocity']}
-        colors={['cornflowerblue']}
-      />
+        <Chart
+          data={vehicleData}
+          dataKeys={["velocity"]}
+          colors={["cornflowerblue"]}
+        />
       </div>
       <div style={vehicleStyles.dataContainer}>
         <h3>RTC Module</h3>

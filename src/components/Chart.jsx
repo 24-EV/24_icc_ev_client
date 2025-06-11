@@ -65,9 +65,17 @@
 
 // export default Chart;
 
-
-import React, { useState, useEffect } from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React, { useState, useEffect } from "react";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 function Chart({ data, dataKeys, colors, title }) {
   const [chartData, setChartData] = useState([]);
@@ -78,8 +86,8 @@ function Chart({ data, dataKeys, colors, title }) {
   const maxDataPoints = 30;
 
   function getKoreaTime() {
-    const koreaTime = new Date(Date.now() + (9 * 60 * 60 * 1000)); // UTC + 9시간
-    return koreaTime.toISOString().replace('T', ' ').split('.')[0];
+    const koreaTime = new Date(Date.now() + 9 * 60 * 60 * 1000); // UTC + 9시간
+    return koreaTime.toISOString().replace("T", " ").split(".")[0];
   }
 
   useEffect(() => {
@@ -87,61 +95,72 @@ function Chart({ data, dataKeys, colors, title }) {
     const baseTime = new Date();
 
     const initialData = Array.from({ length: maxDataPoints }, (_, index) => {
-        // 기준 시간에서 1초씩 감소
-        const time = new Date(baseTime.getTime());
-        time.setSeconds(time.getSeconds() - (maxDataPoints - index - 1));
+      // 기준 시간에서 1초씩 감소
+      const time = new Date(baseTime.getTime());
+      time.setSeconds(time.getSeconds() - (maxDataPoints - index - 1));
 
-        // Date.now()를 강제로 해당 시간으로 변경하여 getKoreaTime()을 호출
-        const originalNow = Date.now;
-        global.Date.now = () => time.getTime();
-        const formattedTime = getKoreaTime();
-        global.Date.now = originalNow; // Date.now() 원래대로 복구
+      // Date.now()를 강제로 해당 시간으로 변경하여 getKoreaTime()을 호출
+      const originalNow = Date.now;
+      global.Date.now = () => time.getTime();
+      const formattedTime = getKoreaTime(); 
+      global.Date.now = originalNow; // Date.now() 원래대로 복구
 
-        return {
-            name: formattedTime,
-            throttle: 0,
-            rpm: 0,
-            controller_temperature: 0,
-        };
+      return {
+        name: formattedTime,
+        throttle: 0,
+        rpm: 0,
+        controller_temperature: 0,
+      };
     });
 
     setChartData(initialData);
-}, []);
+  }, []);
 
   useEffect(() => {
     if (!data || !data.timestamp) return; // 데이터가 없거나 timestamp가 없으면 리턴
-  
+
     const newData = {
-      name: data.timestamp,  // X축을 DB의 timestamp 값으로 설정
-      ...data
+      name: data.timestamp, // X축을 DB의 timestamp 값으로 설정
+      ...data,
     };
-  
+
     setChartData((prevData) => {
       const updatedData = [...prevData, newData];
       return updatedData.length > 30 ? updatedData.slice(1) : updatedData;
     });
   }, [data]);
-  
-  
 
   const handleKeyToggle = (key) => {
-    setSelectedKeys(prevKeys => prevKeys.includes(key) ? prevKeys.filter(k => k !== key) : [...prevKeys, key]);
+    setSelectedKeys((prevKeys) =>
+      prevKeys.includes(key)
+        ? prevKeys.filter((k) => k !== key)
+        : [...prevKeys, key]
+    );
   };
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>{title}</h2>
+    <div style={{ width: "100%", height: "100%" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "10px" }}>{title}</h2>
       {/* 차트 컨테이너 */}
-      <div style={{ width: '100%', height: '350px', backgroundColor: '#f0f0f0', borderRadius: '8px', padding: '15px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+      <div
+        style={{
+          width: "100%",
+          height: "350px",
+          backgroundColor: "#f0f0f0",
+          borderRadius: "8px",
+          padding: "15px",
+          boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+        }}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             {selectedKeys.map((key, index) => (
-              <Line 
-                key={key} 
-                type="monotone" 
-                dataKey={key} 
-                stroke={colors[index % colors.length]} 
-                strokeWidth={2} 
+              <Line
+                key={key}
+                type="monotone"
+                dataKey={key}
+                stroke={colors[index % colors.length]}
+                strokeWidth={2}
                 dot={false}
                 isAnimationActive={false}
               />
@@ -154,11 +173,11 @@ function Chart({ data, dataKeys, colors, title }) {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      
+
       {/* 데이터 선택 체크박스 */}
-      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-        {dataKeys.map(key => (
-          <label key={key} style={{ marginRight: '10px' }}>
+      <div style={{ textAlign: "center", marginBottom: "10px" }}>
+        {dataKeys.map((key) => (
+          <label key={key} style={{ marginRight: "10px" }}>
             <input
               type="checkbox"
               checked={selectedKeys.includes(key)}
