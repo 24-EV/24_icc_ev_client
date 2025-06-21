@@ -65,7 +65,7 @@
 
 // export default Chart;
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import {
   LineChart,
   Line,
@@ -75,86 +75,54 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
 function Chart({ data, dataKeys, colors, title }) {
-  const [chartData, setChartData] = useState([]);
-
-  const [selectedKeys, setSelectedKeys] = useState(dataKeys);
-  const [isZoomed, setIsZoomed] = useState(false);
-
-  const maxDataPoints = 30;
-
-  function getKoreaTime() {
-    const koreaTime = new Date(Date.now() + 9 * 60 * 60 * 1000); // UTC + 9시간
-    return koreaTime.toISOString().replace("T", " ").split(".")[0];
-  }
+  const maxDataPoints = 30; // 30초치 데이터 유지
+  // 초기 chartData를 0으로 30개 패딩
+  const [chartData, setChartData] = useState(() =>
+    Array.from({ length: maxDataPoints }, () => ({
+      name: '',
+      ...Object.fromEntries(dataKeys.map((k) => [k, 0])),
+    })),
+  );
+  const prevTimestampRef = useRef(null);
 
   useEffect(() => {
-    // 기준 시간: 현재 시간을 설정 (제일 마지막 배열의 시간)
-    const baseTime = new Date();
-
-    const initialData = Array.from({ length: maxDataPoints }, (_, index) => {
-      // 기준 시간에서 1초씩 감소
-      const time = new Date(baseTime.getTime());
-      time.setSeconds(time.getSeconds() - (maxDataPoints - index - 1));
-
-      // Date.now()를 강제로 해당 시간으로 변경하여 getKoreaTime()을 호출
-      const originalNow = Date.now;
-      global.Date.now = () => time.getTime();
-      const formattedTime = getKoreaTime(); 
-      global.Date.now = originalNow; // Date.now() 원래대로 복구
-
-      return {
-        name: formattedTime,
-        throttle: 0,
-        rpm: 0,
-        controller_temperature: 0,
-      };
-    });
-
-    setChartData(initialData);
-  }, []);
-
-  useEffect(() => {
-    if (!data || !data.timestamp) return; // 데이터가 없거나 timestamp가 없으면 리턴
+    if (!data || !data.timestamp) return;
+    if (prevTimestampRef.current === data.timestamp) return;
+    prevTimestampRef.current = data.timestamp;
 
     const newData = {
-      name: data.timestamp, // X축을 DB의 timestamp 값으로 설정
+      name: data.timestamp.slice(11, 19),
       ...data,
     };
-
-    setChartData((prevData) => {
-      const updatedData = [...prevData, newData];
-      return updatedData.length > 30 ? updatedData.slice(1) : updatedData;
+    setChartData((prev) => {
+      const updated = [...prev, newData];
+      return updated.length > maxDataPoints ? updated.slice(-maxDataPoints) : updated;
     });
-  }, [data]);
+  }, [data, dataKeys]);
 
-  const handleKeyToggle = (key) => {
-    setSelectedKeys((prevKeys) =>
-      prevKeys.includes(key)
-        ? prevKeys.filter((k) => k !== key)
-        : [...prevKeys, key]
-    );
-  };
+  if (!chartData || chartData.length === 0) {
+    return <div style={{ textAlign: 'center', color: 'gray' }}>차트 데이터가 없습니다.</div>;
+  }
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "10px" }}>{title}</h2>
-      {/* 차트 컨테이너 */}
+    <div style={{ width: '100%' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>{title}</h2>
       <div
         style={{
-          width: "100%",
-          height: "350px",
-          backgroundColor: "#f0f0f0",
-          borderRadius: "8px",
-          padding: "15px",
-          boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+          width: '100%',
+          height: '350px',
+          backgroundColor: '#f0f0f0',
+          borderRadius: '8px',
+          padding: '15px',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
         }}
       >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
-            {selectedKeys.map((key, index) => (
+            {dataKeys.map((key, index) => (
               <Line
                 key={key}
                 type="monotone"
@@ -173,22 +141,8 @@ function Chart({ data, dataKeys, colors, title }) {
           </LineChart>
         </ResponsiveContainer>
       </div>
-
-      {/* 데이터 선택 체크박스 */}
-      <div style={{ textAlign: "center", marginBottom: "10px" }}>
-        {dataKeys.map((key) => (
-          <label key={key} style={{ marginRight: "10px" }}>
-            <input
-              type="checkbox"
-              checked={selectedKeys.includes(key)}
-              onChange={() => handleKeyToggle(key)}
-            />
-            {key}
-          </label>
-        ))}
-      </div>
     </div>
   );
 }
 
-export default Chart;
+export default React.memo(Chart);

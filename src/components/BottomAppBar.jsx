@@ -1,6 +1,12 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import { DirectionsCar, BatteryChargingFull, CarRepair, LocationOn, Settings } from '@mui/icons-material';
+import {
+  DirectionsCar,
+  BatteryChargingFull,
+  CarRepair,
+  LocationOn,
+  Settings,
+} from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { styled } from '@mui/system';
 
@@ -12,13 +18,15 @@ const CustomBottomNavigation = styled(BottomNavigation)({
   '& .Mui-selected .MuiBottomNavigationAction-label': {
     opacity: 1,
   },
+  '& .MuiBottomNavigationAction-root:hover .MuiBottomNavigationAction-label': {
+    opacity: 1,
+  },
 });
 
 function BottomAppBar({ data }) {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
-
 
   // 새로고침시에도 바텀앱바 버튼 유지되도록 함
   useEffect(() => {
@@ -35,7 +43,7 @@ function BottomAppBar({ data }) {
       case '/gps':
         setValue(3);
         break;
-      case '/settings': 
+      case '/settings':
         setValue(4);
         break;
       default:
@@ -68,10 +76,21 @@ function BottomAppBar({ data }) {
   };
 
   return (
-    <div style={{ position: 'fixed', bottom: 0, width: '100%', height:70, backgroundColor: 'red', display: 'flex', alignItems: 'center' }}>
-      <div style={{flexGrow:1, display:'none'}}>
+    <div
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        width: '100%',
+        height: 70,
+        backgroundColor: 'red',
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <div style={{ flexGrow: 1, display: 'none' }}>
         {/* <h4 style={{ color: 'black', paddingLeft: '16px' }}> */}
-          RTC MODULE:<br></br>{data}
+        RTC MODULE:<br></br>
+        {data}
         {/* </h4> */}
       </div>
       <CustomBottomNavigation
@@ -82,8 +101,8 @@ function BottomAppBar({ data }) {
           display: 'flex',
           justifyContent: 'center',
           backgroundColor: '#ffffff',
-          height:'100%',
-          flexGrow:5
+          height: '100%',
+          flexGrow: 5,
         }}
       >
         <BottomNavigationAction label="Vehicle" icon={<DirectionsCar />} />

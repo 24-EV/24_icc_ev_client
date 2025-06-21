@@ -142,9 +142,9 @@
       1. terminal이라고 컴퓨터에 검색 후 뜨는 명령 프롬프트 열기
       2. 검은 바탕에 커서 깜빡거리는 프로그램입니다.
    2. 컴퓨터에 자신이 원하는 디렉토리에 폴더 생성 후 경로 복사
-      1. 바탕화면에 “25ev클라이언트들어올자리” 라는 폴더 만든 후 우클릭하여 경로로 복사
+      1. 바탕화면에 "25ev클라이언트들어올자리" 라는 폴더 만든 후 우클릭하여 경로로 복사
    3. 이때 복사된 경로를 다음과 같이 변경
-      1. "C:\Users\sondh\.ssh” → C:/Users/sondh/.ssh
+      1. "C:\Users\sondh\.ssh" → C:/Users/sondh/.ssh
       2. 쌍따옴표를 지우고 역슬래시를 슬래시로 바꾸기
    4. 변경된 경로를 복사하여 cd 변경된경로
       1. ex) cd C:/Users/sondh/.ssh
@@ -163,8 +163,8 @@
       2. 때문에 저 폴더들이 나열된 화면의 빈 공간을 클릭하여 어떠한 항목도 선택되지 않게 한 후에 우클릭 → New File → .env 입력.
 
          ```cpp
-         VITE_KAKAO_MAP_API_KEY = 카카오맵API발급받아서넣으세요.발급방법위에있습니다.
-         VITE_SERVER_URL = 서버주소넣으세요
+         VITE_KAKAO_MAP_API_KEY=여기에_카카오맵_키_입력
+         VITE_SERVER_URL=http://localhost:2004
          ```
 
       3. 가장 왼쪽 메뉴들의 모양과 개수는 저와 달라도 상관 없습니다
@@ -216,3 +216,30 @@
    3. 완료되었다면 자신의 외부 아이피 주소:외부포트 를 입력하여 로컬에서 실행한 환경과 같은 화면이 뜨는지 확인해보자.
 
 7. 서버와의 연결은 원활한지 등의 테스트 진행해보면 좋습니다.
+
+## 환경변수(.env) 설정 예시
+
+루트 디렉토리에 `.env` 파일을 생성하고 아래와 같이 작성하세요:
+
+```
+VITE_SERVER_URL=http://localhost:2004
+VITE_KAKAO_MAP_API_KEY=여기에_카카오맵_키_입력
+```
+
+- 서버 주소, API 키 등은 반드시 .env로 관리하세요.
+- 코드 내 하드코딩된 주소/키는 제거하고, 반드시 `import.meta.env.VITE_...`로 불러오세요.
+
+---
+
+## 실무적 개선점/운영 가이드 (2024)
+
+- 공통 컴포넌트: src/components/common (DataCard, StatusBanner 등)
+- 커스텀 훅: src/hooks (useSocketData 등)
+- 공통 함수/상수: src/utils, src/constants
+- 코드 스타일 자동화: .eslintrc.js, .prettierrc
+- 테스트: src/components/common/_.test.jsx, src/hooks/_.test.js (Jest, React Testing Library)
+- 환경변수 예시: .env.example
+- 배포/운영: Vercel 등 CI/CD, 환경별 분리, Sentry 등 에러 모니터링
+- 문서/주석: 주요 함수/컴포넌트에 JSDoc, README에 구조/실행/운영 가이드
+
+---

@@ -89,10 +89,11 @@
 
 // export default VehiclePage;
 
-import React, { useContext } from "react";
-import { SocketContext } from "../context/SocketContext";
-import Chart from "../components/Chart";
-import vehicleStyles from "../styles/VehiclePageStyle";
+import React, { useContext } from 'react';
+import { SocketContext } from '../context/SocketContext';
+import Chart from '../components/Chart';
+import vehicleStyles from '../styles/VehiclePageStyle';
+import DataCard from '../components/common/DataCard';
 
 function VehiclePage() {
   const { vehicleData } = useContext(SocketContext);
@@ -105,19 +106,18 @@ function VehiclePage() {
   return (
     <div style={vehicleStyles.container}>
       <div style={vehicleStyles.dataContainer}>
-        <h3>속력</h3>
-        <h1 style={vehicleStyles.data}>{vehicleData.velocity} km/h</h1>
+        <DataCard label="속력" value={vehicleData.velocity} unit="km/h" />
       </div>
-      <div style={vehicleStyles.dataContainer}>
-        {/* <Chart
+      <div style={vehicleStyles.chartContainer}>
+        <Chart
           data={vehicleData}
-          dataKeys={["velocity"]}
-          colors={["cornflowerblue"]}
-        /> */}
+          dataKeys={['velocity']}
+          colors={['cornflowerblue']}
+          title="속도 차트"
+        />
       </div>
       <div style={vehicleStyles.dataContainer}>
-        <h3>RTC Module</h3>
-        <h1 style={vehicleStyles.data}>{realTimeClock.timestamp}</h1>
+        <DataCard label="RTC Module" value={realTimeClock?.timestamp} unit="" />
       </div>
     </div>
   );
