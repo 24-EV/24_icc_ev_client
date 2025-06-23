@@ -13,11 +13,11 @@ function VehiclePage() {
   }
 
   return (
-    <div style={vehicleStyles.container}>
-      <div style={vehicleStyles.dataContainer}>
+    <div>
+      <div>
         <DataCard label="속력" value={vehicleData.velocity} unit="km/h" />
       </div>
-      <div style={vehicleStyles.chartContainer}>
+      <div>
         <Chart
           data={vehicleData}
           dataKeys={['velocity']}
@@ -25,7 +25,7 @@ function VehiclePage() {
           title="속도 차트"
         />
       </div>
-      <div style={vehicleStyles.dataContainer}>
+      <div>
         <DataCard label="RTC Module" value={realTimeClock?.timestamp} unit="" />
       </div>
     </div>

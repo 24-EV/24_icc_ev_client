@@ -5,7 +5,7 @@ import DownloadExcelComponent from '../components/DownloadExcelForm';
 
 function SettingPage() {
   return (
-    <div style={commonStyles.container}>
+    <div>
       <DownloadExcelComponent />
     </div>
   );

@@ -12,17 +12,17 @@ function HVPage() {
   }
 
   return (
-    <div style={hvStyles.container}>
-      <div style={hvStyles.dataContainer}>
+    <div>
+      <div>
         <DataCard label="전압" value={hvData.voltage} unit="V" />
       </div>
-      <div style={hvStyles.dataContainer}>
+      <div>
         <DataCard label="전류" value={hvData.current} unit="A" />
       </div>
-      <div style={hvStyles.dataContainer}>
+      <div>
         <DataCard label="배터리 잔량" value={hvData.battery_percent} unit="%" />
       </div>
-      <div style={hvStyles.dataContainer}>
+      <div>
         <Chart
           data={hvData}
           dataKeys={['voltage', 'current', 'battery_percent']}

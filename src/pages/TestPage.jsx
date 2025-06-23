@@ -10,7 +10,7 @@ function TestPage() {
   const { realTimeClock } = useContext(SocketContext);
 
   if (!motorData) {
-    return <div style={commonStyles.noData}>데이터가 없습니다.</div>;
+    return <div>데이터가 없습니다.</div>;
   }
 
   return (

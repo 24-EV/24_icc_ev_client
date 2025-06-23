@@ -22,38 +22,32 @@ function DownloadExcelComponent() {
 
   return (
     <div>
-      <h1 style={commonStyles.title}>Excel 데이터 다운로드</h1>
-      <div style={commonStyles.dataContainer}>
-        <label style={commonStyles.label}>
+      <h1>Excel 데이터 다운로드</h1>
+      <div>
+        <label>
           시작 날짜:
           <br></br>
           <input
             type="datetime-local"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            style={commonStyles.input}
           />
         </label>
       </div>
-      <div style={commonStyles.dataContainer}>
-        <label style={commonStyles.label}>
+      <div>
+        <label>
           종료 날짜:
           <br></br>
           <input
             type="datetime-local"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            style={commonStyles.input}
           />
         </label>
       </div>
       <button
         onClick={handleDownloadExcel}
         disabled={loading}
-        style={{
-          ...commonStyles.gpsButton,
-          ...(isPressed ? commonStyles.gpsButtonPressed : {}),
-        }}
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onMouseLeave={() => setIsPressed(false)}

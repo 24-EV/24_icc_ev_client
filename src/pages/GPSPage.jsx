@@ -8,7 +8,6 @@ import {
   addMarkerPath,
   drawPolyline,
 } from '../utils/kakaoMapService';
-import { FiveMp } from '@mui/icons-material';
 
 function GPSPage() {
   const [map, setMap] = useState(null);
@@ -70,19 +69,15 @@ function GPSPage() {
   };
 
   return (
-    <div style={commonStyles.container}>
-      <h1 style={commonStyles.title}>GPS</h1>
+    <div>
+      <h1>GPS</h1>
 
       {/* 지도 컨테이너 */}
-      <div id="map" style={{ width: '100%', height: '400px' }}></div>
+      <div id="map"></div>
 
       {/* 버튼 클릭 시 마커 고정/드래그 가능 상태 전환 */}
       <button
         onClick={handleButtonClick}
-        style={{
-          ...commonStyles.gpsButton,
-          ...(isPressed ? commonStyles.gpsButtonPressed : {}),
-        }}
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onMouseLeave={() => setIsPressed(false)}
@@ -93,7 +88,7 @@ function GPSPage() {
         ? `위도: ${gpsData.lat}, 경도: ${gpsData.lng}`
         : 'GPS 데이터 없음'}
       {/* GPS 데이터 수신 상태 메시지 */}
-      <div style={{ marginTop: '20px', fontSize: '16px' }}>
+      <div>
         <DataCard
           label="GPS 데이터 상태"
           value={

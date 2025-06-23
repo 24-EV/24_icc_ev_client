@@ -76,19 +76,9 @@ function BottomAppBar({ data }) {
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        height: 70,
-        backgroundColor: 'red',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <div style={{ flexGrow: 1, display: 'none' }}>
-        {/* <h4 style={{ color: 'black', paddingLeft: '16px' }}> */}
+    <div>
+      <div>
+        {/* <h4> */}
         RTC MODULE:<br></br>
         {data}
         {/* </h4> */}
@@ -96,14 +86,6 @@ function BottomAppBar({ data }) {
       <CustomBottomNavigation
         value={value}
         onChange={handleChange}
-        style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          backgroundColor: '#ffffff',
-          height: '100%',
-          flexGrow: 5,
-        }}
       >
         <BottomNavigationAction label="Vehicle" icon={<DirectionsCar />} />
         <BottomNavigationAction label="HV" icon={<BatteryChargingFull />} />

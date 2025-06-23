@@ -18,31 +18,8 @@ function RealTime() {
   return (
     <>
       {banner}
-      <div
-        style={{
-          position: 'fixed',
-          bottom: 80,
-          right: 0,
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'end',
-          paddingRight: 24,
-          zIndex: 30,
-          pointerEvents: 'none',
-        }}
-      >
-        <span
-          style={{
-            background: '#fff',
-            fontSize: 12,
-            color: '#666',
-            borderRadius: 8,
-            boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
-            padding: '6px 16px',
-            fontFamily: 'monospace',
-            letterSpacing: '-0.5px',
-          }}
-        >
+      <div>
+        <span>
           REAL TIME : {realTimeClock ? realTimeClock.timestamp : '데이터 없음'}
         </span>
       </div>
