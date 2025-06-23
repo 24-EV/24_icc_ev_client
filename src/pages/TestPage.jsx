@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { SocketContext } from '../context/SocketContext';
-import commonStyles from '../styles/style';  // 공통 스타일 가져오기
 import RealTime from '../components/RealTime';
 
 function TestPage() {
@@ -10,7 +9,7 @@ function TestPage() {
   const { realTimeClock } = useContext(SocketContext);
 
   if (!motorData) {
-    return <div style={commonStyles.noData}>데이터가 없습니다.</div>;
+    return <div>데이터가 없습니다.</div>;
   }
 
   return (

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Background, LoadingText } from './Styles';
 import Spinner from '../assets/Spinner.gif';
 
 function SpinnerWhenLoading() {

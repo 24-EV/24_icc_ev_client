@@ -37,20 +37,16 @@ function Chart({ data, dataKeys, colors, title }) {
   }, [data, dataKeys]);
 
   if (!chartData || chartData.length === 0) {
-    return <div style={{ textAlign: 'center', color: 'gray' }}>차트 데이터가 없습니다.</div>;
+    return <div>차트 데이터가 없습니다.</div>;
   }
 
   return (
-    <div style={{ width: '100%' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>{title}</h2>
+    <div>
+      <h2>{title}</h2>
       <div
         style={{
           width: '100%',
-          height: '350px',
-          backgroundColor: '#f0f0f0',
-          borderRadius: '8px',
-          padding: '15px',
-          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+          height: '350px'
         }}
       >
         <ResponsiveContainer width="100%" height="100%">

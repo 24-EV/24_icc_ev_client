@@ -8,15 +8,7 @@ function StatusBanner({ type, message }) {
     success: '#4caf50',
   };
   return (
-    <div
-      style={{
-        background: colorMap[type] || '#2196f3',
-        color: '#fff',
-        padding: '6px',
-        textAlign: 'center',
-        fontWeight: 'bold',
-      }}
-    >
+    <div>
       {message}
     </div>
   );

@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import BottomAppBar from './components/BottomAppBar';
 import { SocketProvider } from './context/SocketContext';
 import RealTime from './components/RealTime';
-import './App.css';
 
 const TestPage = lazy(() => import('./pages/TestPage'));
 const VehiclePage = lazy(() => import('./pages/VehiclePage'));
