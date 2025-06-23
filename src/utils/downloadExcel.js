@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // 서버로부터 Excel 파일을 다운로드하는 함수
 async function downloadExcel(startDate, endDate) {
   if (!startDate || !endDate) {

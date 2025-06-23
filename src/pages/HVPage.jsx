@@ -13,7 +13,6 @@ function HVPage() {
 
   return (
     <div style={hvStyles.container}>
-      <h1 style={hvStyles.title}>HV</h1>
       <div style={hvStyles.dataContainer}>
         <DataCard label="전압" value={hvData.voltage} unit="V" />
       </div>
