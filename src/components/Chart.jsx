@@ -39,14 +39,11 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 function Chart({ data, dataKeys, colors, title }) {
-  const maxDataPoints = 30; // 30초치 데이터 유지
-  // 초기 chartData를 0으로 30개 패딩
-  const [chartData, setChartData] = useState(() =>
-    Array.from({ length: maxDataPoints }, () => ({
-      name: '',
-      ...Object.fromEntries(dataKeys.map((k) => [k, 0])),
-    })),
-  );
+  const maxDataPoints = 30; // 한 화면에 보여줄 데이터 개수
+  // 전체 데이터 저장
+  const [allData, setAllData] = useState([]);
+  // 현재 윈도우 시작 인덱스
+  const [windowStart, setWindowStart] = useState(0);
   const prevTimestampRef = useRef(null);
 
   // legend 상태 관리
@@ -54,6 +51,7 @@ function Chart({ data, dataKeys, colors, title }) {
   // ripple 효과 상태
   const [ripple, setRipple] = useState({});
 
+  // 새 데이터가 들어오면 전체 데이터에 추가
   useEffect(() => {
     if (!data || !data.timestamp) return;
     if (prevTimestampRef.current === data.timestamp) return;
@@ -63,9 +61,15 @@ function Chart({ data, dataKeys, colors, title }) {
       name: data.timestamp.slice(11, 19),
       ...data,
     };
-    setChartData((prev) => {
+    setAllData((prev) => {
       const updated = [...prev, newData];
-      return updated.length > maxDataPoints ? updated.slice(-maxDataPoints) : updated;
+      // 너무 오래된 데이터는 메모리 절약을 위해 1000개까지만 유지
+      return updated.length > 1000 ? updated.slice(-1000) : updated;
+    });
+    // 새 데이터가 들어오면 윈도우를 최신으로 이동
+    setWindowStart((prev, _, arr = allData) => {
+      const newLen = arr.length + 1;
+      return newLen > maxDataPoints ? newLen - maxDataPoints : 0;
     });
   }, [data, dataKeys]);
 
@@ -73,6 +77,15 @@ function Chart({ data, dataKeys, colors, title }) {
   useEffect(() => {
     setSelected(dataKeys);
   }, [dataKeys.join(',')]);
+
+  // 현재 윈도우의 데이터만 보여줌
+  const chartData =
+    allData.length < maxDataPoints
+      ? Array.from({ length: maxDataPoints - allData.length }, () => ({
+          name: '',
+          ...Object.fromEntries(dataKeys.map((k) => [k, 0])),
+        })).concat(allData)
+      : allData.slice(windowStart, windowStart + maxDataPoints);
 
   if (!chartData || chartData.length === 0) {
     return <div>차트 데이터가 없습니다.</div>;
@@ -99,6 +112,16 @@ function Chart({ data, dataKeys, colors, title }) {
       e.preventDefault();
       setSelected((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
     }
+  };
+
+  // 윈도우 이동 핸들러
+  const canPrev = windowStart > 0;
+  const canNext = allData.length > windowStart + maxDataPoints;
+  const handlePrev = () => {
+    if (canPrev) setWindowStart((prev) => Math.max(0, prev - 1));
+  };
+  const handleNext = () => {
+    if (canNext) setWindowStart((prev) => Math.min(allData.length - maxDataPoints, prev + 1));
   };
 
   return (
@@ -139,6 +162,56 @@ function Chart({ data, dataKeys, colors, title }) {
             <Tooltip content={<CustomTooltip />} />
           </LineChart>
         </ResponsiveContainer>
+      </div>
+      {/* 윈도우 이동 버튼 */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 16,
+          margin: '8px 0 0 0',
+        }}
+      >
+        <button
+          onClick={handlePrev}
+          disabled={!canPrev}
+          style={{
+            fontSize: 18,
+            padding: '2px 12px',
+            borderRadius: 8,
+            border: 'none',
+            background: 'var(--color-bg)',
+            color: 'var(--color-primary)',
+            opacity: canPrev ? 1 : 0.4,
+            cursor: canPrev ? 'pointer' : 'not-allowed',
+            transition: 'opacity 0.2s',
+          }}
+        >
+          ◀️
+        </button>
+        <span style={{ color: 'var(--color-primary)', fontWeight: 500, fontSize: 15 }}>
+          {allData.length > maxDataPoints
+            ? `${windowStart + 1}~${Math.min(windowStart + maxDataPoints, allData.length)} / ${allData.length}`
+            : ''}
+        </span>
+        <button
+          onClick={handleNext}
+          disabled={!canNext}
+          style={{
+            fontSize: 18,
+            padding: '2px 12px',
+            borderRadius: 8,
+            border: 'none',
+            background: 'var(--color-bg)',
+            color: 'var(--color-primary)',
+            opacity: canNext ? 1 : 0.4,
+            cursor: canNext ? 'pointer' : 'not-allowed',
+            transition: 'opacity 0.2s',
+          }}
+        >
+          ▶️
+        </button>
       </div>
       <div className={legendStyles.legendPanel}>
         {dataKeys.map((key, idx) => {
