@@ -41,7 +41,7 @@ function MotorPage() {
         <DataCard label="컨트롤러 온도" value={motorData.controller_temperature} unit="℃" />
       </div>
       <Chart
-        data={motorData}
+        data={motorHistory}
         dataKeys={chartOptions.map((opt) => opt.key)}
         colors={chartOptions.map((opt) => opt.color)}
         title="Motor 차트"

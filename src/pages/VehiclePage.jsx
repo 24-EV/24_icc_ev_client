@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '../context/SocketContext';
 import Chart from '../components/Chart';
 import DataCard from '../components/common/DataCard';
@@ -9,6 +9,12 @@ import styles from '../styles/VehiclePage.module.css';
 function VehiclePage() {
   const { vehicleData } = useContext(SocketContext);
   const { realTimeClock } = useContext(SocketContext);
+  const [vehicleHistory, setVehicleHistory] = useState([]);
+  useEffect(() => {
+    if (vehicleData && vehicleData.timestamp) {
+      setVehicleHistory((prev) => [...prev, vehicleData].slice(-300));
+    }
+  }, [vehicleData]);
 
   if (!vehicleData) {
     return (
@@ -27,9 +33,9 @@ function VehiclePage() {
       </div>
       <div className={styles.chartWrap}>
         <Chart
-          data={vehicleData}
+          data={vehicleHistory}
           dataKeys={['velocity']}
-          colors={['var(--color-primary)']}
+          colors={['#a259ec']}
           title="속도 차트"
         />
       </div>
