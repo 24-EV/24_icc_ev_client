@@ -10,6 +10,34 @@ import {
 } from 'recharts';
 import legendStyles from '../styles/ChartLegendPanel.module.css';
 
+// 커스텀 툴팁 컴포넌트
+function CustomTooltip({ active, payload, label }) {
+  if (!active || !payload || payload.length === 0) return null;
+  // label(시간)이 비어있으면 시간 줄을 렌더링하지 않음
+  return (
+    <div
+      style={{
+        background: '#fff',
+        padding: '12px 16px',
+        borderRadius: 8,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+        color: '#3a2d71',
+        fontSize: 15,
+        lineHeight: 1.6,
+      }}
+    >
+      {label && label.trim() && (
+        <div style={{ opacity: 0.5, fontWeight: 400, fontSize: 13, marginBottom: 2 }}>{label}</div>
+      )}
+      {payload.map((entry, i) => (
+        <div key={entry.dataKey} style={{ color: entry.stroke, fontWeight: 500 }}>
+          {entry.name || entry.dataKey} : {entry.value}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Chart({ data, dataKeys, colors, title }) {
   const maxDataPoints = 30; // 30초치 데이터 유지
   // 초기 chartData를 0으로 30개 패딩
@@ -105,10 +133,10 @@ function Chart({ data, dataKeys, colors, title }) {
                 hide={!selected.includes(key)}
               />
             ))}
-            {hasRealData && <CartesianGrid stroke="#ccc" />}
+            {hasRealData && <CartesianGrid stroke="#ccc" vertical={false} horizontal={false} />}
             <YAxis />
             <XAxis dataKey="name" />
-            <Tooltip />
+            <Tooltip content={<CustomTooltip />} />
           </LineChart>
         </ResponsiveContainer>
       </div>

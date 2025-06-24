@@ -14,7 +14,7 @@
 
 .legendItem {
   font-size: 1.05rem;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--color-primary-dark);
   padding: 4px 10px;
   border-radius: 8px;
@@ -40,7 +40,7 @@
 .legendItemActive {
   color: var(--color-primary);
   background: none;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .legendItemInactive {
