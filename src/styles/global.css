@@ -154,6 +154,31 @@ textarea:focus {
   border: 1.5px solid var(--color-primary);
 }
 
+/* BottomNavigationAction 내부 button의 모든 상태에서 배경 투명 강제 */
+.MuiBottomNavigationAction-root,
+.MuiBottomNavigationAction-root:active,
+.MuiBottomNavigationAction-root.Mui-selected,
+.MuiBottomNavigationAction-root:focus,
+.MuiBottomNavigationAction-root:focus-visible,
+.MuiBottomNavigationAction-root:visited,
+.MuiBottomNavigationAction-root:target,
+.MuiBottomNavigationAction-root:focus-within,
+.MuiBottomNavigationAction-root:active:after,
+.MuiBottomNavigationAction-root:active:before,
+.MuiBottomNavigationAction-root > button,
+.MuiBottomNavigationAction-root > button:active,
+.MuiBottomNavigationAction-root > button:focus,
+.MuiBottomNavigationAction-root > button:focus-visible,
+.MuiBottomNavigationAction-root > button:visited,
+.MuiBottomNavigationAction-root > button:target,
+.MuiBottomNavigationAction-root > button:focus-within,
+.MuiBottomNavigationAction-root > button:active:after,
+.MuiBottomNavigationAction-root > button:active:before {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
 @media (max-width: 900px) {
   h1,
   h2,

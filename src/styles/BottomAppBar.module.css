@@ -1,16 +1,17 @@
 .bottomAppBar {
-  background: #fff;
+  background: var(--color-surface);
   border-top: 1px solid var(--color-border);
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  height: 72px;
+  height: 56px;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100vw;
   z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .muiBottomNavigation {
@@ -19,16 +20,32 @@
   box-shadow: none;
   border: none;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   height: 100%;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
 }
 
 .iconButton {
   color: var(--color-text-light) !important;
   min-width: 0 !important;
   padding: 0 !important;
-  font-size: 28px !important;
+  font-size: 13px !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.iconButtonIcon {
+  font-size: 24px !important;
+  margin-bottom: 0px !important;
 }
 
 .Mui-selected,
@@ -38,22 +55,66 @@
 
 @media (max-width: 900px) {
   .bottomAppBar {
-    height: 60px;
+    height: 48px;
   }
-  .iconButton {
-    font-size: 24px !important;
+  .iconButtonIcon {
+    font-size: 20px !important;
   }
 }
 @media (max-width: 600px) {
   .bottomAppBar {
-    height: 52px;
+    height: 44px;
   }
-  .iconButton {
-    font-size: 20px !important;
+  .iconButtonIcon {
+    font-size: 18px !important;
   }
 }
 
 .dark .bottomAppBar {
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
+}
+
+.MuiBottomNavigationAction-root,
+.MuiBottomNavigationAction-root:active,
+.MuiBottomNavigationAction-root.Mui-selected,
+.MuiBottomNavigationAction-root:focus,
+.MuiBottomNavigationAction-root:focus-visible,
+.MuiBottomNavigationAction-root:visited,
+.MuiBottomNavigationAction-root:target,
+.MuiBottomNavigationAction-root:focus-within,
+.MuiBottomNavigationAction-root:active:after,
+.MuiBottomNavigationAction-root:active:before {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.MuiBottomNavigationAction-root button:active {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.muiBottomNavigation .MuiBottomNavigationAction-label {
+  visibility: hidden;
+  min-height: 18px;
+  display: block;
+  font-size: 13px;
+  margin-top: 2px;
+  transition:
+    visibility 0.2s,
+    color 0.2s;
+}
+
+.muiBottomNavigation .Mui-selected .MuiBottomNavigationAction-label {
+  visibility: visible;
+  color: var(--color-primary);
+}
+
+.muiBottomNavigation .MuiBottomNavigationAction-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

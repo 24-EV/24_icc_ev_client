@@ -1,82 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import BatteryChargingFullIcon from '@mui/icons-material/BatteryChargingFull';
-import CarRepairIcon from '@mui/icons-material/CarRepair';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SettingsIcon from '@mui/icons-material/Settings';
+import {
+  DirectionsCar,
+  BatteryChargingFull,
+  CarRepair,
+  LocationOn,
+  Settings,
+} from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import styles from '../styles/BottomAppBar.module.css';
 
-const navItems = [
-  { icon: <DirectionsCarIcon />, path: '/vehicle', label: '차량' },
-  { icon: <BatteryChargingFullIcon />, path: '/hv', label: 'HV' },
-  { icon: <CarRepairIcon />, path: '/motor', label: '모터' },
-  { icon: <LocationOnIcon />, path: '/gps', label: 'GPS' },
-  { icon: <SettingsIcon />, path: '/settings', label: '설정' },
+const NAV_ITEMS = [
+  { label: 'Vehicle', icon: <DirectionsCar />, path: '/vehicle' },
+  { label: 'HV', icon: <BatteryChargingFull />, path: '/hv' },
+  { label: 'Motor', icon: <CarRepair />, path: '/motor' },
+  { label: 'GPS', icon: <LocationOn />, path: '/gps' },
+  { label: 'Settings', icon: <Settings />, path: '/settings' },
 ];
 
 function BottomAppBar() {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
-  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const idx = navItems.findIndex((item) => location.pathname.startsWith(item.path));
+    const idx = NAV_ITEMS.findIndex((item) => item.path === location.pathname);
     setValue(idx === -1 ? 0 : idx);
   }, [location.pathname]);
 
-  useEffect(() => {
-    const observer = () => setIsDark(document.body.classList.contains('dark'));
-    observer();
-    window.addEventListener('storage', observer);
-    return () => window.removeEventListener('storage', observer);
-  }, []);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    navigate(navItems[newValue].path);
+    navigate(NAV_ITEMS[newValue].path);
   };
 
-  // 다크모드 색상 강제 적용
-  const barStyle = isDark
-    ? {
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        width: '100%',
+        height: 56,
         background: 'var(--color-surface)',
         borderTop: '1px solid var(--color-border)',
-      }
-    : {};
-
-  return (
-    <div className={styles.bottomAppBar} style={barStyle}>
+        zIndex: 100,
+      }}
+    >
       <BottomNavigation
         value={value}
         onChange={handleChange}
-        showLabels
-        className={styles.muiBottomNavigation}
-        sx={
-          isDark
-            ? {
-                background: 'var(--color-surface)',
-                borderTop: '1px solid var(--color-border)',
-                boxShadow: 'none',
-                border: 'none',
-              }
-            : {
-                background: 'transparent',
-                boxShadow: 'none',
-                border: 'none',
-              }
-        }
+        showLabels={false}
+        sx={{
+          width: '100%',
+          height: '100%',
+          background: 'transparent',
+          '.MuiBottomNavigationAction-root': {
+            color: 'var(--color-text-light)',
+            '&.Mui-selected': {
+              color: 'var(--color-primary)',
+            },
+          },
+          '.MuiBottomNavigationAction-label': {
+            fontSize: 13,
+            transition: 'all 0.2s',
+          },
+        }}
       >
-        {navItems.map((item, idx) => (
+        {NAV_ITEMS.map((item, idx) => (
           <BottomNavigationAction
-            key={item.path}
+            key={item.label}
+            label={item.label}
             icon={item.icon}
-            aria-label={item.label}
-            className={styles.iconButton}
-            sx={{ minWidth: 0, padding: 0 }}
-            showLabel={false}
+            showLabel={value === idx}
           />
         ))}
       </BottomNavigation>
