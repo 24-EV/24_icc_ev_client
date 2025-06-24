@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../styles/DownloadExcelForm.module.css';
+import cardPanelStyles from '../styles/CardPanel.module.css';
 
-function DownloadExcelComponent() {
+function DownloadExcelComponent({ style }) {
   const [startDate, setStartDate] = useState(''); // 시작 날짜 상태
   const [endDate, setEndDate] = useState(''); // 종료 날짜 상태
   const [loading, setLoading] = useState(false); // 로딩 상태
@@ -18,10 +19,14 @@ function DownloadExcelComponent() {
   };
 
   return (
-    <form className={styles.formWrap} onSubmit={handleDownload}>
+    <form
+      className={`${styles.formWrap} ${cardPanelStyles.cardPanel}`}
+      onSubmit={handleDownload}
+      style={style}
+    >
       <div className={styles.title}>Excel 데이터 다운로드</div>
       <div className={styles.inputRow}>
-        <div style={{ flex: 1 }}>
+        <div className={styles.inputCol}>
           <div className={styles.label}>시작 날짜:</div>
           <input
             type="datetime-local"
@@ -30,7 +35,7 @@ function DownloadExcelComponent() {
             className={styles.input}
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div className={styles.inputCol}>
           <div className={styles.label}>종료 날짜:</div>
           <input
             type="datetime-local"

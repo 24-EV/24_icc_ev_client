@@ -28,9 +28,32 @@
   color: var(--color-text-light) !important;
   min-width: 0 !important;
   padding: 0 !important;
+  font-size: 28px !important;
 }
 
 .Mui-selected,
 .iconButton.Mui-selected {
   color: var(--color-primary) !important;
+}
+
+@media (max-width: 900px) {
+  .bottomAppBar {
+    height: 60px;
+  }
+  .iconButton {
+    font-size: 24px !important;
+  }
+}
+@media (max-width: 600px) {
+  .bottomAppBar {
+    height: 52px;
+  }
+  .iconButton {
+    font-size: 20px !important;
+  }
+}
+
+.dark .bottomAppBar {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
 }

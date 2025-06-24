@@ -1,36 +1,39 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import SettingsPage from './pages/SettingsPage';
+import MotorPage from './pages/MotorPage';
+import HVPage from './pages/HVPage';
+import GPSPage from './pages/GPSPage';
+import TestPage from './pages/TestPage';
+import VehiclePage from './pages/VehiclePage';
+import Section from './components/Section';
 import BottomAppBar from './components/BottomAppBar';
 import { SocketProvider } from './context/SocketContext';
-import RealTime from './components/RealTime';
-import Section from './components/Section';
 
-const TestPage = lazy(() => import('./pages/TestPage'));
-const VehiclePage = lazy(() => import('./pages/VehiclePage'));
-const HVPage = lazy(() => import('./pages/HVPage'));
-const MotorPage = lazy(() => import('./pages/MotorPage'));
-const GPSPage = lazy(() => import('./pages/GPSPage'));
-const SettingPage = lazy(() => import('./pages/SettingsPage'));
+const TestPageComponent = lazy(() => import('./pages/TestPage'));
+const VehiclePageComponent = lazy(() => import('./pages/VehiclePage'));
+const HVPageComponent = lazy(() => import('./pages/HVPage'));
+const MotorPageComponent = lazy(() => import('./pages/MotorPage'));
+const GPSPageComponent = lazy(() => import('./pages/GPSPage'));
+const SettingPageComponent = lazy(() => import('./pages/SettingsPage'));
 
 function App() {
   return (
     <SocketProvider>
-      <BrowserRouter>
-        <RealTime />
-        <Section>
-          <Suspense fallback={<div style={{ textAlign: 'center', marginTop: 40 }}>로딩 중...</div>}>
-            <Routes>
-              <Route path="/" element={<TestPage />} />
-              <Route path="/vehicle" element={<VehiclePage />} />
-              <Route path="/hv" element={<HVPage />} />
-              <Route path="/motor" element={<MotorPage />} />
-              <Route path="/gps" element={<GPSPage />} />
-              <Route path="/settings" element={<SettingPage />} />
-            </Routes>
-          </Suspense>
-        </Section>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<TestPageComponent />} />
+            <Route path="/vehicle" element={<VehiclePageComponent />} />
+            <Route path="/hv" element={<HVPageComponent />} />
+            <Route path="/motor" element={<MotorPageComponent />} />
+            <Route path="/gps" element={<GPSPageComponent />} />
+            <Route path="/settings" element={<SettingPageComponent />} />
+          </Routes>
+        </Layout>
         <BottomAppBar />
-      </BrowserRouter>
+      </Router>
     </SocketProvider>
   );
 }

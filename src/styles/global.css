@@ -1,4 +1,4 @@
-/* 글로벌 컬러 변수 */
+/* 라이트 모드 */
 :root {
   --color-bg: #faf9fb;
   --color-surface: #f3f0ff;
@@ -8,6 +8,21 @@
   --color-text: #22223b;
   --color-text-light: #6c6a7c;
   --color-border: #e0def7;
+  --color-success: #4caf50;
+  --color-error: #f44336;
+  --color-warning: #ff9800;
+}
+
+/* 다크 모드 */
+.dark {
+  --color-bg: #181825;
+  --color-surface: #232136;
+  --color-primary: #a78bfa;
+  --color-primary-light: #c4b5fd;
+  --color-primary-dark: #7c3aed;
+  --color-text: #f3f0ff;
+  --color-text-light: #bdbdbd;
+  --color-border: #393552;
   --color-success: #4caf50;
   --color-error: #f44336;
   --color-warning: #ff9800;
@@ -24,6 +39,9 @@ body {
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 #root {
@@ -134,4 +152,48 @@ input:focus,
 select:focus,
 textarea:focus {
   border: 1.5px solid var(--color-primary);
+}
+
+@media (max-width: 900px) {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1.2em;
+  }
+  button {
+    font-size: 0.98rem;
+    padding: 0.6em 1em;
+  }
+  .card,
+  .data-card {
+    padding: 1em 0.7em;
+  }
+}
+
+@media (max-width: 600px) {
+  html,
+  body {
+    font-size: 15px;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 1em;
+  }
+  button {
+    font-size: 0.95rem;
+    padding: 0.5em 0.7em;
+    border-radius: 10px;
+  }
+  .card,
+  .data-card {
+    padding: 0.7em 0.5em;
+    border-radius: 12px;
+  }
 }

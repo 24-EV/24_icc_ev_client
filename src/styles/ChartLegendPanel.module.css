@@ -8,11 +8,13 @@
   padding: 0;
   margin: 0.25rem 0 0 0;
   box-shadow: none;
+  flex-wrap: wrap;
+  overflow-x: auto;
 }
 
 .legendItem {
   font-size: 1.05rem;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--color-primary-dark);
   padding: 4px 10px;
   border-radius: 8px;
@@ -22,26 +24,63 @@
   border: none;
   transition:
     background 0.15s,
-    color 0.15s,
-    border 0.15s;
+    color 0.15s;
+  outline: none;
+  position: relative;
+}
+
+.legendItem:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+  background: var(--color-primary-light);
+  color: #fff;
 }
 
 .legendItemActive {
   color: var(--color-primary);
-  font-weight: 500;
   background: none;
-  border: none;
+  font-weight: 600;
 }
 
 .legendItemInactive {
   color: #bdbdbd;
   background: none;
-  border: none;
-  text-decoration: line-through;
+  opacity: 0.6;
 }
 
-.legendItem:hover {
+.legendItem:hover,
+.legendItem:focus-visible {
   background: var(--color-primary-light);
   color: #fff;
-  border-radius: 8px;
+}
+
+/* Ripple 효과용 */
+.legendItem .ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.4s linear;
+  background: rgba(124, 58, 237, 0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .legendPanel {
+    gap: 0.5rem;
+    padding: 0 0.2rem;
+  }
+  .legendItem {
+    font-size: 0.98rem;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
 }

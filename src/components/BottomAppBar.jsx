@@ -20,24 +20,54 @@ function BottomAppBar() {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const idx = navItems.findIndex((item) => location.pathname.startsWith(item.path));
     setValue(idx === -1 ? 0 : idx);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const observer = () => setIsDark(document.body.classList.contains('dark'));
+    observer();
+    window.addEventListener('storage', observer);
+    return () => window.removeEventListener('storage', observer);
+  }, []);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
     navigate(navItems[newValue].path);
   };
 
+  // 다크모드 색상 강제 적용
+  const barStyle = isDark
+    ? {
+        background: 'var(--color-surface)',
+        borderTop: '1px solid var(--color-border)',
+      }
+    : {};
+
   return (
-    <nav className={styles.bottomAppBar}>
+    <div className={styles.bottomAppBar} style={barStyle}>
       <BottomNavigation
         value={value}
         onChange={handleChange}
-        showLabels={false}
+        showLabels
         className={styles.muiBottomNavigation}
+        sx={
+          isDark
+            ? {
+                background: 'var(--color-surface)',
+                borderTop: '1px solid var(--color-border)',
+                boxShadow: 'none',
+                border: 'none',
+              }
+            : {
+                background: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+              }
+        }
       >
         {navItems.map((item, idx) => (
           <BottomNavigationAction
@@ -50,7 +80,7 @@ function BottomAppBar() {
           />
         ))}
       </BottomNavigation>
-    </nav>
+    </div>
   );
 }
 

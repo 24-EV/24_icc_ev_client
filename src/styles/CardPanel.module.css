@@ -6,3 +6,18 @@
   margin: 1.2rem 0;
   width: 100%;
 }
+
+@media (max-width: 900px) {
+  .cardPanel {
+    padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+    border-radius: 14px;
+  }
+}
+@media (max-width: 600px) {
+  .cardPanel {
+    padding: 0.8rem 0.3rem 0.7rem 0.3rem;
+    border-radius: 12px;
+    gap: 0.7rem;
+    font-size: 0.98rem;
+  }
+}

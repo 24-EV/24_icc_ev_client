@@ -1,1 +1,30 @@
- 
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.chartWrap {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .cardGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+  .chartWrap {
+    margin-bottom: 1.2rem;
+  }
+}
+@media (max-width: 600px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .chartWrap {
+    margin-bottom: 0.7rem;
+  }
+}

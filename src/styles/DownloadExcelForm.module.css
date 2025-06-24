@@ -1,71 +1,109 @@
 .formWrap {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  background: var(--color-surface);
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(124, 58, 237, 0.1);
+  padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+  margin: 0 0 24px 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  max-width: 720px;
-  min-width: 320px;
-  min-height: 320px;
-  width: 100%;
-  margin: 1.2rem auto 0 auto;
-  background: var(--color-surface);
-  border-radius: 28px;
-  padding: 2.5rem 2.5rem 2rem 2.5rem;
-  box-shadow: 0 4px 24px rgba(140, 120, 200, 0.08);
   align-items: stretch;
+  gap: 1.2rem;
 }
 
 .title {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
   color: var(--color-text);
   text-align: center;
+  margin-bottom: 0.7rem;
 }
 
 .inputRow {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.7rem;
   width: 100%;
 }
 
-.input {
-  font-size: 1.1rem;
-  padding: 0.7em 1.2em;
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  background: #fff;
-  color: var(--color-text);
-  outline: none;
+.inputCol {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
   width: 100%;
-  box-sizing: border-box;
-}
-
-.button {
-  width: 100%;
-  font-size: 1.1rem;
-  padding: 0.9em 0;
-  border-radius: 14px;
-  background: var(--color-primary);
-  color: #fff;
-  border: none;
-  margin-top: 0.7rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.button:active,
-.button:focus {
-  background: var(--color-primary-dark);
-}
-.button:disabled {
-  background: var(--color-border);
-  color: var(--color-text-light);
-  cursor: not-allowed;
 }
 
 .label {
   font-size: 1rem;
   color: var(--color-text-light);
-  margin-bottom: 0.3rem;
-  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.5em 0.7em;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.input:focus {
+  border: 1.5px solid var(--color-primary);
+}
+
+.button {
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 0.8em 0;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.button:disabled {
+  background: var(--color-primary-light);
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .formWrap {
+    padding: 0.8rem 0.3rem 0.7rem 0.3rem;
+    border-radius: 12px;
+    gap: 0.7rem;
+  }
+  .title {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+  }
+  .inputRow {
+    gap: 0.5rem;
+  }
+  .inputCol {
+    gap: 0.15rem;
+  }
+  .input {
+    font-size: 0.98rem;
+    padding: 0.4em 0.5em;
+    max-width: 100%;
+  }
+  .button {
+    font-size: 1rem;
+    padding: 0.7em 0;
+    border-radius: 10px;
+  }
 }

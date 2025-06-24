@@ -23,6 +23,8 @@ function Chart({ data, dataKeys, colors, title }) {
 
   // legend 상태 관리
   const [selected, setSelected] = useState(dataKeys);
+  // ripple 효과 상태
+  const [ripple, setRipple] = useState({});
 
   useEffect(() => {
     if (!data || !data.timestamp) return;
@@ -48,8 +50,27 @@ function Chart({ data, dataKeys, colors, title }) {
     return <div>차트 데이터가 없습니다.</div>;
   }
 
-  const handleLegendClick = (key) => {
+  // 실제 데이터가 있는지 확인
+  const hasRealData = chartData.some((d) =>
+    Object.values(d).some((v) => typeof v === 'number' && v !== 0),
+  );
+
+  const handleLegendClick = (key, e) => {
     setSelected((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+    // ripple 효과
+    const target = e.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    setRipple({ key, x, y, size, ts: Date.now() });
+  };
+
+  const handleLegendKeyDown = (key, e) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      setSelected((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+    }
   };
 
   return (
@@ -84,7 +105,7 @@ function Chart({ data, dataKeys, colors, title }) {
                 hide={!selected.includes(key)}
               />
             ))}
-            <CartesianGrid stroke="#ccc" />
+            {hasRealData && <CartesianGrid stroke="#ccc" />}
             <YAxis />
             <XAxis dataKey="name" />
             <Tooltip />
@@ -101,9 +122,27 @@ function Chart({ data, dataKeys, colors, title }) {
                 legendStyles.legendItem,
                 isActive ? legendStyles.legendItemActive : legendStyles.legendItemInactive,
               ].join(' ')}
-              onClick={() => handleLegendClick(key)}
+              tabIndex={0}
+              aria-pressed={isActive}
+              role="button"
+              aria-label={`${key} 데이터 토글`}
+              onClick={(e) => handleLegendClick(key, e)}
+              onKeyDown={(e) => handleLegendKeyDown(key, e)}
+              style={{ position: 'relative', outline: 'none' }}
             >
               {key}
+              {/* Ripple 효과 */}
+              {ripple.key === key && Date.now() - ripple.ts < 400 && (
+                <span
+                  className="ripple"
+                  style={{
+                    left: ripple.x,
+                    top: ripple.y,
+                    width: ripple.size,
+                    height: ripple.size,
+                  }}
+                />
+              )}
             </span>
           );
         })}
