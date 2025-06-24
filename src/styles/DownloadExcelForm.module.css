@@ -1,0 +1,71 @@
+.formWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 720px;
+  min-width: 320px;
+  min-height: 320px;
+  width: 100%;
+  margin: 1.2rem auto 0 auto;
+  background: var(--color-surface);
+  border-radius: 28px;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  box-shadow: 0 4px 24px rgba(140, 120, 200, 0.08);
+  align-items: stretch;
+}
+
+.title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.inputRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.input {
+  font-size: 1.1rem;
+  padding: 0.7em 1.2em;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  color: var(--color-text);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 0.9em 0;
+  border-radius: 14px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:active,
+.button:focus {
+  background: var(--color-primary-dark);
+}
+.button:disabled {
+  background: var(--color-border);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+}
+
+.label {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}

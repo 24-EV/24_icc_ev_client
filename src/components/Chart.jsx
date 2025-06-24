@@ -6,9 +6,9 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from 'recharts';
+import legendStyles from '../styles/ChartLegendPanel.module.css';
 
 function Chart({ data, dataKeys, colors, title }) {
   const maxDataPoints = 30; // 30초치 데이터 유지
@@ -20,6 +20,9 @@ function Chart({ data, dataKeys, colors, title }) {
     })),
   );
   const prevTimestampRef = useRef(null);
+
+  // legend 상태 관리
+  const [selected, setSelected] = useState(dataKeys);
 
   useEffect(() => {
     if (!data || !data.timestamp) return;
@@ -36,17 +39,35 @@ function Chart({ data, dataKeys, colors, title }) {
     });
   }, [data, dataKeys]);
 
+  // dataKeys가 바뀌면 legend 상태도 동기화
+  useEffect(() => {
+    setSelected(dataKeys);
+  }, [dataKeys.join(',')]);
+
   if (!chartData || chartData.length === 0) {
     return <div>차트 데이터가 없습니다.</div>;
   }
 
+  const handleLegendClick = (key) => {
+    setSelected((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  };
+
   return (
-    <div>
-      <h2>{title}</h2>
+    <div
+      style={{
+        background: 'var(--color-surface)',
+        borderRadius: 20,
+        boxShadow: '0 2px 12px rgba(124,58,237,0.06)',
+        padding: '1.2rem 1.2rem 0.7rem 1.2rem',
+        margin: '1.2rem 0',
+        width: '100%',
+      }}
+    >
+      <h2 style={{ margin: '0 0 1.2rem 0' }}>{title}</h2>
       <div
         style={{
           width: '100%',
-          height: '350px'
+          height: '350px',
         }}
       >
         <ResponsiveContainer width="100%" height="100%">
@@ -60,15 +81,32 @@ function Chart({ data, dataKeys, colors, title }) {
                 strokeWidth={2}
                 dot={false}
                 isAnimationActive={false}
+                hide={!selected.includes(key)}
               />
             ))}
             <CartesianGrid stroke="#ccc" />
             <YAxis />
             <XAxis dataKey="name" />
             <Tooltip />
-            <Legend />
           </LineChart>
         </ResponsiveContainer>
+      </div>
+      <div className={legendStyles.legendPanel}>
+        {dataKeys.map((key, idx) => {
+          const isActive = selected.includes(key);
+          return (
+            <span
+              key={key}
+              className={[
+                legendStyles.legendItem,
+                isActive ? legendStyles.legendItemActive : legendStyles.legendItemInactive,
+              ].join(' ')}
+              onClick={() => handleLegendClick(key)}
+            >
+              {key}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

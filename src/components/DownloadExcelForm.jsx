@@ -1,59 +1,49 @@
 import React, { useState } from 'react';
-import downloadExcel from '../utils/downloadExcel';
+import axios from 'axios';
+import styles from '../styles/DownloadExcelForm.module.css';
 
 function DownloadExcelComponent() {
   const [startDate, setStartDate] = useState(''); // 시작 날짜 상태
   const [endDate, setEndDate] = useState(''); // 종료 날짜 상태
   const [loading, setLoading] = useState(false); // 로딩 상태
-  const [isPressed, setIsPressed] = useState(false); // 버튼 눌림 상태
 
-  async function handleDownloadExcel() {
+  const handleDownload = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
-      await downloadExcel(startDate, endDate);
-    } catch (error) {
-      console.error('액셀 파일 다운로드 실패 : ', error);
-      alert('파일 다운로드 중 오류가 발생했습니다.');
+      // 실제 다운로드 로직
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
-    <div>
-      <h1>Excel 데이터 다운로드</h1>
-      <div>
-        <label>
-          시작 날짜:
-          <br></br>
+    <form className={styles.formWrap} onSubmit={handleDownload}>
+      <div className={styles.title}>Excel 데이터 다운로드</div>
+      <div className={styles.inputRow}>
+        <div style={{ flex: 1 }}>
+          <div className={styles.label}>시작 날짜:</div>
           <input
             type="datetime-local"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            className={styles.input}
           />
-        </label>
-      </div>
-      <div>
-        <label>
-          종료 날짜:
-          <br></br>
+        </div>
+        <div style={{ flex: 1 }}>
+          <div className={styles.label}>종료 날짜:</div>
           <input
             type="datetime-local"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
+            className={styles.input}
           />
-        </label>
+        </div>
       </div>
-      <button
-        onClick={handleDownloadExcel}
-        disabled={loading}
-        onMouseDown={() => setIsPressed(true)}
-        onMouseUp={() => setIsPressed(false)}
-        onMouseLeave={() => setIsPressed(false)}
-      >
+      <button type="submit" className={styles.button} disabled={loading}>
         {loading ? '다운로드 중...' : 'Excel 다운로드'}
       </button>
-    </div>
+    </form>
   );
 }
 

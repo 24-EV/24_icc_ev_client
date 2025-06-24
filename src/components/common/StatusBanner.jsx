@@ -1,15 +1,26 @@
 import React from 'react';
+import styles from '../../styles/StatusBanner.module.css';
 
-function StatusBanner({ type, message }) {
-  const colorMap = {
-    loading: '#2196f3',
-    error: '#f44336',
-    warning: '#ff9800',
-    success: '#4caf50',
-  };
+const iconMap = {
+  loading: <span style={{ fontSize: 18 }}>⏳</span>,
+  error: <span style={{ fontSize: 18 }}>❌</span>,
+  warning: <span style={{ fontSize: 18 }}>⚠️</span>,
+  success: <span style={{ fontSize: 18 }}>✅</span>,
+};
+
+function StatusBanner({ type = 'loading', message }) {
+  const typeClass =
+    type === 'success'
+      ? styles.statusBannerSuccess
+      : type === 'error'
+        ? styles.statusBannerError
+        : type === 'warning'
+          ? styles.statusBannerWarning
+          : styles.statusBannerLoading;
   return (
-    <div>
-      {message}
+    <div className={`${styles.statusBanner} ${typeClass}`}>
+      {iconMap[type]}
+      <span>{message}</span>
     </div>
   );
 }

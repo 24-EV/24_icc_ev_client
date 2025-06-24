@@ -1,0 +1,137 @@
+/* 글로벌 컬러 변수 */
+:root {
+  --color-bg: #faf9fb;
+  --color-surface: #f3f0ff;
+  --color-primary: #7c3aed;
+  --color-primary-light: #a78bfa;
+  --color-primary-dark: #5b21b6;
+  --color-text: #22223b;
+  --color-text-light: #6c6a7c;
+  --color-border: #e0def7;
+  --color-success: #4caf50;
+  --color-error: #f44336;
+  --color-warning: #ff9800;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Noto Sans KR', 'Pretendard', 'Roboto', Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  margin: 0 0 0.5em 0;
+  color: var(--color-text);
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 0.7em 1.4em;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: none;
+}
+button:active,
+button:focus {
+  background: var(--color-primary-dark);
+}
+button:disabled {
+  background: var(--color-border);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+}
+
+/* 카드 스타일 */
+.card,
+.data-card {
+  background: var(--color-surface);
+  border-radius: 16px;
+  padding: 1.2em 1.5em;
+  margin: 0.5em 0;
+  box-shadow: none;
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+/* 배너 스타일 */
+.status-banner {
+  border-radius: 10px;
+  padding: 0.7em 1.2em;
+  margin: 0.7em 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+.status-banner.success {
+  color: var(--color-success);
+}
+.status-banner.error {
+  color: var(--color-error);
+}
+.status-banner.warning {
+  color: var(--color-warning);
+}
+.status-banner.loading {
+  color: var(--color-primary);
+}
+
+/* 하단 네비게이션 */
+.bottom-app-bar {
+  background: #fff;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* 기타 */
+input,
+select,
+textarea {
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  padding: 0.5em 1em;
+  background: #fff;
+  color: var(--color-text);
+  outline: none;
+  transition: border 0.2s;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  border: 1.5px solid var(--color-primary);
+}

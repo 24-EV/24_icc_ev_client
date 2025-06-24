@@ -1,0 +1,21 @@
+.mapContainer {
+  width: 100%;
+  height: 300px;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.buttonWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.gpsButton {
+  margin: 0 auto;
+}
+
+.dataCardWrap {
+  margin-bottom: 1.2rem;
+}

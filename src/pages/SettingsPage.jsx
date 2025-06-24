@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // axios 임포트
+import React from 'react';
 import DownloadExcelComponent from '../components/DownloadExcelForm';
+import Section from '../components/Section';
+import PageHeader from '../components/PageHeader';
 
 function SettingPage() {
   return (
-    <div>
+    <Section>
+      <PageHeader title="설정" />
       <DownloadExcelComponent />
-    </div>
+    </Section>
   );
 }
 

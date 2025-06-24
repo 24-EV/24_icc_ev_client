@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '../context/SocketContext';
 import DataCard from '../components/common/DataCard';
+import Section from '../components/Section';
+import PageHeader from '../components/PageHeader';
+import styles from '../styles/GPSPage.module.css';
+import cardPanelStyles from '../styles/CardPanel.module.css';
 import {
   loadKakaoMap,
   updateMarkerPosition,
@@ -68,32 +72,23 @@ function GPSPage() {
   };
 
   return (
-    <div>
-      <h1>GPS</h1>
-
-      {/* 지도 컨테이너 */}
-      <div
-        id="map"
-        style={{
-          width: '95%',
-          height: '300px',
-        }}
-      ></div>
-
-      {/* 버튼 클릭 시 마커 고정/드래그 가능 상태 전환 */}
-      <button
-        onClick={handleButtonClick}
-        onMouseDown={() => setIsPressed(true)}
-        onMouseUp={() => setIsPressed(false)}
-        onMouseLeave={() => setIsPressed(false)}
-      >
-        지도 마커 기준 고정
-      </button>
-      {gpsData && gpsData.lat !== null && gpsData.lng !== null
-        ? `위도: ${gpsData.lat}, 경도: ${gpsData.lng}`
-        : 'GPS 데이터 없음'}
-      {/* GPS 데이터 수신 상태 메시지 */}
-      <div>
+    <Section>
+      <PageHeader title="GPS" />
+      <div className={cardPanelStyles.cardPanel}>
+        <div id="map" className={styles.mapContainer}></div>
+        <div className={styles.buttonWrap}>
+          <button
+            onClick={handleButtonClick}
+            onMouseDown={() => setIsPressed(true)}
+            onMouseUp={() => setIsPressed(false)}
+            onMouseLeave={() => setIsPressed(false)}
+            className={styles.gpsButton}
+          >
+            지도 마커 기준 고정
+          </button>
+        </div>
+      </div>
+      <div className={styles.dataCardWrap}>
         <DataCard
           label="GPS 데이터 상태"
           value={
@@ -104,7 +99,7 @@ function GPSPage() {
           unit={gpsData ? '' : ''}
         />
       </div>
-    </div>
+    </Section>
   );
 }
 

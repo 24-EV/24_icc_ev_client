@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { SocketContext } from '../context/SocketContext';
 import StatusBanner from './common/StatusBanner';
+import styles from '../styles/RealTime.module.css';
 
 function RealTime() {
   const { realTimeClock, socketError, loading, isConnected } = useContext(SocketContext);
@@ -16,14 +17,12 @@ function RealTime() {
   }
 
   return (
-    <>
+    <div className={styles.realTimeContainer}>
       {banner}
-      <div>
-        <span>
-          REAL TIME : {realTimeClock ? realTimeClock.timestamp : '데이터 없음'}
-        </span>
+      <div className={`${styles.realTimeBanner} status-banner loading`}>
+        REAL TIME : {realTimeClock ? realTimeClock.timestamp : '데이터 없음'}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,0 +1,21 @@
+.dataCard {
+  background: var(--color-surface);
+  border-radius: 16px;
+  padding: 1.2em 1.5em;
+  margin: 0.5em 0;
+  box-shadow: none;
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.label {
+  color: var(--color-text-light);
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+.value {
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 1.2rem;
+}

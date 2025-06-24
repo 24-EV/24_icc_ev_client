@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { SocketContext } from '../context/SocketContext';
-import RealTime from '../components/RealTime';
+import Section from '../components/Section';
+import PageHeader from '../components/PageHeader';
+import DataCard from '../components/common/DataCard';
 
 function TestPage() {
   const { vehicleData } = useContext(SocketContext);
@@ -9,43 +11,26 @@ function TestPage() {
   const { realTimeClock } = useContext(SocketContext);
 
   if (!motorData) {
-    return <div>데이터가 없습니다.</div>;
+    return (
+      <Section>
+        <PageHeader title="테스트" />
+        <div>데이터가 없습니다.</div>
+      </Section>
+    );
   }
 
   return (
-    <div >
-      <div>
-        <h1>속력 : {vehicleData.velocity} km/h</h1>
-      </div>
-
-      <div>
-        <h1>RTC Module : {realTimeClock.timestamp}</h1>
-      </div>
-
-      <div>
-        <h1>전압 : {hvData.voltage} V</h1>
-      </div>
-
-      <div>
-        <h1>전류 : {hvData.current} A</h1>
-      </div>
-
-      <div>
-        <h1>배터리 잔량 : {hvData.battery_percent} %</h1>
-      </div>
-
-      <div>
-        <h1>Throttle : {motorData.throttle} / 255</h1>
-      </div>
-
-      <div>
-        <h1>RPM : {motorData.rpm} RPM</h1>
-      </div>
-
-      <div>
-        <h1>컨트롤러 온도 : {motorData.controller_temperature} ℃</h1>
-      </div>
-    </div>
+    <Section>
+      <PageHeader title="테스트" />
+      <DataCard label="속력" value={vehicleData.velocity} unit="km/h" />
+      <DataCard label="RTC Module" value={realTimeClock.timestamp} unit="" />
+      <DataCard label="전압" value={hvData.voltage} unit="V" />
+      <DataCard label="전류" value={hvData.current} unit="A" />
+      <DataCard label="배터리 잔량" value={hvData.battery_percent} unit="%" />
+      <DataCard label="Throttle" value={motorData.throttle} unit="/ 255" />
+      <DataCard label="RPM" value={motorData.rpm} unit="RPM" />
+      <DataCard label="컨트롤러 온도" value={motorData.controller_temperature} unit="℃" />
+    </Section>
   );
 }
 

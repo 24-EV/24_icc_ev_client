@@ -1,0 +1,31 @@
+.chartControl {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  color: var(--color-text-light);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+}
+
+.checkbox {
+  accent-color: var(--color-primary);
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1.5px solid var(--color-primary-light);
+  background: #fff;
+  transition: box-shadow 0.2s;
+}
+.checkbox:focus {
+  outline: 2px solid var(--color-primary-dark);
+}
