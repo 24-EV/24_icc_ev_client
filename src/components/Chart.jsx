@@ -1,112 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { createChart } from 'lightweight-charts';
 import legendStyles from '../styles/ChartLegendPanel.module.css';
+import cardPanelStyles from '../styles/CardPanel.module.css';
 
-// 커스텀 툴팁 컴포넌트
-function CustomTooltip({ active, payload, label }) {
-  if (!active || !payload || payload.length === 0) return null;
-  // label(시간)이 비어있으면 시간 줄을 렌더링하지 않음
-  return (
-    <div
-      style={{
-        background: '#fff',
-        padding: '12px 16px',
-        borderRadius: 8,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-        color: '#3a2d71',
-        fontSize: 15,
-        lineHeight: 1.6,
-      }}
-    >
-      {label && label.trim() && (
-        <div style={{ opacity: 0.5, fontWeight: 400, fontSize: 13, marginBottom: 2 }}>{label}</div>
-      )}
-      {payload.map((entry, i) => (
-        <div key={entry.dataKey} style={{ color: entry.stroke, fontWeight: 500 }}>
-          {entry.name || entry.dataKey} : {entry.value}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Chart({ data, dataKeys, colors, title }) {
-  const maxDataPoints = 30; // 한 화면에 보여줄 데이터 개수
-  // 전체 데이터 저장
-  const [allData, setAllData] = useState([]);
-  // 현재 윈도우 시작 인덱스
-  const [windowStart, setWindowStart] = useState(0);
-  const prevTimestampRef = useRef(null);
-
+// data: [{ name: '시간', key1: 값, key2: 값, ... }]
+// dataKeys: ['key1', 'key2', ...]
+// colors: ['#color1', '#color2', ...]
+// title: 차트 제목
+function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
+  const chartRef = useRef();
+  const chartInstance = useRef();
+  const seriesRefs = useRef([]);
+  const [autoScroll, setAutoScroll] = useState(true);
   // legend 상태 관리
   const [selected, setSelected] = useState(dataKeys);
-  // ripple 효과 상태
-  const [ripple, setRipple] = useState({});
+  const [chartReady, setChartReady] = useState(false);
 
-  // 새 데이터가 들어오면 전체 데이터에 추가
-  useEffect(() => {
-    if (!data || !data.timestamp) return;
-    if (prevTimestampRef.current === data.timestamp) return;
-    prevTimestampRef.current = data.timestamp;
-
-    const newData = {
-      name: data.timestamp.slice(11, 19),
-      ...data,
-    };
-    setAllData((prev) => {
-      const updated = [...prev, newData];
-      // 너무 오래된 데이터는 메모리 절약을 위해 1000개까지만 유지
-      return updated.length > 1000 ? updated.slice(-1000) : updated;
-    });
-    // 새 데이터가 들어오면 윈도우를 최신으로 이동
-    setWindowStart((prev, _, arr = allData) => {
-      const newLen = arr.length + 1;
-      return newLen > maxDataPoints ? newLen - maxDataPoints : 0;
-    });
-  }, [data, dataKeys]);
-
-  // dataKeys가 바뀌면 legend 상태도 동기화
-  useEffect(() => {
-    setSelected(dataKeys);
-  }, [dataKeys.join(',')]);
-
-  // 현재 윈도우의 데이터만 보여줌
-  const chartData =
-    allData.length < maxDataPoints
-      ? Array.from({ length: maxDataPoints - allData.length }, () => ({
-          name: '',
-          ...Object.fromEntries(dataKeys.map((k) => [k, 0])),
-        })).concat(allData)
-      : allData.slice(windowStart, windowStart + maxDataPoints);
-
-  if (!chartData || chartData.length === 0) {
-    return <div>차트 데이터가 없습니다.</div>;
-  }
-
-  // 실제 데이터가 있는지 확인
-  const hasRealData = chartData.some((d) =>
-    Object.values(d).some((v) => typeof v === 'number' && v !== 0),
-  );
-
-  const handleLegendClick = (key, e) => {
+  // legend 토글 핸들러
+  const handleLegendClick = (key) => {
     setSelected((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
-    // ripple 효과
-    const target = e.currentTarget;
-    const rect = target.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    setRipple({ key, x, y, size, ts: Date.now() });
   };
-
+  // 키보드 접근성(선택적)
   const handleLegendKeyDown = (key, e) => {
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
@@ -114,137 +28,197 @@ function Chart({ data, dataKeys, colors, title }) {
     }
   };
 
-  // 윈도우 이동 핸들러
-  const canPrev = windowStart > 0;
-  const canNext = allData.length > windowStart + maxDataPoints;
-  const handlePrev = () => {
-    if (canPrev) setWindowStart((prev) => Math.max(0, prev - 1));
-  };
-  const handleNext = () => {
-    if (canNext) setWindowStart((prev) => Math.min(allData.length - maxDataPoints, prev + 1));
-  };
+  // 시간 문자열(YYYY-MM-DD HH:mm:ss 또는 HH:mm:ss) → epoch(초) 변환
+  function toEpochSeconds(str) {
+    if (!str) return 0;
+    const d = new Date(str.replace(' ', 'T'));
+    return Math.floor(d.getTime() / 1000);
+  }
+
+  // ResizeObserver로 차트 컨테이너 크기 감지
+  useEffect(() => {
+    if (!chartRef.current) return;
+    let observer = new window.ResizeObserver(() => {
+      if (!chartRef.current) return;
+      if (chartRef.current.clientWidth > 0 && chartRef.current.clientHeight > 0) {
+        setChartReady(true);
+      }
+    });
+    observer.observe(chartRef.current);
+    if (chartRef.current.clientWidth > 0 && chartRef.current.clientHeight > 0) {
+      setChartReady(true);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  // 차트 생성/옵션
+  useEffect(() => {
+    if (!chartReady) return;
+    if (!chartRef.current) return;
+    chartInstance.current = createChart(chartRef.current, {
+      width: chartRef.current.clientWidth,
+      height: 340,
+      layout: {
+        background: { color: 'transparent' },
+        textColor: '#fff',
+      },
+      grid: {
+        vertLines: { visible: false, color: '#222' },
+        horzLines: { visible: false, color: '#222' },
+      },
+      crosshair: { mode: 1 },
+      leftPriceScale: {
+        visible: true,
+        borderColor: '#71649C',
+        tickMarkFormatter: (v) => Math.round(v).toString(),
+        scaleMargins: { top: 0.1, bottom: 0.1 },
+      },
+      rightPriceScale: {
+        visible: false,
+      },
+      timeScale: {
+        borderColor: '#71649C',
+        timeVisible: true,
+        secondsVisible: true,
+      },
+    });
+    // 시리즈 추가 (왼쪽 Y축에)
+    seriesRefs.current = dataKeys.map((key, idx) => {
+      return chartInstance.current.addLineSeries({
+        priceScaleId: 'left',
+        color: colors[idx % colors.length] || '#a259ec',
+        lineWidth: 2,
+        title: key,
+        visible: selected.includes(key),
+      });
+    });
+    return () => {
+      chartInstance.current && chartInstance.current.remove();
+    };
+    // eslint-disable-next-line
+  }, [chartReady]);
+
+  // 시리즈 on/off(legend) 반영
+  useEffect(() => {
+    if (!seriesRefs.current.length) return;
+    dataKeys.forEach((key, idx) => {
+      const series = seriesRefs.current[idx];
+      if (!series) return;
+      series.applyOptions({ visible: selected.includes(key) });
+    });
+  }, [selected, dataKeys]);
+
+  // 데이터 업데이트
+  useEffect(() => {
+    if (!chartInstance.current || !data) return;
+    // data가 배열이 아니면 배열로 변환
+    const arr = Array.isArray(data) ? data : data && typeof data === 'object' ? [data] : [];
+    if (arr.length === 0) return;
+    // time 오름차순 정렬(동일 time 중복 방지)
+    const sortedData = [...arr].sort((a, b) => {
+      const ta = a.timestamp ? toEpochSeconds(a.timestamp) : 0;
+      const tb = b.timestamp ? toEpochSeconds(b.timestamp) : 0;
+      return ta - tb;
+    });
+    dataKeys.forEach((key, idx) => {
+      const series = seriesRefs.current[idx];
+      if (!series) return;
+      // time이 중복된 데이터는 첫 번째만 사용
+      const seen = new Set();
+      const seriesData = sortedData
+        .map((d, i) => ({
+          time: d.timestamp ? toEpochSeconds(d.timestamp) : i,
+          value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0,
+        }))
+        .filter((item) => {
+          if (seen.has(item.time)) return false;
+          seen.add(item.time);
+          return true;
+        });
+      series.setData(seriesData);
+    });
+    if (autoScroll) {
+      chartInstance.current.timeScale().scrollToRealTime();
+    }
+  }, [data, dataKeys, autoScroll]);
 
   return (
-    <div
-      style={{
-        background: 'var(--color-surface)',
-        borderRadius: 20,
-        boxShadow: '0 2px 12px rgba(124,58,237,0.06)',
-        padding: '1.2rem 1.2rem 0.7rem 1.2rem',
-        margin: '1.2rem 0',
-        width: '100%',
-      }}
-    >
-      <h2 style={{ margin: '0 0 1.2rem 0' }}>{title}</h2>
-      <div
-        style={{
-          width: '100%',
-          height: '350px',
-        }}
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
-            {dataKeys.map((key, index) => (
-              <Line
-                key={key}
-                type="monotone"
-                dataKey={key}
-                stroke={colors[index % colors.length]}
-                strokeWidth={2}
-                dot={false}
-                isAnimationActive={false}
-                hide={!selected.includes(key)}
-              />
-            ))}
-            {hasRealData && <CartesianGrid stroke="#ccc" vertical={false} horizontal={false} />}
-            <YAxis />
-            <XAxis dataKey="name" />
-            <Tooltip content={<CustomTooltip />} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-      {/* 윈도우 이동 버튼 */}
+    <div className={cardPanelStyles.cardPanel}>
       <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
           gap: 16,
-          margin: '8px 0 0 0',
+          justifyContent: 'space-between',
+          marginBottom: 8,
         }}
       >
-        <button
-          onClick={handlePrev}
-          disabled={!canPrev}
-          style={{
-            fontSize: 18,
-            padding: '2px 12px',
-            borderRadius: 8,
-            border: 'none',
-            background: 'var(--color-bg)',
-            color: 'var(--color-primary)',
-            opacity: canPrev ? 1 : 0.4,
-            cursor: canPrev ? 'pointer' : 'not-allowed',
-            transition: 'opacity 0.2s',
-          }}
-        >
-          ◀️
-        </button>
-        <span style={{ color: 'var(--color-primary)', fontWeight: 500, fontSize: 15 }}>
-          {allData.length > maxDataPoints
-            ? `${windowStart + 1}~${Math.min(windowStart + maxDataPoints, allData.length)} / ${allData.length}`
-            : ''}
-        </span>
-        <button
-          onClick={handleNext}
-          disabled={!canNext}
-          style={{
-            fontSize: 18,
-            padding: '2px 12px',
-            borderRadius: 8,
-            border: 'none',
-            background: 'var(--color-bg)',
-            color: 'var(--color-primary)',
-            opacity: canNext ? 1 : 0.4,
-            cursor: canNext ? 'pointer' : 'not-allowed',
-            transition: 'opacity 0.2s',
-          }}
-        >
-          ▶️
-        </button>
+        <h2 style={{ margin: 0 }}>
+          {title}{' '}
+          <span style={{ fontWeight: 400, fontSize: 15, opacity: 0.5 }}>(코인/주식 스타일)</span>
+        </h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ color: '#a259ec', fontWeight: 500, fontSize: 15 }}>스크롤 잠금</span>
+          {/* 커스텀 토글 스위치 */}
+          <label style={{ position: 'relative', display: 'inline-block', width: 38, height: 22 }}>
+            <input
+              type="checkbox"
+              checked={autoScroll}
+              onChange={(e) => setAutoScroll(e.target.checked)}
+              style={{ opacity: 0, width: 0, height: 0 }}
+            />
+            <span
+              style={{
+                position: 'absolute',
+                cursor: 'pointer',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: autoScroll ? '#a259ec' : '#444',
+                transition: 'background 0.2s',
+                borderRadius: 22,
+                boxShadow: autoScroll ? '0 0 4px #a259ec55' : 'none',
+              }}
+            ></span>
+            <span
+              style={{
+                position: 'absolute',
+                left: autoScroll ? 18 : 2,
+                top: 2,
+                width: 18,
+                height: 18,
+                background: '#fff',
+                borderRadius: '50%',
+                transition: 'left 0.2s',
+                boxShadow: '0 1px 4px #0002',
+              }}
+            ></span>
+          </label>
+        </div>
       </div>
+      <div ref={chartRef} style={{ width: '100%', height: 340, minWidth: 100, minHeight: 100 }} />
+      {/* legend(그래프 선택 버튼) 아래로 이동 */}
       <div className={legendStyles.legendPanel}>
         {dataKeys.map((key, idx) => {
           const isActive = selected.includes(key);
           return (
-            <span
+            <button
               key={key}
               className={[
                 legendStyles.legendItem,
                 isActive ? legendStyles.legendItemActive : legendStyles.legendItemInactive,
               ].join(' ')}
+              style={{
+                color: isActive ? colors[idx % colors.length] || '#a259ec' : undefined,
+              }}
               tabIndex={0}
               aria-pressed={isActive}
-              role="button"
-              aria-label={`${key} 데이터 토글`}
-              onClick={(e) => handleLegendClick(key, e)}
+              onClick={() => handleLegendClick(key)}
               onKeyDown={(e) => handleLegendKeyDown(key, e)}
-              style={{ position: 'relative', outline: 'none' }}
             >
               {key}
-              {/* Ripple 효과 */}
-              {ripple.key === key && Date.now() - ripple.ts < 400 && (
-                <span
-                  className="ripple"
-                  style={{
-                    left: ripple.x,
-                    top: ripple.y,
-                    width: ripple.size,
-                    height: ripple.size,
-                  }}
-                />
-              )}
-            </span>
+            </button>
           );
         })}
       </div>
@@ -252,4 +226,4 @@ function Chart({ data, dataKeys, colors, title }) {
   );
 }
 
-export default React.memo(Chart);
+export default Chart;

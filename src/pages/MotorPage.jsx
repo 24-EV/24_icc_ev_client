@@ -4,7 +4,6 @@ import Chart from '../components/Chart';
 import DataCard from '../components/common/DataCard';
 import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
-import ChartLite from '../components/ChartLite';
 import styles from '../styles/MotorPage.module.css';
 
 const chartOptions = [
@@ -43,12 +42,6 @@ function MotorPage() {
       </div>
       <Chart
         data={motorData}
-        dataKeys={chartOptions.map((opt) => opt.key)}
-        colors={chartOptions.map((opt) => opt.color)}
-        title="Motor 차트"
-      />
-      <ChartLite
-        data={motorHistory}
         dataKeys={chartOptions.map((opt) => opt.key)}
         colors={chartOptions.map((opt) => opt.color)}
         title="Motor 차트"
