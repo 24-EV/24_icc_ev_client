@@ -4,7 +4,7 @@ async function loadKakaoMap(gpsData, dragState = true) {
     throw new Error('Kakao Maps API가 로드되지 않았습니다.');
   }
 
-  if (!gpsData === null) {
+  if (!gpsData) {
     gpsData = { lat: 37.01219267534181, lng: 127.08870196277597 };
   }
 

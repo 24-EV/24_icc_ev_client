@@ -72,7 +72,13 @@ function GPSPage() {
       <h1>GPS</h1>
 
       {/* 지도 컨테이너 */}
-      <div id="map"></div>
+      <div
+        id="map"
+        style={{
+          width: '95%',
+          height: '300px',
+        }}
+      ></div>
 
       {/* 버튼 클릭 시 마커 고정/드래그 가능 상태 전환 */}
       <button
