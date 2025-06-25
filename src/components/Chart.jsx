@@ -4,6 +4,8 @@ import legendStyles from '../styles/ChartLegendPanel.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
 import styles from '../styles/Chart.module.css';
 import { useDarkMode } from '../hooks/useDarkMode';
+import ChartHeader from './ChartHeader';
+import ChartLegend from './ChartLegend';
 
 // data: [{ name: '시간', key1: 값, key2: 값, ... }]
 // dataKeys: ['key1', 'key2', ...]
@@ -182,24 +184,12 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
 
   return (
     <div className={cardPanelStyles.cardPanel}>
-      <div className={styles.chartHeader}>
-        <h2 className={styles.chartTitle}>{title}</h2>
-        <div className={styles.toggleWrap}>
-          <span className={styles.toggleLabel}>스크롤 잠금</span>
-          {/* 커스텀 토글 스위치 */}
-          <label className={styles.toggleSwitch}>
-            <input
-              type="checkbox"
-              checked={autoScroll}
-              onChange={(e) => setAutoScroll(e.target.checked)}
-              className={styles.toggleInput}
-            />
-            <span className={styles.toggleTrack} data-checked={autoScroll}>
-              <span className={styles.toggleThumb} data-checked={autoScroll} />
-            </span>
-          </label>
-        </div>
-      </div>
+      <ChartHeader
+        title={title}
+        autoScroll={autoScroll}
+        setAutoScroll={setAutoScroll}
+        styles={styles}
+      />
       {/* 2-1: 차트 사용법 안내 메시지 */}
       <div className={styles.chartHint}>마우스 휠로 확대/축소, 드래그로 스크롤</div>
       <div
@@ -207,30 +197,14 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
         className={styles.chartArea}
         style={{ background: isDark ? '#222' : '#fff' }}
       />
-      {/* legend(그래프 선택 버튼) 아래로 이동 */}
-      <div className={legendStyles.legendPanel}>
-        {dataKeys.map((key, idx) => {
-          const isActive = selected.includes(key);
-          return (
-            <button
-              key={key}
-              className={[
-                legendStyles.legendItem,
-                isActive ? legendStyles.legendItemActive : legendStyles.legendItemInactive,
-              ].join(' ')}
-              style={{
-                color: isActive ? colors[idx % colors.length] || '#a259ec' : undefined,
-              }}
-              tabIndex={0}
-              aria-pressed={isActive}
-              onClick={() => handleLegendClick(key)}
-              onKeyDown={(e) => handleLegendKeyDown(key, e)}
-            >
-              {key}
-            </button>
-          );
-        })}
-      </div>
+      <ChartLegend
+        dataKeys={dataKeys}
+        selected={selected}
+        onClick={handleLegendClick}
+        onKeyDown={handleLegendKeyDown}
+        colors={colors}
+        legendStyles={legendStyles}
+      />
     </div>
   );
 }
