@@ -1,21 +1,13 @@
 import React from 'react';
 import BottomAppBar from './BottomAppBar';
 import '../styles/global.css';
+import styles from '../styles/Layout.module.css';
 
 function Layout({ children }) {
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'var(--color-bg)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <div className={styles.container}>
       {/* 메인 컨텐츠 */}
-      <main style={{ flex: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
-        {children}
-      </main>
+      <main className={styles.main}>{children}</main>
       {/* 바텀앱바 */}
       <BottomAppBar />
     </div>

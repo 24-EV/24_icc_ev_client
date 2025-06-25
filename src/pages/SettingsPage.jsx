@@ -1,5 +1,5 @@
 import React from 'react';
-import DownloadExcelComponent from '../components/DownloadExcelForm';
+import DownloadExcelForm from '../components/DownloadExcelForm';
 import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
 import cardPanelStyles from '../styles/CardPanel.module.css';
@@ -67,7 +67,7 @@ function SettingPage() {
         </label>
       </div>
       {/* 다운로드 카드(겹침 없이 바로!) */}
-      <DownloadExcelComponent style={{ maxWidth: 400, marginLeft: 0, marginRight: 'auto' }} />
+      <DownloadExcelForm style={{ maxWidth: 400, marginLeft: 0, marginRight: 'auto' }} />
     </Section>
   );
 }

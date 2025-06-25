@@ -8,7 +8,6 @@ import GPSPage from './pages/GPSPage';
 import TestPage from './pages/TestPage';
 import VehiclePage from './pages/VehiclePage';
 import Section from './components/Section';
-import BottomAppBar from './components/BottomAppBar';
 import { SocketProvider } from './context/SocketContext';
 
 const TestPageComponent = lazy(() => import('./pages/TestPage'));
@@ -32,7 +31,6 @@ function App() {
             <Route path="/settings" element={<SettingPageComponent />} />
           </Routes>
         </Layout>
-        <BottomAppBar />
       </Router>
     </SocketProvider>
   );

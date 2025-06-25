@@ -98,7 +98,7 @@ button:disabled {
 }
 
 /* 배너 스타일 */
-.status-banner {
+/* .status-banner {
   border-radius: 10px;
   padding: 0.7em 1.2em;
   margin: 0.7em 0;
@@ -120,7 +120,7 @@ button:disabled {
 }
 .status-banner.loading {
   color: var(--color-primary);
-}
+} */
 
 /* 하단 네비게이션 */
 .bottom-app-bar {

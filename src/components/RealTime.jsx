@@ -19,7 +19,7 @@ function RealTime() {
   return (
     <div className={styles.realTimeContainer}>
       {banner}
-      <div className={`${styles.realTimeBanner} status-banner loading`}>
+      <div className={`${styles.realTimeBanner} ${styles.loading}`}>
         REAL TIME : {realTimeClock ? realTimeClock.timestamp : '데이터 없음'}
       </div>
     </div>
