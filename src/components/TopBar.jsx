@@ -35,8 +35,8 @@ export default function TopBar({ rtc, isConnected, lastReceived, onMenuClick }) 
           boxSizing: 'border-box'
         }}
       >
-        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-          RTC Module: {rtc}
+        <Typography variant="subtitle1" sx={{ fontWeight: 500, color: '#fff' }}>
+          RTC: {rtc}
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           {isConnected ? (

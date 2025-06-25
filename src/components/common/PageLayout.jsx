@@ -77,7 +77,7 @@ function Layout({ children }) {
         >
           <h2
             style={{
-              color: '#fff',
+              color: 'var(--color-text)',
               fontWeight: 700,
               fontSize: '2rem',
               textAlign: 'center',

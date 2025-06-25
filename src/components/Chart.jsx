@@ -69,27 +69,27 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
       height: 340,
       layout: {
         background: { color: 'transparent' },
-        textColor: '#fff',
+        textColor: '#fff'
       },
       grid: {
         vertLines: { visible: false, color: '#222' },
-        horzLines: { visible: false, color: '#222' },
+        horzLines: { visible: false, color: '#222' }
       },
       crosshair: { mode: 1 },
       leftPriceScale: {
         visible: true,
         borderColor: '#71649C',
         tickMarkFormatter: (v) => Math.round(v).toString(),
-        scaleMargins: { top: 0.1, bottom: 0.1 },
+        scaleMargins: { top: 0.1, bottom: 0.1 }
       },
       rightPriceScale: {
-        visible: false,
+        visible: false
       },
       timeScale: {
         borderColor: '#71649C',
         timeVisible: true,
-        secondsVisible: true,
-      },
+        secondsVisible: true
+      }
     });
     // 시리즈 추가 (왼쪽 Y축에)
     seriesRefs.current = dataKeys.map((key, idx) => {
@@ -98,7 +98,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
         color: colors[idx % colors.length] || '#a259ec',
         lineWidth: 2,
         title: key,
-        visible: selected.includes(key),
+        visible: selected.includes(key)
       });
     });
     // *** 차트가 생성된 직후, 현재 slicedData로 setData ***
@@ -110,7 +110,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
         const seriesData = slicedData
           .map((d, i) => ({
             time: d.timestamp ? toEpochSeconds(d.timestamp) : i,
-            value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0,
+            value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0
           }))
           .filter((item) => {
             if (seen.has(item.time)) return false;
@@ -148,7 +148,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
       const seriesData = arr
         .map((d, i) => ({
           time: d.timestamp ? toEpochSeconds(d.timestamp) : i,
-          value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0,
+          value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0
         }))
         .filter((item) => {
           if (seen.has(item.time)) return false;
@@ -192,11 +192,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
       />
       {/* 2-1: 차트 사용법 안내 메시지 */}
       <div className={styles.chartHint}>마우스 휠로 확대/축소, 드래그로 스크롤</div>
-      <div
-        ref={chartRef}
-        className={styles.chartArea}
-        style={{ background: isDark ? '#222' : '#fff' }}
-      />
+      <div ref={chartRef} className={styles.chartArea} style={{ background: 'transparent' }} />
       <ChartLegend
         dataKeys={dataKeys}
         selected={selected}
