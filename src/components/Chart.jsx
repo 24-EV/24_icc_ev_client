@@ -153,10 +153,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
           marginBottom: 8,
         }}
       >
-        <h2 style={{ margin: 0 }}>
-          {title}{' '}
-          <span style={{ fontWeight: 400, fontSize: 15, opacity: 0.5 }}>(코인/주식 스타일)</span>
-        </h2>
+        <h2 style={{ margin: 0 }}>{title}</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ color: '#a259ec', fontWeight: 500, fontSize: 15 }}>스크롤 잠금</span>
           {/* 커스텀 토글 스위치 */}

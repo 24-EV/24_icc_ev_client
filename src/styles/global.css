@@ -40,8 +40,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition:
-    background 0.2s,
-    color 0.2s;
+    background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out;
 }
 
 #root {
@@ -70,7 +70,9 @@ button {
   padding: 0.7em 1.4em;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition:
+    background-color 2s,
+    color 2s;
   box-shadow: none;
 }
 button:active,
