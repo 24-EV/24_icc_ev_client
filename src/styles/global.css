@@ -29,7 +29,8 @@
 }
 
 html,
-body {
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -42,6 +43,7 @@ body {
   transition:
     background-color 0.3s ease-in-out,
     color 0.3s ease-in-out;
+  overflow-x: hidden;
 }
 
 #root {
@@ -223,4 +225,20 @@ textarea:focus {
     padding: 0.7em 0.5em;
     border-radius: 12px;
   }
+}
+
+.menu-btn:hover {
+  transform: scale(1.08);
+}
+.menu-btn:active,
+.menu-btn.menu-active {
+  transform: scale(1.15);
+}
+.menu-btn svg {
+  transition: color 0.15s;
+}
+.menu-btn:hover svg,
+.menu-btn:active svg,
+.menu-btn.menu-active svg {
+  color: #bdbdbd;
 }

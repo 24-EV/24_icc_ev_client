@@ -107,3 +107,12 @@
     border-radius: 10px;
   }
 }
+
+input,
+button,
+.MuiInputBase-root,
+.MuiButton-root {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}

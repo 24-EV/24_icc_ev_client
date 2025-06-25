@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
+import Layout from './components/common/PageLayout';
 import SettingsPage from './pages/SettingsPage';
 import MotorPage from './pages/MotorPage';
 import HVPage from './pages/HVPage';

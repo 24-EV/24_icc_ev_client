@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import DataCard from './DataCard';
+import DataCard from '../components/common/DataCard';
 
 describe('DataCard', () => {
   it('라벨, 값, 단위를 올바르게 렌더링한다', () => {

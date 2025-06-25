@@ -7,23 +7,10 @@ import styles from '../styles/SettingsPage.module.css';
 import useDarkMode from '../hooks/useDarkMode';
 import ToggleSwitch from '../components/common/ToggleSwitch';
 
-function SettingsPage() {
-  const [dark, toggleDark] = useDarkMode();
-
+export default function SettingsPage() {
   return (
-    <Section>
-      <PageHeader title="설정" />
-      {/* 다크모드 카드 */}
-      <div className={cardPanelStyles.cardPanel + ' ' + styles.darkModeCard}>
-        <span className={styles.darkModeLabel}>다크모드</span>
-        <ToggleSwitch checked={dark} onChange={toggleDark} label="" />
-      </div>
-      {/* 다운로드 카드(겹침 없이 바로!) */}
-      <div className={styles.downloadCardWrap}>
-        <DownloadExcelForm />
-      </div>
-    </Section>
+    <div style={{ color: '#bdbdbd', textAlign: 'center', marginTop: 40 }}>
+      설정은 Drawer(오른쪽 메뉴)에서 확인하세요.
+    </div>
   );
 }
-
-export default SettingsPage;
