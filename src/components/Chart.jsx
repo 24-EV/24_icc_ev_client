@@ -3,7 +3,7 @@ import { createChart } from 'lightweight-charts';
 import legendStyles from '../styles/ChartLegendPanel.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
 import styles from '../styles/Chart.module.css';
-import { useDarkMode } from '../hooks/useDarkMode';
+import useDarkMode from '../hooks/useDarkMode';
 import ChartHeader from './ChartHeader';
 import ChartLegend from './ChartLegend';
 
@@ -19,7 +19,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
   // legend 상태 관리
   const [selected, setSelected] = useState(dataKeys);
   const [chartReady, setChartReady] = useState(false);
-  const { isDark } = useDarkMode();
+  const [isDark] = useDarkMode();
 
   // legend 토글 핸들러
   const handleLegendClick = (key) => {
