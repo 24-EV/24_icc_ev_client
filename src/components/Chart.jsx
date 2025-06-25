@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createChart } from 'lightweight-charts';
 import legendStyles from '../styles/ChartLegendPanel.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
@@ -35,6 +35,21 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
     const d = new Date(str.replace(' ', 'T'));
     return Math.floor(d.getTime() / 1000);
   }
+
+  // 1-1, 1-2: useMemo로 데이터 정렬 및 최근 500개만 슬라이싱
+  const MAX_POINTS = 500;
+  const sortedData = useMemo(() => {
+    if (!Array.isArray(data)) return [];
+    return [...data].sort((a, b) => {
+      const ta = a.timestamp ? toEpochSeconds(a.timestamp) : 0;
+      const tb = b.timestamp ? toEpochSeconds(b.timestamp) : 0;
+      return ta - tb;
+    });
+  }, [data]);
+  const slicedData = useMemo(() => {
+    if (!sortedData.length) return [];
+    return sortedData.slice(-MAX_POINTS);
+  }, [sortedData]);
 
   // chartReady: 데이터가 1개 이상 있으면 바로 true
   useEffect(() => {
@@ -82,19 +97,13 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
         visible: selected.includes(key),
       });
     });
-    // *** 차트가 생성된 직후, 현재 data로 setData ***
-    if (Array.isArray(data) && data.length > 0) {
-      // time 오름차순 정렬(동일 time 중복 방지)
-      const sortedData = [...data].sort((a, b) => {
-        const ta = a.timestamp ? toEpochSeconds(a.timestamp) : 0;
-        const tb = b.timestamp ? toEpochSeconds(b.timestamp) : 0;
-        return ta - tb;
-      });
+    // *** 차트가 생성된 직후, 현재 slicedData로 setData ***
+    if (Array.isArray(slicedData) && slicedData.length > 0) {
       dataKeys.forEach((key, idx) => {
         const series = seriesRefs.current[idx];
         if (!series) return;
         const seen = new Set();
-        const seriesData = sortedData
+        const seriesData = slicedData
           .map((d, i) => ({
             time: d.timestamp ? toEpochSeconds(d.timestamp) : i,
             value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0,
@@ -125,23 +134,14 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
 
   // 데이터 업데이트
   useEffect(() => {
-    if (!chartInstance.current || !data) return;
-    // data가 배열이 아니면 배열로 변환
-    const arr = Array.isArray(data) ? data : data && typeof data === 'object' ? [data] : [];
+    if (!chartInstance.current || !slicedData) return;
+    const arr = Array.isArray(slicedData) ? slicedData : [];
     if (arr.length === 0) return;
-    // time 오름차순 정렬(동일 time 중복 방지)
-    const sortedData = [...arr].sort((a, b) => {
-      const ta = a.timestamp ? toEpochSeconds(a.timestamp) : 0;
-      const tb = b.timestamp ? toEpochSeconds(b.timestamp) : 0;
-      return ta - tb;
-    });
-    console.log('차트 sortedData:', sortedData);
     dataKeys.forEach((key, idx) => {
       const series = seriesRefs.current[idx];
       if (!series) return;
-      // time이 중복된 데이터는 첫 번째만 사용
       const seen = new Set();
-      const seriesData = sortedData
+      const seriesData = arr
         .map((d, i) => ({
           time: d.timestamp ? toEpochSeconds(d.timestamp) : i,
           value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0,
@@ -151,13 +151,12 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
           seen.add(item.time);
           return true;
         });
-      console.log('차트 seriesData:', key, seriesData);
       series.setData(seriesData);
     });
     if (autoScroll) {
       chartInstance.current.timeScale().scrollToRealTime();
     }
-  }, [data, dataKeys, autoScroll]);
+  }, [slicedData, dataKeys, autoScroll]);
 
   return (
     <div className={cardPanelStyles.cardPanel}>
