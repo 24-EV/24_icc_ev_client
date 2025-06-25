@@ -46,9 +46,7 @@ export function useSocketData(serverUrl = 'http://localhost:2004') {
     });
 
     socket.on('dataReceived', function (message) {
-      if (import.meta.env.MODE === 'development') {
-        console.log('서버로부터 받은 데이터 : ', message);
-      }
+      // console.log('서버로부터 받은 데이터 : ', message);
       try {
         const _data = message;
         setVehicleData({

@@ -61,7 +61,7 @@ function BottomAppBar() {
           <BottomNavigationAction
             key={item.label}
             label={item.label}
-            icon={item.icon}
+            icon={<item.icon />}
             showLabel={value === idx}
           />
         ))}

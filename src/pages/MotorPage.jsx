@@ -1,10 +1,10 @@
-import React, { useContext, useRef, useEffect, useState } from 'react';
-import { SocketContext } from '../context/SocketContext';
+import React from 'react';
 import Chart from '../components/Chart';
 import DataCard from '../components/common/DataCard';
 import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
 import styles from '../styles/MotorPage.module.css';
+import useHistory from '../hooks/useHistory';
 
 const chartOptions = [
   { key: 'throttle', color: '#a259ec' },
@@ -13,17 +13,11 @@ const chartOptions = [
 ];
 
 function MotorPage() {
-  const { motorData } = useContext(SocketContext);
-  const [motorHistory, setMotorHistory] = useState([]);
+  const { history } = useHistory();
+  const motorHistory = history.map((h) => h.motorData);
+  const latest = motorHistory[motorHistory.length - 1];
 
-  // motorData가 바뀔 때마다 누적 (최근 300개만 유지)
-  useEffect(() => {
-    if (motorData && motorData.timestamp) {
-      setMotorHistory((prev) => [...prev, motorData].slice(-300));
-    }
-  }, [motorData]);
-
-  if (!motorData) {
+  if (!motorHistory.length) {
     return (
       <Section>
         <PageHeader title="모터" />
@@ -36,16 +30,18 @@ function MotorPage() {
     <Section>
       <PageHeader title="모터" />
       <div className={styles.cardGrid}>
-        <DataCard label="Throttle" value={motorData.throttle} unit="/ 255" />
-        <DataCard label="RPM" value={motorData.rpm} unit="RPM" />
-        <DataCard label="컨트롤러 온도" value={motorData.controller_temperature} unit="℃" />
+        <DataCard label="Throttle" value={latest?.throttle} unit="/ 255" />
+        <DataCard label="RPM" value={latest?.rpm} unit="RPM" />
+        <DataCard label="컨트롤러 온도" value={latest?.controller_temperature} unit="℃" />
       </div>
-      <Chart
-        data={motorHistory}
-        dataKeys={chartOptions.map((opt) => opt.key)}
-        colors={chartOptions.map((opt) => opt.color)}
-        title="Motor 차트"
-      />
+      <div className={styles.chartWrap}>
+        <Chart
+          data={motorHistory}
+          dataKeys={chartOptions.map((opt) => opt.key)}
+          colors={chartOptions.map((opt) => opt.color)}
+          title="Motor 차트"
+        />
+      </div>
     </Section>
   );
 }

@@ -1,10 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { SocketContext } from '../context/SocketContext';
 import StatusBanner from './common/StatusBanner';
 import styles from '../styles/RealTime.module.css';
+import useHistory from '../hooks/useHistory';
 
 function RealTime() {
-  const { realTimeClock, socketError, loading, isConnected } = useContext(SocketContext);
+  // useSocketData 직접 호출 X, Context만 사용
+  const ctx = useContext(SocketContext);
+  console.log('SocketContext 값:', ctx);
+  const {
+    vehicleData,
+    hvData,
+    motorData,
+    gpsData,
+    realTimeClock,
+    socketError,
+    loading,
+    isConnected,
+  } = ctx;
+  const { addHistory } = useHistory();
+
+  useEffect(() => {
+    console.log('vehicleData:', vehicleData);
+    if (vehicleData && vehicleData.timestamp) {
+      console.log('addHistory 호출!', { vehicleData, hvData, motorData, gpsData, realTimeClock });
+      addHistory({ vehicleData, hvData, motorData, gpsData, realTimeClock });
+    }
+  }, [vehicleData, hvData, motorData, gpsData, realTimeClock, addHistory]);
 
   // 에러/로딩/연결 안내 배너
   let banner = null;

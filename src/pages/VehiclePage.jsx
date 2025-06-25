@@ -5,18 +5,14 @@ import DataCard from '../components/common/DataCard';
 import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
 import styles from '../styles/VehiclePage.module.css';
+import useHistory from '../hooks/useHistory';
 
 function VehiclePage() {
-  const { vehicleData } = useContext(SocketContext);
+  const { history } = useHistory();
+  const vehicleHistory = history.map((h) => h.vehicleData);
   const { realTimeClock } = useContext(SocketContext);
-  const [vehicleHistory, setVehicleHistory] = useState([]);
-  useEffect(() => {
-    if (vehicleData && vehicleData.timestamp) {
-      setVehicleHistory((prev) => [...prev, vehicleData].slice(-300));
-    }
-  }, [vehicleData]);
 
-  if (!vehicleData) {
+  if (!vehicleHistory.length) {
     return (
       <Section>
         <PageHeader title="차량" />
@@ -29,7 +25,11 @@ function VehiclePage() {
     <Section>
       <PageHeader title="차량" />
       <div className={styles.cardGrid}>
-        <DataCard label="속력" value={vehicleData.velocity} unit="km/h" />
+        <DataCard
+          label="속력"
+          value={vehicleHistory[vehicleHistory.length - 1].velocity}
+          unit="km/h"
+        />
       </div>
       <div className={styles.chartWrap}>
         <Chart

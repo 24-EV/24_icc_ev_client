@@ -49,8 +49,12 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
     if (chartRef.current.clientWidth > 0 && chartRef.current.clientHeight > 0) {
       setChartReady(true);
     }
+    // 데이터가 있으면 바로 chartReady true
+    if (Array.isArray(data) && data.length > 0) {
+      setChartReady(true);
+    }
     return () => observer.disconnect();
-  }, []);
+  }, [data]);
 
   // 차트 생성/옵션
   useEffect(() => {
@@ -121,6 +125,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
       const tb = b.timestamp ? toEpochSeconds(b.timestamp) : 0;
       return ta - tb;
     });
+    console.log('차트 sortedData:', sortedData);
     dataKeys.forEach((key, idx) => {
       const series = seriesRefs.current[idx];
       if (!series) return;
@@ -136,6 +141,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
           seen.add(item.time);
           return true;
         });
+      console.log('차트 seriesData:', key, seriesData);
       series.setData(seriesData);
     });
     if (autoScroll) {

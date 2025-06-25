@@ -11,6 +11,7 @@ import {
   addMarkerPath,
   drawPolyline,
 } from '../utils/kakaoMapUtils';
+import useHistory from '../hooks/useHistory';
 
 function GPSPage() {
   const [map, setMap] = useState(null);
@@ -20,6 +21,8 @@ function GPSPage() {
   const [path, setPath] = useState([]); // 경로 좌표 배열
   const [polyline, setPolyline] = useState(null); // 폴리라인 객체
   const [isPressed, setIsPressed] = useState(false);
+  const { history } = useHistory();
+  const gpsHistory = history.map((h) => h.gpsData);
 
   async function initMap() {
     try {
@@ -98,6 +101,13 @@ function GPSPage() {
           }
           unit={gpsData ? '' : ''}
         />
+      </div>
+      <div>
+        {gpsHistory.map((item, idx) => (
+          <div key={idx}>
+            위도: {item.lat}, 경도: {item.lng}, 시간: {item.timestamp}
+          </div>
+        ))}
       </div>
     </Section>
   );

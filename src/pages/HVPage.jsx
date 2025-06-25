@@ -5,17 +5,13 @@ import DataCard from '../components/common/DataCard';
 import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
 import styles from '../styles/HVPage.module.css';
+import useHistory from '../hooks/useHistory';
 
 function HVPage() {
-  const { hvData } = useContext(SocketContext);
-  const [hvHistory, setHvHistory] = useState([]);
-  useEffect(() => {
-    if (hvData && hvData.timestamp) {
-      setHvHistory((prev) => [...prev, hvData].slice(-300));
-    }
-  }, [hvData]);
+  const { history } = useHistory();
+  const hvHistory = history.map((h) => h.hvData);
 
-  if (!hvData) {
+  if (!hvHistory.length) {
     return (
       <Section>
         <PageHeader title="HV" />
@@ -28,9 +24,13 @@ function HVPage() {
     <Section>
       <PageHeader title="HV" />
       <div className={styles.cardGrid}>
-        <DataCard label="전압" value={hvData.voltage} unit="V" />
-        <DataCard label="전류" value={hvData.current} unit="A" />
-        <DataCard label="배터리 잔량" value={hvData.battery_percent} unit="%" />
+        <DataCard label="전압" value={hvHistory[hvHistory.length - 1].voltage} unit="V" />
+        <DataCard label="전류" value={hvHistory[hvHistory.length - 1].current} unit="A" />
+        <DataCard
+          label="배터리 잔량"
+          value={hvHistory[hvHistory.length - 1].battery_percent}
+          unit="%"
+        />
       </div>
       <Chart
         data={hvHistory}

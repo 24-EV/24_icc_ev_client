@@ -9,6 +9,7 @@ import TestPage from './pages/TestPage';
 import VehiclePage from './pages/VehiclePage';
 import Section from './components/Section';
 import { SocketProvider } from './context/SocketContext';
+import { HistoryProvider } from './context/HistoryContext';
 
 const TestPageComponent = lazy(() => import('./pages/TestPage'));
 const VehiclePageComponent = lazy(() => import('./pages/VehiclePage'));
@@ -20,18 +21,20 @@ const SettingPageComponent = lazy(() => import('./pages/SettingsPage'));
 function App() {
   return (
     <SocketProvider>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<TestPageComponent />} />
-            <Route path="/vehicle" element={<VehiclePageComponent />} />
-            <Route path="/hv" element={<HVPageComponent />} />
-            <Route path="/motor" element={<MotorPageComponent />} />
-            <Route path="/gps" element={<GPSPageComponent />} />
-            <Route path="/settings" element={<SettingPageComponent />} />
-          </Routes>
-        </Layout>
-      </Router>
+      <HistoryProvider>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<TestPageComponent />} />
+              <Route path="/vehicle" element={<VehiclePageComponent />} />
+              <Route path="/hv" element={<HVPageComponent />} />
+              <Route path="/motor" element={<MotorPageComponent />} />
+              <Route path="/gps" element={<GPSPageComponent />} />
+              <Route path="/settings" element={<SettingPageComponent />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </HistoryProvider>
     </SocketProvider>
   );
 }
