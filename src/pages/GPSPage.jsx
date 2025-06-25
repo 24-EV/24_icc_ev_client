@@ -13,6 +13,7 @@ import {
 } from '../utils/kakaoMapUtils';
 import useHistory from '../hooks/useHistory';
 import { useLocation } from 'react-router-dom';
+import ToggleSwitch from '../components/common/ToggleSwitch';
 
 function GPSPage() {
   const [map, setMap] = useState(null);
@@ -97,15 +98,11 @@ function GPSPage() {
       <div className={cardPanelStyles.cardPanel}>
         <div id="map" key={location.pathname} className={styles.mapContainer}></div>
         <div className={styles.buttonWrap}>
-          <button
-            onClick={handleButtonClick}
-            onMouseDown={() => setIsPressed(true)}
-            onMouseUp={() => setIsPressed(false)}
-            onMouseLeave={() => setIsPressed(false)}
-            className={styles.gpsButton}
-          >
-            지도 마커 기준 고정
-          </button>
+          <ToggleSwitch
+            checked={dragState}
+            onChange={handleButtonClick}
+            label="지도 마커 기준 고정"
+          />
         </div>
       </div>
       <div className={styles.dataCardWrap}>

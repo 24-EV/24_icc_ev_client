@@ -1,5 +1,5 @@
 // 카카오맵 초기화 및 마커 생성
-const DEFAULT_COORDS = { lat: 37.01219267534181, lng: 127.08870196277597 };
+const DEFAULT_COORDS = { lat: 37.01219267534181, lng: 127.08870196277597 }; // ㅋㅋ 우리집 좌표
 
 function getCoords(data) {
   return data && data.lat && data.lng ? data : DEFAULT_COORDS;

@@ -1,0 +1,44 @@
+.toggleSwitch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.toggleInput {
+  display: none;
+}
+.toggleTrack {
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  background: #ccc;
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+  margin-right: 8px;
+}
+.toggleInput:checked + .toggleTrack,
+.toggleTrack[data-checked='true'] {
+  background: #a259ec;
+}
+.toggleThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+.toggleInput:checked + .toggleTrack .toggleThumb,
+.toggleTrack[data-checked='true'] .toggleThumb {
+  left: 22px;
+}
+.toggleLabel {
+  font-size: 1rem;
+  color: #bdbdbd;
+  margin-right: 8px;
+  margin-left: 0;
+}
