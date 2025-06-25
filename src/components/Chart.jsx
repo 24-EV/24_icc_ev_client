@@ -3,12 +3,13 @@ import { createChart } from 'lightweight-charts';
 import legendStyles from '../styles/ChartLegendPanel.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
 import styles from '../styles/Chart.module.css';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 // data: [{ name: '시간', key1: 값, key2: 값, ... }]
 // dataKeys: ['key1', 'key2', ...]
 // colors: ['#color1', '#color2', ...]
 // title: 차트 제목
-function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
+function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, error }) {
   const chartRef = useRef();
   const chartInstance = useRef();
   const seriesRefs = useRef([]);
@@ -16,6 +17,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
   // legend 상태 관리
   const [selected, setSelected] = useState(dataKeys);
   const [chartReady, setChartReady] = useState(false);
+  const { isDark } = useDarkMode();
 
   // legend 토글 핸들러
   const handleLegendClick = (key) => {
@@ -158,6 +160,26 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
     }
   }, [slicedData, dataKeys, autoScroll]);
 
+  // 로딩/에러/데이터 없음 처리 (예시)
+  if (typeof loading !== 'undefined' && loading)
+    return (
+      <div className={styles.chartArea}>
+        <span>로딩 중...</span>
+      </div>
+    );
+  if (typeof error !== 'undefined' && error)
+    return (
+      <div className={styles.chartArea}>
+        <span>에러 발생: {error.message}</span>
+      </div>
+    );
+  if (!slicedData || slicedData.length === 0)
+    return (
+      <div className={styles.chartArea}>
+        <span>데이터 없음</span>
+      </div>
+    );
+
   return (
     <div className={cardPanelStyles.cardPanel}>
       <div className={styles.chartHeader}>
@@ -178,7 +200,13 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
           </label>
         </div>
       </div>
-      <div ref={chartRef} className={styles.chartArea} />
+      {/* 2-1: 차트 사용법 안내 메시지 */}
+      <div className={styles.chartHint}>마우스 휠로 확대/축소, 드래그로 스크롤</div>
+      <div
+        ref={chartRef}
+        className={styles.chartArea}
+        style={{ background: isDark ? '#222' : '#fff' }}
+      />
       {/* legend(그래프 선택 버튼) 아래로 이동 */}
       <div className={legendStyles.legendPanel}>
         {dataKeys.map((key, idx) => {
