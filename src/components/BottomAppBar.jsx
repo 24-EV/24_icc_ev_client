@@ -8,14 +8,7 @@ import {
   Settings,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-const NAV_ITEMS = [
-  { label: 'Vehicle', icon: <DirectionsCar />, path: '/vehicle' },
-  { label: 'HV', icon: <BatteryChargingFull />, path: '/hv' },
-  { label: 'Motor', icon: <CarRepair />, path: '/motor' },
-  { label: 'GPS', icon: <LocationOn />, path: '/gps' },
-  { label: 'Settings', icon: <Settings />, path: '/settings' },
-];
+import { NAV_ITEMS } from '../constants/bottomAppBarConfig';
 
 function BottomAppBar() {
   const [value, setValue] = useState(0);

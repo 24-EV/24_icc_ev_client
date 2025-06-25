@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import legendStyles from '../styles/ChartLegendPanel.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
+import styles from '../styles/Chart.module.css';
 
 // data: [{ name: '시간', key1: 값, key2: 값, ... }]
 // dataKeys: ['key1', 'key2', ...]
@@ -144,57 +145,25 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
 
   return (
     <div className={cardPanelStyles.cardPanel}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 16,
-          justifyContent: 'space-between',
-          marginBottom: 8,
-        }}
-      >
-        <h2 style={{ margin: 0 }}>{title}</h2>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ color: '#a259ec', fontWeight: 500, fontSize: 15 }}>스크롤 잠금</span>
+      <div className={styles.chartHeader}>
+        <h2 className={styles.chartTitle}>{title}</h2>
+        <div className={styles.toggleWrap}>
+          <span className={styles.toggleLabel}>스크롤 잠금</span>
           {/* 커스텀 토글 스위치 */}
-          <label style={{ position: 'relative', display: 'inline-block', width: 38, height: 22 }}>
+          <label className={styles.toggleSwitch}>
             <input
               type="checkbox"
               checked={autoScroll}
               onChange={(e) => setAutoScroll(e.target.checked)}
-              style={{ opacity: 0, width: 0, height: 0 }}
+              className={styles.toggleInput}
             />
-            <span
-              style={{
-                position: 'absolute',
-                cursor: 'pointer',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: autoScroll ? '#a259ec' : '#444',
-                transition: 'background 0.2s',
-                borderRadius: 22,
-                boxShadow: autoScroll ? '0 0 4px #a259ec55' : 'none',
-              }}
-            ></span>
-            <span
-              style={{
-                position: 'absolute',
-                left: autoScroll ? 18 : 2,
-                top: 2,
-                width: 18,
-                height: 18,
-                background: '#fff',
-                borderRadius: '50%',
-                transition: 'left 0.2s',
-                boxShadow: '0 1px 4px #0002',
-              }}
-            ></span>
+            <span className={styles.toggleTrack} data-checked={autoScroll}>
+              <span className={styles.toggleThumb} data-checked={autoScroll} />
+            </span>
           </label>
         </div>
       </div>
-      <div ref={chartRef} style={{ width: '100%', height: 340, minWidth: 100, minHeight: 100 }} />
+      <div ref={chartRef} className={styles.chartArea} />
       {/* legend(그래프 선택 버튼) 아래로 이동 */}
       <div className={legendStyles.legendPanel}>
         {dataKeys.map((key, idx) => {

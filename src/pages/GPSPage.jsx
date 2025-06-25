@@ -10,7 +10,7 @@ import {
   updateMarkerPosition,
   addMarkerPath,
   drawPolyline,
-} from '../utils/kakaoMapService';
+} from '../utils/kakaoMapUtils';
 
 function GPSPage() {
   const [map, setMap] = useState(null);

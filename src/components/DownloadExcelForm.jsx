@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import downloadExcel from '../utils/downloadExcel';
+import formatToExcelFile from '../utils/formatToExcelFile';
 import SpinnerWhenLoading from './SpinnerWhenLoading';
 import styles from '../styles/DownloadExcelForm.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
@@ -13,7 +13,7 @@ function DownloadExcelForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      await downloadExcel(startDate, endDate);
+      await formatToExcelFile(startDate, endDate);
     } catch (err) {
       // 에러 핸들링(알림 등)
     } finally {

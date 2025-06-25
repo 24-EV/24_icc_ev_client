@@ -1,4 +1,4 @@
-import { addMarkerPath } from '../utils/kakaoMapService';
+import { addMarkerPath } from '../utils/kakaoMapUtils';
 import { describe, it, expect } from 'vitest';
 
 describe('addMarkerPath', () => {

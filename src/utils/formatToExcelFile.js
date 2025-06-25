@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // 서버로부터 Excel 파일을 다운로드하는 함수
-async function downloadExcel(startDate, endDate) {
+async function formatToExcelFile(startDate, endDate) {
   if (!startDate || !endDate) {
     alert('시작 날짜와 종료 날짜를 모두 입력해주세요.');
     throw new Error('시작 날짜 또는 종료 날짜 미입력.');
@@ -28,4 +28,4 @@ async function downloadExcel(startDate, endDate) {
   a.remove(); // 링크 제거
 }
 
-export default downloadExcel;
+export default formatToExcelFile;
