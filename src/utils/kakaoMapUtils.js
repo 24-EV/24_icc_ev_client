@@ -1,12 +1,16 @@
 // 카카오맵 초기화 및 마커 생성
+const DEFAULT_COORDS = { lat: 37.01219267534181, lng: 127.08870196277597 };
+
+function getCoords(data) {
+  return data && data.lat && data.lng ? data : DEFAULT_COORDS;
+}
+
 async function loadKakaoMap(gpsData, dragState = true) {
   if (!(window.kakao && window.kakao.maps)) {
     throw new Error('Kakao Maps API가 로드되지 않았습니다.');
   }
 
-  if (!gpsData) {
-    gpsData = { lat: 37.01219267534181, lng: 127.08870196277597 };
-  }
+  const coords = getCoords(gpsData);
 
   const { kakaoMap, newMarker } = await new Promise(function (resolve) {
     window.kakao.maps.load(function () {
@@ -15,8 +19,8 @@ async function loadKakaoMap(gpsData, dragState = true) {
       // 지도 컨테이너
       const container = document.getElementById('map');
       const options = {
-        center: new window.kakao.maps.LatLng(gpsData.lat, gpsData.lng), // 기본 위치
-        level: 3,
+        center: new window.kakao.maps.LatLng(coords.lat, coords.lng), // 기본 위치
+        level: 3
       };
 
       // 맵 초기화
@@ -25,7 +29,7 @@ async function loadKakaoMap(gpsData, dragState = true) {
       // 마커 생성
       const newMarker = new window.kakao.maps.Marker({
         position: options.center,
-        draggable: dragState,
+        draggable: dragState
       });
       newMarker.setMap(kakaoMap);
 
@@ -37,10 +41,9 @@ async function loadKakaoMap(gpsData, dragState = true) {
 }
 
 function updateMarkerPosition(map, marker, gpsData, dragState = true) {
-  if (!gpsData) return;
-
-  if (map && marker && gpsData.lat && gpsData.lng) {
-    const newPosition = new window.kakao.maps.LatLng(gpsData.lat, gpsData.lng);
+  const coords = getCoords(gpsData);
+  if (map && marker && coords.lat && coords.lng) {
+    const newPosition = new window.kakao.maps.LatLng(coords.lat, coords.lng);
     marker.setPosition(newPosition);
 
     if (dragState) {
@@ -51,7 +54,7 @@ function updateMarkerPosition(map, marker, gpsData, dragState = true) {
   }
 }
 
-function addMarkerPath(gpsData, prevPathObj) {
+function addMarkerPath(gpsData = { lat: 37.01219267534181, lng: 127.08870196277597 }, prevPathObj) {
   if (!gpsData) return;
 
   if (prevPathObj.length > 0) {
@@ -76,7 +79,7 @@ function drawPolyline(map, path, polyline) {
       strokeWeight: 4,
       strokeColor: '#FF0000',
       strokeOpacity: 0.8,
-      strokeStyle: 'solid',
+      strokeStyle: 'solid'
     });
     newPolyline.setMap(map);
 

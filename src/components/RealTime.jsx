@@ -7,7 +7,6 @@ import useHistory from '../hooks/useHistory';
 function RealTime() {
   // useSocketData 직접 호출 X, Context만 사용
   const ctx = useContext(SocketContext);
-  console.log('SocketContext 값:', ctx);
   const {
     vehicleData,
     hvData,
@@ -21,9 +20,7 @@ function RealTime() {
   const { addHistory } = useHistory();
 
   useEffect(() => {
-    console.log('vehicleData:', vehicleData);
     if (vehicleData && vehicleData.timestamp) {
-      console.log('addHistory 호출!', { vehicleData, hvData, motorData, gpsData, realTimeClock });
       addHistory({ vehicleData, hvData, motorData, gpsData, realTimeClock });
     }
   }, [vehicleData, hvData, motorData, gpsData, realTimeClock, addHistory]);

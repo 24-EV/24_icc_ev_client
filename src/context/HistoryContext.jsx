@@ -20,10 +20,7 @@ export function HistoryProvider({ children }) {
       const newItem = addTimestamp(data);
       const updated = [...prev, newItem];
       const filtered = filterRecentData(updated);
-      console.log('addHistory newItem:', newItem);
-      console.log('addHistory filtered:', filtered);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-      console.log('로컬스토리지 저장됨:', localStorage.getItem(STORAGE_KEY));
       return filtered;
     });
   }, []);

@@ -9,9 +9,10 @@ import {
   loadKakaoMap,
   updateMarkerPosition,
   addMarkerPath,
-  drawPolyline,
+  drawPolyline
 } from '../utils/kakaoMapUtils';
 import useHistory from '../hooks/useHistory';
+import { useLocation } from 'react-router-dom';
 
 function GPSPage() {
   const [map, setMap] = useState(null);
@@ -23,6 +24,8 @@ function GPSPage() {
   const [isPressed, setIsPressed] = useState(false);
   const { history } = useHistory();
   const gpsHistory = history.map((h) => h.gpsData);
+  const location = useLocation();
+  const DEFAULT_COORDS = { lat: 37.01219267534181, lng: 127.08870196277597 };
 
   async function initMap() {
     try {
@@ -34,51 +37,65 @@ function GPSPage() {
     }
   }
 
-  useEffect(function () {
-    initMap();
-  }, []);
+  useEffect(
+    function () {
+      const container = document.getElementById('map');
+      if (container) {
+        // 모든 자식 노드 완전 제거
+        while (container.firstChild) container.removeChild(container.firstChild);
+      }
+      initMap();
+    },
+    [location.pathname]
+  );
 
   // GPS 데이터로 마커 위치 업데이트
   useEffect(
     function () {
-      if (map && marker && gpsData && gpsData.lat && gpsData.lng) {
+      if (map && marker) {
         updateMarkerPosition(map, marker, gpsData, dragState);
       }
     },
-    [gpsData, map, marker, dragState],
+    [gpsData, map, marker, dragState]
   );
 
   // gpsData 들어올 때마다 path에 추가
-  useEffect(() => {
-    if (gpsData && gpsData.lat && gpsData.lng) {
-      setPath((prevPath) => addMarkerPath(gpsData, prevPath));
-    }
-  }, [gpsData]);
+  useEffect(
+    function () {
+      if (gpsData && gpsData.lat && gpsData.lng) {
+        setPath((prevPath) => addMarkerPath(gpsData, prevPath));
+      }
+    },
+    [gpsData]
+  );
 
   // path가 바뀔 때마다 폴리라인 그리기
-  useEffect(() => {
-    if (!map || path.length < 2) return;
-    const newPolyline = drawPolyline(map, path, polyline);
-    if (newPolyline) {
-      setPolyline(newPolyline);
-    }
-  }, [map, path]);
+  useEffect(
+    function () {
+      if (!map || path.length < 2) return;
+      const newPolyline = drawPolyline(map, path, polyline);
+      if (newPolyline) {
+        setPolyline(newPolyline);
+      }
+    },
+    [map, path]
+  );
 
   // 버튼 클릭시 마커 드래그 상태 변경
-  const handleButtonClick = () => {
+  function handleButtonClick() {
     if (map && marker) {
       const newDragState = !dragState;
       setDragState(newDragState);
       marker.setDraggable(newDragState);
       map.setDraggable(newDragState);
     }
-  };
+  }
 
   return (
     <Section>
       <PageHeader title="GPS" />
       <div className={cardPanelStyles.cardPanel}>
-        <div id="map" className={styles.mapContainer}></div>
+        <div id="map" key={location.pathname} className={styles.mapContainer}></div>
         <div className={styles.buttonWrap}>
           <button
             onClick={handleButtonClick}
@@ -101,13 +118,6 @@ function GPSPage() {
           }
           unit={gpsData ? '' : ''}
         />
-      </div>
-      <div>
-        {gpsHistory.map((item, idx) => (
-          <div key={idx}>
-            위도: {item.lat}, 경도: {item.lng}, 시간: {item.timestamp}
-          </div>
-        ))}
       </div>
     </Section>
   );
