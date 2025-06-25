@@ -36,24 +36,9 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
     return Math.floor(d.getTime() / 1000);
   }
 
-  // ResizeObserver로 차트 컨테이너 크기 감지
+  // chartReady: 데이터가 1개 이상 있으면 바로 true
   useEffect(() => {
-    if (!chartRef.current) return;
-    let observer = new window.ResizeObserver(() => {
-      if (!chartRef.current) return;
-      if (chartRef.current.clientWidth > 0 && chartRef.current.clientHeight > 0) {
-        setChartReady(true);
-      }
-    });
-    observer.observe(chartRef.current);
-    if (chartRef.current.clientWidth > 0 && chartRef.current.clientHeight > 0) {
-      setChartReady(true);
-    }
-    // 데이터가 있으면 바로 chartReady true
-    if (Array.isArray(data) && data.length > 0) {
-      setChartReady(true);
-    }
-    return () => observer.disconnect();
+    setChartReady(Array.isArray(data) && data.length > 0);
   }, [data]);
 
   // 차트 생성/옵션
@@ -97,6 +82,31 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '' }) {
         visible: selected.includes(key),
       });
     });
+    // *** 차트가 생성된 직후, 현재 data로 setData ***
+    if (Array.isArray(data) && data.length > 0) {
+      // time 오름차순 정렬(동일 time 중복 방지)
+      const sortedData = [...data].sort((a, b) => {
+        const ta = a.timestamp ? toEpochSeconds(a.timestamp) : 0;
+        const tb = b.timestamp ? toEpochSeconds(b.timestamp) : 0;
+        return ta - tb;
+      });
+      dataKeys.forEach((key, idx) => {
+        const series = seriesRefs.current[idx];
+        if (!series) return;
+        const seen = new Set();
+        const seriesData = sortedData
+          .map((d, i) => ({
+            time: d.timestamp ? toEpochSeconds(d.timestamp) : i,
+            value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0,
+          }))
+          .filter((item) => {
+            if (seen.has(item.time)) return false;
+            seen.add(item.time);
+            return true;
+          });
+        series.setData(seriesData);
+      });
+    }
     return () => {
       chartInstance.current && chartInstance.current.remove();
     };
