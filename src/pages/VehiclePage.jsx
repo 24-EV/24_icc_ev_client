@@ -6,11 +6,13 @@ import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
 import styles from '../styles/VehiclePage.module.css';
 import useHistory from '../hooks/useHistory';
+import useDarkMode from '../hooks/useDarkMode';
 
 function VehiclePage() {
   const { history } = useHistory();
   const vehicleHistory = history.map((h) => h.vehicleData);
   const { realTimeClock } = useContext(SocketContext);
+  const [isDark] = useDarkMode();
 
   if (!vehicleHistory.length) {
     return (
@@ -33,6 +35,7 @@ function VehiclePage() {
       </div>
       <div className={styles.chartWrap}>
         <Chart
+          key={isDark ? 'dark' : 'light'}
           data={vehicleHistory}
           dataKeys={['velocity']}
           colors={['#a259ec']}

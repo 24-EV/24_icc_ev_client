@@ -6,10 +6,12 @@ import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
 import styles from '../styles/HVPage.module.css';
 import useHistory from '../hooks/useHistory';
+import useDarkMode from '../hooks/useDarkMode';
 
 function HVPage() {
   const { history } = useHistory();
   const hvHistory = history.map((h) => h.hvData);
+  const [isDark] = useDarkMode();
 
   if (!hvHistory.length) {
     return (
@@ -33,6 +35,7 @@ function HVPage() {
         />
       </div>
       <Chart
+        key={isDark ? 'dark' : 'light'}
         data={hvHistory}
         dataKeys={['voltage', 'current', 'battery_percent']}
         colors={['#a259ec', '#b388ff', '#7c3aed']}

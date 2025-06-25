@@ -5,17 +5,19 @@ import Section from '../components/Section';
 import PageHeader from '../components/PageHeader';
 import styles from '../styles/MotorPage.module.css';
 import useHistory from '../hooks/useHistory';
+import useDarkMode from '../hooks/useDarkMode';
 
 const chartOptions = [
   { key: 'throttle', color: '#a259ec' },
   { key: 'rpm', color: '#b388ff' },
-  { key: 'controller_temperature', color: '#7c3aed' },
+  { key: 'controller_temperature', color: '#7c3aed' }
 ];
 
 function MotorPage() {
   const { history } = useHistory();
   const motorHistory = history.map((h) => h.motorData);
   const latest = motorHistory[motorHistory.length - 1];
+  const [isDark] = useDarkMode();
 
   if (!motorHistory.length) {
     return (
@@ -36,6 +38,7 @@ function MotorPage() {
       </div>
       <div className={styles.chartWrap}>
         <Chart
+          key={isDark ? 'dark' : 'light'}
           data={motorHistory}
           dataKeys={chartOptions.map((opt) => opt.key)}
           colors={chartOptions.map((opt) => opt.color)}
