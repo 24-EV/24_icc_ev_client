@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import downloadExcel from '../utils/downloadExcel';
+import SpinnerWhenLoading from './SpinnerWhenLoading';
 import styles from '../styles/DownloadExcelForm.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
 
-function DownloadExcelComponent({ style }) {
-  const [startDate, setStartDate] = useState(''); // 시작 날짜 상태
-  const [endDate, setEndDate] = useState(''); // 종료 날짜 상태
-  const [loading, setLoading] = useState(false); // 로딩 상태
+function DownloadExcelForm() {
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleDownload = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // 실제 다운로드 로직
+      await downloadExcel(startDate, endDate);
+    } catch (err) {
+      // 에러 핸들링(알림 등)
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form
-      className={`${styles.formWrap} ${cardPanelStyles.cardPanel}`}
-      onSubmit={handleDownload}
-      style={style}
-    >
+    <form className={`${styles.formWrap} ${cardPanelStyles.cardPanel}`} onSubmit={handleDownload}>
       <div className={styles.title}>Excel 데이터 다운로드</div>
       <div className={styles.inputRow}>
         <div className={styles.inputCol}>
@@ -45,11 +44,15 @@ function DownloadExcelComponent({ style }) {
           />
         </div>
       </div>
-      <button type="submit" className={styles.button} disabled={loading}>
-        {loading ? '다운로드 중...' : 'Excel 다운로드'}
-      </button>
+      {loading ? (
+        <SpinnerWhenLoading />
+      ) : (
+        <button type="submit" className={styles.button}>
+          Excel 다운로드
+        </button>
+      )}
     </form>
   );
 }
 
-export default DownloadExcelComponent;
+export default DownloadExcelForm;
