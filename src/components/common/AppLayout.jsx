@@ -82,21 +82,14 @@ function AppLayout({ children }) {
               color: 'var(--color-text)',
               fontWeight: 700,
               fontSize: '2rem',
-              textAlign: 'center',
               margin: '24px 0 32px 0'
             }}
           >
-            \uc124\uc815
+            설정
           </h2>
           <DarkModeCard />
-          <DarkModeCard />
-          <DarkModeCard />
-          <DarkModeCard />
-          <DarkModeCard />
-          <DarkModeCard />
-          <DarkModeCard />
-          <DarkModeCard />
-          <DarkModeCard />
+          <DownloadExcelForm />
+          <DownloadExcelForm />
           <DownloadExcelForm />
         </div>
       </SwipeableDrawer>

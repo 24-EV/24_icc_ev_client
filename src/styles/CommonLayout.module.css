@@ -3,54 +3,66 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 2vw;
-  margin: 2vw auto 1.2vw auto;
+  gap: 1rem;
+  margin: 1rem auto 0.7rem auto;
   width: 100%;
-  max-width: 1200px;
-  padding: 0;
+  padding-left: max(16px, 3vw);
+  padding-right: max(16px, 3vw);
   box-sizing: border-box;
+}
+
+.panelRow {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 10%;
+  padding-left: max(16px, 3vw);
+  padding-right: max(16px, 3vw);
+  margin-bottom:
+  /* 필요시 아래 여백/배경 등 추가 가능 */
 }
 
 .titleWrap {
   flex: 0 0 auto;
   margin-bottom: 0.2em;
-  margin-right: 1vw;
-  margin-top: 1vw;
+  margin-right: 0.7rem;
+  margin-top: 0.7rem;
 }
 
 .dataCardRow {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  gap: 1.2rem;
+  gap: 0.7rem;
   justify-content: flex-end;
   align-self: flex-end;
   width: 100%;
-  max-width: 700px;
+  max-width: min(100vw, 1000px);
   min-width: 180px;
   box-sizing: border-box;
 }
 
-.panelRow {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 56px auto;
-  padding: 0;
-  box-sizing: border-box;
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  max-height: none;
-}
-
 @media (max-width: 900px) {
+  .topRow,
   .panelRow {
-    margin-bottom: 56px;
+    max-width: 100vw;
+    padding-left: max(8px, 2vw);
+    padding-right: max(8px, 2vw);
+  }
+  .panelRow {
+    margin-bottom: 32px;
   }
 }
 @media (max-width: 600px) {
+  .topRow,
   .panelRow {
-    margin-bottom: 56px;
+    max-width: 100vw;
+    padding-left: max(8px, 3vw);
+    padding-right: max(8px, 3vw);
+  }
+  .panelRow {
+    margin-bottom: 16px;
   }
 }
