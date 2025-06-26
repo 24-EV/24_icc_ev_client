@@ -28,15 +28,20 @@ function VehiclePage() {
 
   return (
     <Section>
-      <PageHeader title="차량" />
-      <div className={styles.cardGrid}>
-        <DataCard
-          label="속력"
-          value={vehicleHistory[vehicleHistory.length - 1].velocity}
-          unit="km/h"
-        />
+      <div className={styles.topRow}>
+        <div className={styles.titleWrap}>
+          <PageHeader title="차량" />
+        </div>
+        <div className={styles.dataCardRow}>
+          <DataCard
+            label="속력"
+            value={vehicleHistory[vehicleHistory.length - 1].velocity}
+            unit="km/h"
+          />
+          <DataCard label="RTC Module" value={realTimeClock?.timestamp} unit="" />
+        </div>
       </div>
-      <div className={styles.chartWrap}>
+      <div className={styles.panelRow}>
         <Chart
           key={isDark ? 'dark' : 'light'}
           data={vehicleHistory}
@@ -45,9 +50,7 @@ function VehiclePage() {
           title="속도 차트"
         />
       </div>
-      <div className={styles.cardGrid}>
-        <DataCard label="RTC Module" value={realTimeClock?.timestamp} unit="" />
-      </div>
+      <div className={styles.dataCardRow} data-single></div>
     </Section>
   );
 }

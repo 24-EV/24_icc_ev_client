@@ -219,7 +219,6 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
         setAutoScroll={setAutoScroll}
         styles={styles}
       />
-      {/* 2-1: 차트 사용법 안내 메시지 */}
       <div ref={chartRef} className={styles.chartArea} style={{ background: 'transparent' }} />
       <ChartLegend
         dataKeys={dataKeys}

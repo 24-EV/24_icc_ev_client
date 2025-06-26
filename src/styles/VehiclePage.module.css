@@ -1,30 +1,102 @@
-.cardGrid {
+/* 상단 row: 타이틀(왼쪽) + 데이터카드(오른쪽) */
+.topRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2vw;
+  margin: 2vw 0 1.2vw 0;
+  width: 100vw;
+  max-width: 100vw;
+  padding: 0 2vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.titleWrap {
+  flex: 0 0 auto;
+  margin-bottom: 0.2em;
+  margin-right: 1vw;
+  margin-top: 1vw;
+}
+
+.dataCardRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 1.2rem;
-  margin-bottom: 2rem;
+  justify-content: flex-end;
+  align-self: flex-end;
+  width: 100%;
+  max-width: 700px;
+  min-width: 180px;
+  box-sizing: border-box;
+}
+.dataCardRow[data-single] {
+  max-width: 340px;
+  width: 100%;
+  justify-content: flex-end;
 }
 
-.chartWrap {
-  margin-bottom: 2rem;
+.panelRow {
+  width: 100vw;
+  max-width: 100vw;
+  min-height: 340px;
+  margin: 0;
+  padding: 0 2vw;
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  overflow-x: hidden;
 }
 
-@media (max-width: 900px) {
-  .cardGrid {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-  .chartWrap {
-    margin-bottom: 1.2rem;
-  }
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-bottom: 8px;
 }
-@media (max-width: 600px) {
-  .cardGrid {
+.buttonRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.toggleWrap {
+  margin: 0;
+  padding: 0;
+}
+.toggleSwitch {
+  width: 38px;
+  height: 22px;
+  min-width: 38px;
+  min-height: 22px;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 900px), (orientation: portrait) {
+  .topRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0 1vw;
+  }
+  .dataCardRow {
+    width: 100vw;
+    grid-auto-flow: row;
     grid-template-columns: 1fr;
-    gap: 0.6rem;
-    margin-bottom: 1.2rem;
+    min-width: 0;
+    max-width: 100vw;
+    gap: 0.7rem;
+    padding: 0 1vw;
+    justify-content: flex-start;
   }
-  .chartWrap {
-    margin-bottom: 0.7rem;
+  .panelRow {
+    min-height: 220px;
+    margin: 0;
+    padding: 0 1vw;
   }
 }

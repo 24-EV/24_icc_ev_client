@@ -8,14 +8,14 @@
   display: none;
 }
 .toggleTrack {
-  display: inline-block;
-  width: 44px;
-  height: 24px;
-  background: #ccc;
+  width: 38px;
+  height: 22px;
+  background: #a259ec;
   border-radius: 12px;
   position: relative;
   transition: background 0.2s;
-  margin-right: 8px;
+  margin: 0;
+  padding: 0;
 }
 .toggleInput:checked + .toggleTrack,
 .toggleTrack[data-checked='true'] {
@@ -25,8 +25,8 @@
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: #fff;
   border-radius: 50%;
   transition: left 0.2s;
@@ -37,8 +37,16 @@
   left: 22px;
 }
 .toggleLabel {
-  font-size: 1rem;
-  color: #bdbdbd;
-  margin-right: 8px;
-  margin-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--color-text-light);
+  margin: 0;
+  padding: 0;
+}
+.labelText {
+  margin-right: 0.2em;
+  white-space: nowrap;
 }

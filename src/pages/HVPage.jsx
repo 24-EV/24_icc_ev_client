@@ -27,23 +27,29 @@ function HVPage() {
 
   return (
     <Section>
-      <PageHeader title="HV" />
-      <div className={styles.cardGrid}>
-        <DataCard label="전압" value={hvHistory[hvHistory.length - 1].voltage} unit="V" />
-        <DataCard label="전류" value={hvHistory[hvHistory.length - 1].current} unit="A" />
-        <DataCard
-          label="배터리 잔량"
-          value={hvHistory[hvHistory.length - 1].battery_percent}
-          unit="%"
+      <div className={styles.topRow}>
+        <div className={styles.titleWrap}>
+          <PageHeader title="HV" />
+        </div>
+        <div className={styles.dataCardRow}>
+          <DataCard label="전압" value={hvHistory[hvHistory.length - 1].voltage} unit="V" />
+          <DataCard label="전류" value={hvHistory[hvHistory.length - 1].current} unit="A" />
+          <DataCard
+            label="배터리 잔량"
+            value={hvHistory[hvHistory.length - 1].battery_percent}
+            unit="%"
+          />
+        </div>
+      </div>
+      <div className={styles.panelRow}>
+        <Chart
+          key={isDark ? 'dark' : 'light'}
+          data={hvHistory}
+          dataKeys={['voltage', 'current', 'battery_percent']}
+          colors={colors}
+          title="HV 차트"
         />
       </div>
-      <Chart
-        key={isDark ? 'dark' : 'light'}
-        data={hvHistory}
-        dataKeys={['voltage', 'current', 'battery_percent']}
-        colors={colors}
-        title="HV 차트"
-      />
     </Section>
   );
 }

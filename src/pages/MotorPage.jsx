@@ -32,13 +32,17 @@ function MotorPage() {
 
   return (
     <Section>
-      <PageHeader title="모터" />
-      <div className={styles.cardGrid}>
-        <DataCard label="Throttle" value={latest?.throttle} unit="/ 255" />
-        <DataCard label="RPM" value={latest?.rpm} unit="RPM" />
-        <DataCard label="컨트롤러 온도" value={latest?.controller_temperature} unit="℃" />
+      <div className={styles.topRow}>
+        <div className={styles.titleWrap}>
+          <PageHeader title="모터" />
+        </div>
+        <div className={styles.dataCardRow}>
+          <DataCard label="Throttle" value={latest?.throttle} unit="/ 255" />
+          <DataCard label="RPM" value={latest?.rpm} unit="RPM" />
+          <DataCard label="컨트롤러 온도" value={latest?.controller_temperature} unit="℃" />
+        </div>
       </div>
-      <div className={styles.chartWrap}>
+      <div className={styles.panelRow}>
         <Chart
           key={isDark ? 'dark' : 'light'}
           data={motorHistory}
