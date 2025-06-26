@@ -7,7 +7,7 @@ import styles from '../../styles/SettingsPage.module.css';
 export default function DarkModeCard() {
   const [dark, toggleDark] = useDarkMode();
   return (
-    <div className={cardPanelStyles.cardPanel + ' ' + styles.darkModeCard}>
+    <div className={cardPanelStyles.drawerCardPanel + ' ' + styles.darkModeCard}>
       <span className={styles.darkModeLabel}>다크모드</span>
       <ToggleSwitch checked={dark} onChange={toggleDark} label="" />
     </div>

@@ -22,7 +22,10 @@ function DownloadExcelForm() {
   };
 
   return (
-    <form className={`${styles.formWrap} ${cardPanelStyles.cardPanel}`} onSubmit={handleDownload}>
+    <form
+      className={`${styles.formWrap} ${cardPanelStyles.drawerCardPanel}`}
+      onSubmit={handleDownload}
+    >
       <div className={styles.title}>Excel 데이터 다운로드</div>
       <div className={styles.inputRow}>
         <div className={styles.inputCol}>
