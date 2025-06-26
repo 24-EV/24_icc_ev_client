@@ -69,24 +69,27 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
       chartInstance.current = null;
     }
     chartRef.current.innerHTML = '';
+    const chartTextColor = isDark ? '#f3f0ff' : '#181825';
+    const chartGridColor = isDark ? '#393552' : '#bdbdbd';
     chartInstance.current = createChart(chartRef.current, {
       width: chartRef.current.clientWidth,
       height: 340,
       layout: {
         background: { color: 'transparent' },
-        textColor: '#181825', // 라이트모드 기본값
+        textColor: chartTextColor,
         fontFamily: 'Inter, Pretendard, Arial, sans-serif'
       },
       grid: {
-        vertLines: { visible: false, color: '#bdbdbd' },
-        horzLines: { visible: false, color: '#bdbdbd' }
+        vertLines: { visible: false, color: chartGridColor },
+        horzLines: { visible: false, color: chartGridColor }
       },
       crosshair: { mode: 1 },
       leftPriceScale: {
         visible: true,
         borderColor: '#71649C',
         tickMarkFormatter: (v) => Math.round(v).toString(),
-        scaleMargins: { top: 0.1, bottom: 0.1 }
+        scaleMargins: { top: 0.1, bottom: 0.1 },
+        textColor: chartTextColor
       },
       rightPriceScale: {
         visible: false
@@ -94,7 +97,8 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
       timeScale: {
         borderColor: '#71649C',
         timeVisible: true,
-        secondsVisible: true
+        secondsVisible: true,
+        textColor: chartTextColor
       }
     });
     // 시리즈 추가 (왼쪽 Y축에)
@@ -129,7 +133,7 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
     return () => {
       chartInstance.current && chartInstance.current.remove();
     };
-  }, [chartReady]);
+  }, [chartReady, isDark]);
 
   // 다크/라이트모드 변경 시 차트 옵션만 동적으로 변경
   useEffect(() => {
@@ -145,7 +149,9 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
       grid: {
         vertLines: { visible: false, color: chartGridColor },
         horzLines: { visible: false, color: chartGridColor }
-      }
+      },
+      leftPriceScale: { textColor: chartTextColor },
+      timeScale: { textColor: chartTextColor }
     });
   }, [isDark]);
 

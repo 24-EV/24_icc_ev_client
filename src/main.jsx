@@ -3,20 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-
-// 다크모드 초기화: 앱 렌더링 전에 body.classList 세팅
-const theme = localStorage.getItem('theme');
-if (theme === 'dark') {
-  document.body.classList.add('dark');
-} else {
-  document.body.classList.remove('dark');
-}
+import { DarkModeProvider } from './context/DarkModeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <DarkModeProvider>
+      <App />
+    </DarkModeProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

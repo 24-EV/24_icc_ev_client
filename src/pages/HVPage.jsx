@@ -13,6 +13,9 @@ function HVPage() {
   const hvHistory = history.map((h) => h.hvData);
   const [isDark] = useDarkMode();
 
+  // 기존 색상만 사용
+  const colors = ['#a259ec', '#b388ff', '#7c3aed'];
+
   if (!hvHistory.length) {
     return (
       <Section>
@@ -38,7 +41,7 @@ function HVPage() {
         key={isDark ? 'dark' : 'light'}
         data={hvHistory}
         dataKeys={['voltage', 'current', 'battery_percent']}
-        colors={['#a259ec', '#b388ff', '#7c3aed']}
+        colors={colors}
         title="HV 차트"
       />
     </Section>

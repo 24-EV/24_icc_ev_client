@@ -13,6 +13,8 @@ const chartOptions = [
   { key: 'controller_temperature', color: '#7c3aed' }
 ];
 
+const colors = ['#a259ec', '#b388ff', '#7c3aed'];
+
 function MotorPage() {
   const { history } = useHistory();
   const motorHistory = history.map((h) => h.motorData);
@@ -41,7 +43,7 @@ function MotorPage() {
           key={isDark ? 'dark' : 'light'}
           data={motorHistory}
           dataKeys={chartOptions.map((opt) => opt.key)}
-          colors={chartOptions.map((opt) => opt.color)}
+          colors={colors}
           title="Motor 차트"
         />
       </div>

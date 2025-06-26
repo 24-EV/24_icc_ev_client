@@ -14,6 +14,9 @@ function VehiclePage() {
   const { realTimeClock } = useContext(SocketContext);
   const [isDark] = useDarkMode();
 
+  // 기존 색상만 사용
+  const colors = ['#a259ec'];
+
   if (!vehicleHistory.length) {
     return (
       <Section>
@@ -38,7 +41,7 @@ function VehiclePage() {
           key={isDark ? 'dark' : 'light'}
           data={vehicleHistory}
           dataKeys={['velocity']}
-          colors={['#a259ec']}
+          colors={colors}
           title="속도 차트"
         />
       </div>
