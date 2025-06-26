@@ -1,5 +1,6 @@
 import React from 'react';
 import Section from '../Section';
+import styles from '../../styles/CommonLayout.module.css';
 
 function PageLayout({
   header,

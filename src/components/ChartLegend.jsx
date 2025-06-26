@@ -1,6 +1,7 @@
 import React from 'react';
+import legendStyles from '../styles/ChartLegendPanel.module.css';
 
-function ChartLegend({ dataKeys, selected, onClick, onKeyDown, colors, legendStyles }) {
+function ChartLegend({ dataKeys, selected, onClick, onKeyDown, colors }) {
   return (
     <div className={legendStyles.legendPanel}>
       {dataKeys.map((key, idx) => {
@@ -10,10 +11,10 @@ function ChartLegend({ dataKeys, selected, onClick, onKeyDown, colors, legendSty
             key={key}
             className={[
               legendStyles.legendItem,
-              isActive ? legendStyles.legendItemActive : legendStyles.legendItemInactive,
+              isActive ? legendStyles.legendItemActive : legendStyles.legendItemInactive
             ].join(' ')}
             style={{
-              color: isActive ? colors[idx % colors.length] || '#a259ec' : undefined,
+              color: isActive ? colors[idx % colors.length] || '#a259ec' : undefined
             }}
             tabIndex={0}
             aria-pressed={isActive}

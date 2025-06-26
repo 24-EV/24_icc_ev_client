@@ -259,15 +259,22 @@ function Chart({
         onToggleChange={() => setAutoScroll((v) => !v)}
         toggleSwitchLabel="스크롤 잠금"
       />
-      <div ref={chartRef} className={styles.chartArea} style={{ background: 'transparent' }} />
-      <ChartLegend
-        dataKeys={dataKeys}
-        selected={selected}
-        onClick={handleLegendClick}
-        onKeyDown={handleLegendKeyDown}
-        colors={colors}
-        legendStyles={legendStyles}
-      />
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+        <div
+          ref={chartRef}
+          className={styles.chartArea}
+          style={{ flex: 1, background: 'transparent' }}
+        />
+        <ChartLegend
+          dataKeys={dataKeys}
+          selected={selected}
+          onClick={handleLegendClick}
+          onKeyDown={handleLegendKeyDown}
+          colors={colors}
+          legendStyles={legendStyles}
+          style={{ paddingTop: 12 }}
+        />
+      </div>
     </div>
   );
 }
