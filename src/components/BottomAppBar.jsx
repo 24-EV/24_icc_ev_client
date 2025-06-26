@@ -5,7 +5,7 @@ import {
   BatteryChargingFull,
   CarRepair,
   LocationOn,
-  Settings,
+  Settings
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { NAV_ITEMS } from '../constants/bottomAppBarConfig';
@@ -31,10 +31,14 @@ function BottomAppBar() {
         position: 'fixed',
         bottom: 0,
         width: '100%',
+        maxWidth: '100vw',
+        boxSizing: 'border-box',
+        padding: 0,
+        overflowX: 'hidden',
         height: 56,
         background: 'var(--color-surface)',
         borderTop: '1px solid var(--color-border)',
-        zIndex: 100,
+        zIndex: 100
       }}
     >
       <BottomNavigation
@@ -48,13 +52,13 @@ function BottomAppBar() {
           '.MuiBottomNavigationAction-root': {
             color: 'var(--color-text-light)',
             '&.Mui-selected': {
-              color: 'var(--color-primary)',
-            },
+              color: 'var(--color-primary)'
+            }
           },
           '.MuiBottomNavigationAction-label': {
             fontSize: 13,
-            transition: 'all 0.2s',
-          },
+            transition: 'all 0.2s'
+          }
         }}
       >
         {NAV_ITEMS.map((item, idx) => (
