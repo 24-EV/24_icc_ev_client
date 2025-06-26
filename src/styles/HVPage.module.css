@@ -41,13 +41,9 @@
 .panelRow {
   width: 100vw;
   max-width: 100vw;
-  min-height: 340px;
   margin: 0;
   padding: 0 2vw;
   box-sizing: border-box;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
   overflow-x: hidden;
 }
 
@@ -76,6 +72,8 @@
   margin: 0;
   padding: 0;
 }
+
+/* 차트 영역 내부 조정 삭제 (Chart.module.css에서만 관리) */
 
 @media (max-width: 900px), (orientation: portrait) {
   .topRow {

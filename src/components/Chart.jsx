@@ -11,7 +11,17 @@ import ChartLegend from './ChartLegend';
 // dataKeys: ['key1', 'key2', ...]
 // colors: ['#color1', '#color2', ...]
 // title: 차트 제목
-function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, error }) {
+function Chart({
+  data = [],
+  dataKeys = [],
+  colors = [],
+  title = '',
+  loading,
+  error,
+  yAxisMin,
+  yAxisMax,
+  yAxisTickInterval
+}) {
   const chartRef = useRef();
   const chartInstance = useRef();
   const seriesRefs = useRef([]);
@@ -190,6 +200,23 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
       chartInstance.current.timeScale().scrollToRealTime();
     }
   }, [slicedData, dataKeys, autoScroll]);
+
+  // ResizeObserver로 차트 컨테이너 크기 변화 감지 및 리사이즈
+  useEffect(() => {
+    if (!chartRef.current || !chartInstance.current) return;
+    const container = chartRef.current;
+    const chart = chartInstance.current;
+    const resizeObserver = new window.ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        chart.resize(width, height);
+      }
+    });
+    resizeObserver.observe(container);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [chartReady, isDark]);
 
   // 로딩/에러/데이터 없음 처리 (예시)
   if (typeof loading !== 'undefined' && loading)
