@@ -220,7 +220,6 @@ function Chart({ data = [], dataKeys = [], colors = [], title = '', loading, err
         styles={styles}
       />
       {/* 2-1: 차트 사용법 안내 메시지 */}
-      <div className={styles.chartHint}>마우스 휠로 확대/축소, 드래그로 스크롤</div>
       <div ref={chartRef} className={styles.chartArea} style={{ background: 'transparent' }} />
       <ChartLegend
         dataKeys={dataKeys}
