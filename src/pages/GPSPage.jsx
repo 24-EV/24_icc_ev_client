@@ -94,8 +94,23 @@ function GPSPage() {
 
   return (
     <Section>
-      <PageHeader title="GPS" />
-      <div className={cardPanelStyles.cardPanel}>
+      <div className={styles.topRow} style={{ marginTop: '2vw' }}>
+        <div className={styles.titleWrap}>
+          <PageHeader title="GPS" />
+        </div>
+        <div className={styles.dataCardRow}>
+          <DataCard
+            label="GPS 데이터 상태"
+            value={
+              gpsData && gpsData.lat !== null && gpsData.lng !== null
+                ? `위도: ${gpsData.lat}, 경도: ${gpsData.lng}`
+                : 'GPS 데이터 없음'
+            }
+            unit=""
+          />
+        </div>
+      </div>
+      <div className={cardPanelStyles.cardPanel + ' ' + styles.panelRow}>
         <div id="map" key={location.pathname} className={styles.mapContainer}></div>
         <div className={styles.buttonWrap}>
           <ToggleSwitch
@@ -104,17 +119,6 @@ function GPSPage() {
             label="지도 마커 기준 고정"
           />
         </div>
-      </div>
-      <div className={styles.dataCardWrap}>
-        <DataCard
-          label="GPS 데이터 상태"
-          value={
-            gpsData && gpsData.lat !== null && gpsData.lng !== null
-              ? `위도: ${gpsData.lat}, 경도: ${gpsData.lng}`
-              : 'GPS 데이터 없음'
-          }
-          unit={gpsData ? '' : ''}
-        />
       </div>
     </Section>
   );
