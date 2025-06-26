@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/common/PageLayout';
+import AppLayout from './components/common/AppLayout';
 import SettingsPage from './pages/SettingsPage';
 import MotorPage from './pages/MotorPage';
 import HVPage from './pages/HVPage';
@@ -23,7 +23,7 @@ function App() {
     <SocketProvider>
       <HistoryProvider>
         <Router>
-          <Layout>
+          <AppLayout>
             <Routes>
               <Route path="/" element={<TestPageComponent />} />
               <Route path="/vehicle" element={<VehiclePageComponent />} />
@@ -32,7 +32,7 @@ function App() {
               <Route path="/gps" element={<GPSPageComponent />} />
               <Route path="/settings" element={<SettingPageComponent />} />
             </Routes>
-          </Layout>
+          </AppLayout>
         </Router>
       </HistoryProvider>
     </SocketProvider>

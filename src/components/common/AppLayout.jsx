@@ -9,7 +9,7 @@ import '../../styles/global.css';
 import styles from '../../styles/Layout.module.css';
 import useHistory from '../../hooks/useHistory';
 
-function Layout({ children }) {
+function AppLayout({ children }) {
   const ctx = useContext(SocketContext);
   const { realTimeClock, isConnected, vehicleData, hvData, motorData, gpsData } = ctx;
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -98,4 +98,4 @@ function Layout({ children }) {
   );
 }
 
-export default Layout;
+export default AppLayout;
