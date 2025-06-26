@@ -252,7 +252,7 @@ function Chart({
     );
 
   return (
-    <div className={cardPanelStyles.cardPanel} style={{ minHeight: 480 }}>
+    <div className={cardPanelStyles.cardPanel}>
       <PanelHeader
         title={title}
         toggleChecked={autoScroll}

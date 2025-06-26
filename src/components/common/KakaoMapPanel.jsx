@@ -77,7 +77,7 @@ function KakaoMapPanel({ title }) {
   // title, autoScroll, setAutoScroll, toggleSwitchLabel
 
   return (
-    <div className={cardPanelStyles.cardPanel} style={{ minHeight: 480 }}>
+    <div className={cardPanelStyles.cardPanel}>
       <PanelHeader
         title="지도"
         toggleChecked={dragState}

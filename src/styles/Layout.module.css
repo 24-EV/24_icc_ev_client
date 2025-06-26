@@ -2,20 +2,27 @@
   width: 100%;
   min-width: 0;
   height: 100vh;
-  overflow: hidden;
-  position: relative;
-  background: var(--color-bg);
   display: flex;
   flex-direction: column;
+  background: var(--color-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.topBar {
+  height: 48px;
+  flex-shrink: 0;
 }
 
 .main {
-  position: absolute;
-  top: 48px;
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 48px - 56px);
+  flex: 1 1 0;
   overflow-y: auto;
+  width: 100%;
   padding: 0;
   box-sizing: border-box;
+}
+
+.bottomBar {
+  height: 56px;
+  flex-shrink: 0;
 }

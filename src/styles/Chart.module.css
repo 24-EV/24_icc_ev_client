@@ -70,9 +70,9 @@
 .chartArea {
   width: 100%;
   max-width: 100%;
-  height: clamp(240px, 40vw, 600px);
-  min-width: 0;
-  min-height: 220px;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
   background: transparent;
   margin: 0;
   box-sizing: border-box;

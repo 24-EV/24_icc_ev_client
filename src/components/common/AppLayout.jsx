@@ -40,12 +40,14 @@ function AppLayout({ children }) {
 
   return (
     <div className={styles.container}>
-      <TopAppBar
-        rtc={realTimeClock ? realTimeClock.timestamp : '수신 중...'}
-        isConnected={isConnected}
-        lastReceived={lastReceived}
-        onMenuClick={() => setDrawerOpen(true)}
-      />
+      <div className={styles.topBar}>
+        <TopAppBar
+          rtc={realTimeClock ? realTimeClock.timestamp : '\uc218\uc2e0 \uc911...'}
+          isConnected={isConnected}
+          lastReceived={lastReceived}
+          onMenuClick={() => setDrawerOpen(true)}
+        />
+      </div>
       <SwipeableDrawer
         anchor="right"
         open={drawerOpen}
@@ -68,7 +70,6 @@ function AppLayout({ children }) {
         <div
           style={{
             padding: 16,
-            minHeight: '100vh',
             overflowX: 'hidden',
             width: '100%',
             maxWidth: '100%',
@@ -85,7 +86,7 @@ function AppLayout({ children }) {
               margin: '24px 0 32px 0'
             }}
           >
-            설정
+            \uc124\uc815
           </h2>
           <DarkModeCard />
           <DarkModeCard />
@@ -99,10 +100,12 @@ function AppLayout({ children }) {
           <DownloadExcelForm />
         </div>
       </SwipeableDrawer>
-      {/* 메인 컨텐츠 */}
+      {/* \uba54\uc778 \ucee8\ud150\uce20 */}
       <main className={styles.main}>{children}</main>
-      {/* 바텀앱바 */}
-      <BottomAppBar />
+      {/* \ubc14\ud140\uc571\ubc14 */}
+      <div className={styles.bottomBar}>
+        <BottomAppBar />
+      </div>
     </div>
   );
 }

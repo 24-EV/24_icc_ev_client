@@ -5,7 +5,7 @@ function getCoords(data) {
   return data && data.lat && data.lng ? data : DEFAULT_COORDS;
 }
 
-async function loadKakaoMap(gpsData, dragState = true) {
+async function loadKakaoMap(gpsData, dragState = true, mapId = 'map') {
   if (!(window.kakao && window.kakao.maps)) {
     throw new Error('Kakao Maps API가 로드되지 않았습니다.');
   }
@@ -17,7 +17,7 @@ async function loadKakaoMap(gpsData, dragState = true) {
       console.log('Kakao Maps 로드 완료');
 
       // 지도 컨테이너
-      const container = document.getElementById('map');
+      const container = document.getElementById(mapId);
       const options = {
         center: new window.kakao.maps.LatLng(coords.lat, coords.lng), // 기본 위치
         level: 3

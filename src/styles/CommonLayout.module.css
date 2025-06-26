@@ -34,7 +34,23 @@
 .panelRow {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto 1.2vw auto;
+  margin: 0 auto 56px auto;
   padding: 0;
   box-sizing: border-box;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+}
+
+@media (max-width: 900px) {
+  .panelRow {
+    margin-bottom: 56px;
+  }
+}
+@media (max-width: 600px) {
+  .panelRow {
+    margin-bottom: 56px;
+  }
 }
