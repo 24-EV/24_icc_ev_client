@@ -7,6 +7,7 @@ import PageHeader from '../components/PageHeader';
 import styles from '../styles/HVPage.module.css';
 import useHistory from '../hooks/useHistory';
 import useDarkMode from '../hooks/useDarkMode';
+import PageLayout from '../components/common/PageLayout';
 
 function HVPage() {
   const { history } = useHistory();
@@ -25,32 +26,46 @@ function HVPage() {
     );
   }
 
+  const dataCardItems = [
+    {
+      key: 'voltage',
+      label: '전압',
+      value: hvHistory[hvHistory.length - 1].voltage,
+      unit: 'V'
+    },
+    {
+      key: 'current',
+      label: '전류',
+      value: hvHistory[hvHistory.length - 1].current,
+      unit: 'A'
+    },
+    {
+      key: 'battery',
+      label: '배터리 잔량',
+      value: hvHistory[hvHistory.length - 1].battery_percent,
+      unit: '%'
+    }
+  ];
+
   return (
-    <Section>
-      <div className={styles.topRow}>
-        <div className={styles.titleWrap}>
-          <PageHeader title="HV" />
-        </div>
-        <div className={styles.dataCardRow}>
-          <DataCard label="전압" value={hvHistory[hvHistory.length - 1].voltage} unit="V" />
-          <DataCard label="전류" value={hvHistory[hvHistory.length - 1].current} unit="A" />
-          <DataCard
-            label="배터리 잔량"
-            value={hvHistory[hvHistory.length - 1].battery_percent}
-            unit="%"
-          />
-        </div>
-      </div>
-      <div className={styles.panelRow}>
+    <PageLayout
+      header={<PageHeader title="HV" />}
+      dataCards={dataCardItems.map((item) => (
+        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
+      ))}
+      mainPanel={
         <Chart
-          key={isDark ? 'dark' : 'light'}
           data={hvHistory}
           dataKeys={['voltage', 'current', 'battery_percent']}
           colors={colors}
           title="HV 차트"
         />
-      </div>
-    </Section>
+      }
+      topRowClass={styles.topRow}
+      titleWrapClass={styles.titleWrap}
+      dataCardRowClass={styles.dataCardRow}
+      panelRowClass={styles.panelRow}
+    />
   );
 }
 

@@ -74,8 +74,14 @@ function Chart({
   useEffect(() => {
     if (!chartReady) return;
     if (!chartRef.current) return;
+    // 안전하게 차트 인스턴스 제거
     if (chartInstance.current) {
-      chartInstance.current.remove();
+      try {
+        chartInstance.current.remove();
+      } catch (e) {
+        // 이미 dispose된 경우 무시
+        // console.warn('Chart already disposed:', e);
+      }
       chartInstance.current = null;
     }
     chartRef.current.innerHTML = '';
@@ -141,9 +147,16 @@ function Chart({
       });
     }
     return () => {
-      chartInstance.current && chartInstance.current.remove();
+      if (chartInstance.current) {
+        try {
+          chartInstance.current.remove();
+        } catch (e) {
+          // 이미 dispose된 경우 무시
+        }
+        chartInstance.current = null;
+      }
     };
-  }, [chartReady, isDark]);
+  }, [chartReady]);
 
   // 다크/라이트모드 변경 시 차트 옵션만 동적으로 변경
   useEffect(() => {

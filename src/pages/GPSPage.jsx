@@ -14,6 +14,8 @@ import {
 import useHistory from '../hooks/useHistory';
 import { useLocation } from 'react-router-dom';
 import ToggleSwitch from '../components/common/ToggleSwitch';
+import KakaoMapPanel from '../components/common/KakaoMapPanel';
+import PageLayout from '../components/common/PageLayout';
 
 function GPSPage() {
   const [map, setMap] = useState(null);
@@ -27,6 +29,18 @@ function GPSPage() {
   const gpsHistory = history.map((h) => h.gpsData);
   const location = useLocation();
   const DEFAULT_COORDS = { lat: 37.01219267534181, lng: 127.08870196277597 };
+
+  const dataCardItems = [
+    {
+      key: 'gps-status',
+      label: 'GPS 데이터 상태',
+      value:
+        gpsData && gpsData.lat !== null && gpsData.lng !== null
+          ? `위도: ${gpsData.lat}, 경도: ${gpsData.lng}`
+          : 'GPS 데이터 없음',
+      unit: ''
+    }
+  ];
 
   async function initMap() {
     try {
@@ -93,34 +107,17 @@ function GPSPage() {
   }
 
   return (
-    <Section>
-      <div className={styles.topRow} style={{ marginTop: '2vw' }}>
-        <div className={styles.titleWrap}>
-          <PageHeader title="GPS" />
-        </div>
-        <div className={styles.dataCardRow}>
-          <DataCard
-            label="GPS 데이터 상태"
-            value={
-              gpsData && gpsData.lat !== null && gpsData.lng !== null
-                ? `위도: ${gpsData.lat}, 경도: ${gpsData.lng}`
-                : 'GPS 데이터 없음'
-            }
-            unit=""
-          />
-        </div>
-      </div>
-      <div className={cardPanelStyles.cardPanel + ' ' + styles.panelRow}>
-        <div id="map" key={location.pathname} className={styles.mapContainer}></div>
-        <div className={styles.buttonWrap}>
-          <ToggleSwitch
-            checked={dragState}
-            onChange={handleButtonClick}
-            label="지도 마커 기준 고정"
-          />
-        </div>
-      </div>
-    </Section>
+    <PageLayout
+      header={<PageHeader title="GPS" />}
+      dataCards={dataCardItems.map((item) => (
+        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
+      ))}
+      mainPanel={<KakaoMapPanel />}
+      topRowClass={styles.topRow}
+      titleWrapClass={styles.titleWrap}
+      dataCardRowClass={styles.dataCardRow}
+      panelRowClass={styles.panelRow}
+    />
   );
 }
 

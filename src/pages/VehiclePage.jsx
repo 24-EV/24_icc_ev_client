@@ -7,6 +7,7 @@ import PageHeader from '../components/PageHeader';
 import styles from '../styles/VehiclePage.module.css';
 import useHistory from '../hooks/useHistory';
 import useDarkMode from '../hooks/useDarkMode';
+import PageLayout from '../components/common/PageLayout';
 
 function VehiclePage() {
   const { history } = useHistory();
@@ -26,32 +27,35 @@ function VehiclePage() {
     );
   }
 
+  const dataCardItems = [
+    {
+      key: 'velocity',
+      label: '속력',
+      value: vehicleHistory[vehicleHistory.length - 1].velocity,
+      unit: 'km/h'
+    },
+    {
+      key: 'rtc',
+      label: 'RTC Module',
+      value: realTimeClock?.timestamp,
+      unit: ''
+    }
+  ];
+
   return (
-    <Section>
-      <div className={styles.topRow}>
-        <div className={styles.titleWrap}>
-          <PageHeader title="차량" />
-        </div>
-        <div className={styles.dataCardRow}>
-          <DataCard
-            label="속력"
-            value={vehicleHistory[vehicleHistory.length - 1].velocity}
-            unit="km/h"
-          />
-          <DataCard label="RTC Module" value={realTimeClock?.timestamp} unit="" />
-        </div>
-      </div>
-      <div className={styles.panelRow}>
-        <Chart
-          key={isDark ? 'dark' : 'light'}
-          data={vehicleHistory}
-          dataKeys={['velocity']}
-          colors={colors}
-          title="속도 차트"
-        />
-      </div>
-      <div className={styles.dataCardRow} data-single></div>
-    </Section>
+    <PageLayout
+      header={<PageHeader title="차량" />}
+      dataCards={dataCardItems.map((item) => (
+        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
+      ))}
+      mainPanel={
+        <Chart data={vehicleHistory} dataKeys={['velocity']} colors={colors} title="속도 차트" />
+      }
+      topRowClass={styles.topRow}
+      titleWrapClass={styles.titleWrap}
+      dataCardRowClass={styles.dataCardRow}
+      panelRowClass={styles.panelRow}
+    />
   );
 }
 

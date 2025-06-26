@@ -6,6 +6,7 @@ import PageHeader from '../components/PageHeader';
 import styles from '../styles/MotorPage.module.css';
 import useHistory from '../hooks/useHistory';
 import useDarkMode from '../hooks/useDarkMode';
+import PageLayout from '../components/common/PageLayout';
 
 const chartOptions = [
   { key: 'throttle', color: '#a259ec' },
@@ -30,28 +31,46 @@ function MotorPage() {
     );
   }
 
+  const dataCardItems = [
+    {
+      key: 'throttle',
+      label: 'Throttle',
+      value: latest?.throttle,
+      unit: '/ 255'
+    },
+    {
+      key: 'rpm',
+      label: 'RPM',
+      value: latest?.rpm,
+      unit: 'RPM'
+    },
+    {
+      key: 'controller_temperature',
+      label: '컨트롤러 온도',
+      value: latest?.controller_temperature,
+      unit: '℃'
+    }
+  ];
+
   return (
-    <Section>
-      <div className={styles.topRow}>
-        <div className={styles.titleWrap}>
-          <PageHeader title="모터" />
-        </div>
-        <div className={styles.dataCardRow}>
-          <DataCard label="Throttle" value={latest?.throttle} unit="/ 255" />
-          <DataCard label="RPM" value={latest?.rpm} unit="RPM" />
-          <DataCard label="컨트롤러 온도" value={latest?.controller_temperature} unit="℃" />
-        </div>
-      </div>
-      <div className={styles.panelRow}>
+    <PageLayout
+      header={<PageHeader title="모터" />}
+      dataCards={dataCardItems.map((item) => (
+        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
+      ))}
+      mainPanel={
         <Chart
-          key={isDark ? 'dark' : 'light'}
           data={motorHistory}
           dataKeys={chartOptions.map((opt) => opt.key)}
           colors={colors}
           title="Motor 차트"
         />
-      </div>
-    </Section>
+      }
+      topRowClass={styles.topRow}
+      titleWrapClass={styles.titleWrap}
+      dataCardRowClass={styles.dataCardRow}
+      panelRowClass={styles.panelRow}
+    />
   );
 }
 
