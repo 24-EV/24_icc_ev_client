@@ -7,7 +7,7 @@ import SensorsOffIcon from '@mui/icons-material/SensorsOff';
 import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
 
-export default function TopBar({ rtc, isConnected, lastReceived, onMenuClick }) {
+export default function TopAppBar({ rtc, isConnected, lastReceived, onMenuClick }) {
   return (
     <AppBar
       position="fixed"

@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react';
 import BottomAppBar from '../BottomAppBar';
-import TopBar from '../TopBar';
+import TopAppBar from '../TopAppBar';
 import { SocketContext } from '../../context/SocketContext';
 import DarkModeCard from './DarkModeCard';
 import DownloadExcelForm from '../DownloadExcelForm';
@@ -40,7 +40,7 @@ function AppLayout({ children }) {
 
   return (
     <div className={styles.container}>
-      <TopBar
+      <TopAppBar
         rtc={realTimeClock ? realTimeClock.timestamp : '수신 중...'}
         isConnected={isConnected}
         lastReceived={lastReceived}
