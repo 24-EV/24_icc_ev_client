@@ -10,8 +10,9 @@ import ToggleSwitch from './ToggleSwitch';
 import cardPanelStyles from '../../styles/CardPanel.module.css';
 import styles from '../../styles/GPSPage.module.css';
 import { useLocation } from 'react-router-dom';
+import PanelHeader from '../PanelHeader';
 
-function KakaoMapPanel() {
+function KakaoMapPanel({ title }) {
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
   const [dragState, setDragState] = useState(true);
@@ -73,16 +74,17 @@ function KakaoMapPanel() {
     }
   }
 
+  // title, autoScroll, setAutoScroll, toggleSwitchLabel
+
   return (
-    <div className={cardPanelStyles.cardPanel + ' ' + styles.panelRow}>
+    <div className={cardPanelStyles.cardPanel} style={{ minHeight: 480 }}>
+      <PanelHeader
+        title="지도"
+        toggleChecked={dragState}
+        onToggleChange={handleButtonClick}
+        toggleSwitchLabel="마커 기준 고정"
+      />
       <div id="map" key={location.pathname} className={styles.mapContainer}></div>
-      <div className={styles.buttonWrap}>
-        <ToggleSwitch
-          checked={dragState}
-          onChange={handleButtonClick}
-          label="지도 마커 기준 고정"
-        />
-      </div>
     </div>
   );
 }

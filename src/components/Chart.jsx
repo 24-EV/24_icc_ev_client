@@ -4,7 +4,7 @@ import legendStyles from '../styles/ChartLegendPanel.module.css';
 import cardPanelStyles from '../styles/CardPanel.module.css';
 import styles from '../styles/Chart.module.css';
 import useDarkMode from '../hooks/useDarkMode';
-import ChartHeader from './ChartHeader';
+import PanelHeader from './PanelHeader';
 import ChartLegend from './ChartLegend';
 
 // data: [{ name: '시간', key1: 값, key2: 값, ... }]
@@ -252,12 +252,12 @@ function Chart({
     );
 
   return (
-    <div className={cardPanelStyles.cardPanel}>
-      <ChartHeader
+    <div className={cardPanelStyles.cardPanel} style={{ minHeight: 480 }}>
+      <PanelHeader
         title={title}
-        autoScroll={autoScroll}
-        setAutoScroll={setAutoScroll}
-        styles={styles}
+        toggleChecked={autoScroll}
+        onToggleChange={() => setAutoScroll((v) => !v)}
+        toggleSwitchLabel="스크롤 잠금"
       />
       <div ref={chartRef} className={styles.chartArea} style={{ background: 'transparent' }} />
       <ChartLegend

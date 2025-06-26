@@ -8,6 +8,7 @@ import styles from '../styles/HVPage.module.css';
 import useHistory from '../hooks/useHistory';
 import useDarkMode from '../hooks/useDarkMode';
 import PageLayout from '../components/common/PageLayout';
+import commonStyles from '../styles/CommonLayout.module.css';
 
 function HVPage() {
   const { history } = useHistory();
@@ -61,10 +62,10 @@ function HVPage() {
           title="HV 차트"
         />
       }
-      topRowClass={styles.topRow}
-      titleWrapClass={styles.titleWrap}
-      dataCardRowClass={styles.dataCardRow}
-      panelRowClass={styles.panelRow}
+      topRowClass={commonStyles.topRow}
+      titleWrapClass={commonStyles.titleWrap}
+      dataCardRowClass={commonStyles.dataCardRow}
+      panelRowClass={commonStyles.panelRow}
     />
   );
 }

@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom';
 import ToggleSwitch from '../components/common/ToggleSwitch';
 import KakaoMapPanel from '../components/common/KakaoMapPanel';
 import PageLayout from '../components/common/PageLayout';
+import commonStyles from '../styles/CommonLayout.module.css';
 
 function GPSPage() {
   const [map, setMap] = useState(null);
@@ -112,11 +113,11 @@ function GPSPage() {
       dataCards={dataCardItems.map((item) => (
         <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
       ))}
-      mainPanel={<KakaoMapPanel />}
-      topRowClass={styles.topRow}
-      titleWrapClass={styles.titleWrap}
-      dataCardRowClass={styles.dataCardRow}
-      panelRowClass={styles.panelRow}
+      mainPanel={<KakaoMapPanel title={'Map'} />}
+      topRowClass={commonStyles.topRow}
+      titleWrapClass={commonStyles.titleWrap}
+      dataCardRowClass={commonStyles.dataCardRow}
+      panelRowClass={commonStyles.panelRow}
     />
   );
 }

@@ -8,6 +8,7 @@ import styles from '../styles/VehiclePage.module.css';
 import useHistory from '../hooks/useHistory';
 import useDarkMode from '../hooks/useDarkMode';
 import PageLayout from '../components/common/PageLayout';
+import commonStyles from '../styles/CommonLayout.module.css';
 
 function VehiclePage() {
   const { history } = useHistory();
@@ -51,10 +52,10 @@ function VehiclePage() {
       mainPanel={
         <Chart data={vehicleHistory} dataKeys={['velocity']} colors={colors} title="속도 차트" />
       }
-      topRowClass={styles.topRow}
-      titleWrapClass={styles.titleWrap}
-      dataCardRowClass={styles.dataCardRow}
-      panelRowClass={styles.panelRow}
+      topRowClass={commonStyles.topRow}
+      titleWrapClass={commonStyles.titleWrap}
+      dataCardRowClass={commonStyles.dataCardRow}
+      panelRowClass={commonStyles.panelRow}
     />
   );
 }
