@@ -52,6 +52,7 @@ function AppLayout({ children }) {
         onClose={() => setDrawerOpen(false)}
         onOpen={() => setDrawerOpen(true)}
         PaperProps={{
+          className: 'drawer',
           sx: {
             background: 'var(--color-bg)',
             color: '#fff',
@@ -86,6 +87,14 @@ function AppLayout({ children }) {
           >
             설정
           </h2>
+          <DarkModeCard />
+          <DarkModeCard />
+          <DarkModeCard />
+          <DarkModeCard />
+          <DarkModeCard />
+          <DarkModeCard />
+          <DarkModeCard />
+          <DarkModeCard />
           <DarkModeCard />
           <DownloadExcelForm />
         </div>

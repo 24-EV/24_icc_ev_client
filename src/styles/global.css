@@ -242,3 +242,32 @@ textarea:focus {
 .menu-btn.menu-active svg {
   color: #bdbdbd;
 }
+
+/* 스크롤바 배경 투명하게 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-color: #bdbdbd transparent;
+  scrollbar-width: thin;
+}
+
+/* Drawer(설정 패널)에서만 스크롤바 숨김 - drawer 내부 자식에만 적용 */
+.drawer * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none;
+}
+.drawer *::-webkit-scrollbar {
+  display: none;
+}
