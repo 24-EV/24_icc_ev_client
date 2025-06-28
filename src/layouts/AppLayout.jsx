@@ -1,13 +1,13 @@
 import React, { useContext, useMemo, useState, useEffect } from 'react';
-import BottomAppBar from '../BottomAppBar';
-import TopAppBar from '../TopAppBar';
-import { SocketContext } from '../../context/SocketContext';
-import DarkModeCard from './DarkModeCard';
-import DownloadExcelForm from '../DownloadExcelForm';
+import BottomAppBar from './BottomAppBar';
+import TopAppBar from './TopAppBar';
+import { SocketContext } from '../context/SocketContext';
+import DarkModeCard from '../components/common/DarkModeCard';
+import DownloadExcelForm from '../components/DownloadExcelForm';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import '../../styles/global.css';
 import styles from '../../styles/Layout.module.css';
-import useHistory from '../../hooks/useHistory';
+import useHistory from '../hooks/useHistory';
 
 function AppLayout({ children }) {
   const ctx = useContext(SocketContext);
@@ -89,9 +89,8 @@ function AppLayout({ children }) {
           </h2>
           <DarkModeCard />
           <DownloadExcelForm />
-          <div>
-            <h1>도움말</h1>
-          </div>
+          <DownloadExcelForm />
+          <DownloadExcelForm />
         </div>
       </SwipeableDrawer>
       {/* \uba54\uc778 \ucee8\ud150\uce20 */}
