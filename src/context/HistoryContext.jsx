@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { filterRecentData, addTimestamp, ONE_HOUR_MS } from '../utils/historyUtils';
+import { filterRecentData, addTimestamp, ONE_HOUR_MS } from '../utils/history/historyUtils';
 
 const HistoryContext = createContext();
 

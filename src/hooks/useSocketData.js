@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-export function useSocketData(serverUrl = 'http://localhost:2004') {
+export function useSocketData(serverUrl = import.meta.env.VITE_SERVER_URL) {
   const [loading, setLoading] = useState(true);
   const [vehicleData, setVehicleData] = useState(null);
   const [hvData, setHvData] = useState(null);
@@ -11,6 +11,7 @@ export function useSocketData(serverUrl = 'http://localhost:2004') {
   const [realTimeClock, setRealTimeClock] = useState(null);
   const [socketError, setSocketError] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isSameVersion, setIsSameVersion] = useState(false);
 
   useEffect(() => {
     const socket = io(serverUrl, {
@@ -18,7 +19,7 @@ export function useSocketData(serverUrl = 'http://localhost:2004') {
       reconnectionAttempts: 20,
       reconnectionDelay: 100,
       reconnectionDelayMax: 5000,
-      transports: ['websocket'],
+      transports: ['websocket']
     });
 
     socket.on('connect', function () {
@@ -26,6 +27,14 @@ export function useSocketData(serverUrl = 'http://localhost:2004') {
       setSocketError(null);
       setLoading(false);
       socket.emit('requestData');
+    });
+
+    socket.on('serverControllerVersion', function () {
+      socket.emit('clientControllerVersion', import.meta.env.VITE_CONTROLLER_VERSION);
+    });
+
+    socket.on('controllerVersionOK', function (message) {
+      console.log(message);
     });
 
     socket.on('disconnect', function () {
@@ -41,6 +50,7 @@ export function useSocketData(serverUrl = 'http://localhost:2004') {
     });
 
     socket.on('error', function (error) {
+      console.log(error);
       setSocketError('WebSocket 오류: ' + (error?.message || '알 수 없는 오류'));
       setLoading(true);
     });
@@ -51,28 +61,28 @@ export function useSocketData(serverUrl = 'http://localhost:2004') {
         const _data = message;
         setVehicleData({
           velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null,
+          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
         });
         setHvData({
           voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
           current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
           battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null,
+          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
         });
         setMotorData({
           throttle: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
           rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
           controller_temperature:
             typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null,
+          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
         });
         setRealTimeClock({
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null,
+          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
         });
         setGpsData({
           lat: typeof _data.lat === 'number' ? _data.lat : null,
           lng: typeof _data.lng === 'number' ? _data.lng : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null,
+          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
         });
         setLoading(false);
         setSocketError(null);
@@ -94,6 +104,6 @@ export function useSocketData(serverUrl = 'http://localhost:2004') {
     gpsData,
     realTimeClock,
     socketError,
-    isConnected,
+    isConnected
   };
 }

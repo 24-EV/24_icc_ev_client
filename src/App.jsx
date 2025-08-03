@@ -1,22 +1,15 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AppLayout from './components/common/AppLayout';
-import SettingsPage from './pages/SettingsPage';
-import MotorPage from './pages/MotorPage';
-import HVPage from './pages/HVPage';
-import GPSPage from './pages/GPSPage';
-import TestPage from './pages/TestPage';
-import VehiclePage from './pages/VehiclePage';
-import Section from './components/Section';
+import AppLayout from './components/layout/AppLayout';
 import { SocketProvider } from './context/SocketContext';
 import { HistoryProvider } from './context/HistoryContext';
 
-const TestPageComponent = lazy(() => import('./pages/TestPage'));
-const VehiclePageComponent = lazy(() => import('./pages/VehiclePage'));
-const HVPageComponent = lazy(() => import('./pages/HVPage'));
-const MotorPageComponent = lazy(() => import('./pages/MotorPage'));
-const GPSPageComponent = lazy(() => import('./pages/GPSPage'));
-const SettingPageComponent = lazy(() => import('./pages/SettingsPage'));
+const TestPageComponent = lazy(() => import('./features/test/pages/TestPage'));
+const VehiclePageComponent = lazy(() => import('./features/vehicle/pages/VehiclePage'));
+const HVPageComponent = lazy(() => import('./features/hv/pages/HVPage'));
+const MotorPageComponent = lazy(() => import('./features/motor/pages/MotorPage'));
+const GPSPageComponent = lazy(() => import('./features/gps/pages/GPSPage'));
+const SettingPageComponent = lazy(() => import('./features/settings/pages/SettingsPage'));
 
 function App() {
   return (

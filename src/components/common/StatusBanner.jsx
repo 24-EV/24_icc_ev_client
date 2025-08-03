@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/StatusBanner.module.css';
+import styles from '../../styles/common/StatusBanner.module.css';
 
 const iconMap = {
   loading: <span style={{ fontSize: 18 }}>⏳</span>,

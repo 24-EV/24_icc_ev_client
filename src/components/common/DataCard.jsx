@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../../styles/DataCard.module.css';
+import styles from '../../styles/common/DataCard.module.css';
 
 function DataCard({ label, value, unit }) {
   return (

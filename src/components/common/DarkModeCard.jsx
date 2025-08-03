@@ -1,8 +1,8 @@
 import React from 'react';
 import useDarkMode from '../../hooks/useDarkMode';
 import ToggleSwitch from './ToggleSwitch';
-import cardPanelStyles from '../../styles/CardPanel.module.css';
-import styles from '../../styles/SettingsPage.module.css';
+import cardPanelStyles from '../../styles/common/CardPanel.module.css';
+import styles from '../../features/settings/styles/SettingsPage.module.css';
 
 export default function DarkModeCard() {
   const [dark, toggleDark] = useDarkMode();
