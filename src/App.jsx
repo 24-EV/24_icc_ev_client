@@ -13,22 +13,24 @@ const SettingPageComponent = lazy(() => import('./features/settings/pages/Settin
 
 function App() {
   return (
-    <SocketProvider>
-      <HistoryProvider>
-        <Router>
-          <AppLayout>
-            <Routes>
-              <Route path="/" element={<TestPageComponent />} />
-              <Route path="/vehicle" element={<VehiclePageComponent />} />
-              <Route path="/hv" element={<HVPageComponent />} />
-              <Route path="/motor" element={<MotorPageComponent />} />
-              <Route path="/gps" element={<GPSPageComponent />} />
-              <Route path="/settings" element={<SettingPageComponent />} />
-            </Routes>
-          </AppLayout>
-        </Router>
-      </HistoryProvider>
-    </SocketProvider>
+    <Suspense fallback={<div>test</div>}>
+      <SocketProvider>
+        <HistoryProvider>
+          <Router>
+            <AppLayout>
+              <Routes>
+                <Route path="/" element={<TestPageComponent />} />
+                <Route path="/vehicle" element={<VehiclePageComponent />} />
+                <Route path="/hv" element={<HVPageComponent />} />
+                <Route path="/motor" element={<MotorPageComponent />} />
+                <Route path="/gps" element={<GPSPageComponent />} />
+                <Route path="/settings" element={<SettingPageComponent />} />
+              </Routes>
+            </AppLayout>
+          </Router>
+        </HistoryProvider>
+      </SocketProvider>
+    </Suspense>
   );
 }
 

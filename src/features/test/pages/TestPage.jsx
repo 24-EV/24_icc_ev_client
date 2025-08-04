@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { SocketContext } from '../context/SocketContext';
-import Section from '../components/Section';
-import PageHeader from '../components/PageHeader';
-import DataCard from '../components/common/DataCard';
+import { SocketContext } from '../../../context/SocketContext';
+import Section from '../../../components/common/Section';
+import PageHeader from '../../../components/layout/PageHeader';
+import DataCard from '../../../components/common/DataCard';
 
 function TestPage() {
   const { vehicleData } = useContext(SocketContext);

@@ -8,14 +8,15 @@ function ConnectionStatusIndicator() {
   // useSocketData 직접 호출 X, Context만 사용
   const ctx = useContext(SocketContext);
   const {
+    loading,
+    socketError,
+    isConnected,
+    isSameControllerVersion,
     vehicleData,
     hvData,
     motorData,
     gpsData,
-    realTimeClock,
-    socketError,
-    loading,
-    isConnected,
+    realTimeClock
   } = ctx;
   const { addHistory } = useHistory();
 

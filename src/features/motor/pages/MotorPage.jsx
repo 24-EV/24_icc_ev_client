@@ -10,7 +10,7 @@ import commonStyles from '../../../styles/layout/PageLayout.module.css';
 import Section from '../../../components/common/Section';
 
 const chartOptions = [
-  { key: 'throttle', color: '#a259ec' },
+  { key: 'THROTTLE_SIGNAL', color: '#a259ec' },
   { key: 'rpm', color: '#b388ff' },
   { key: 'controller_temperature', color: '#7c3aed' }
 ];
@@ -32,26 +32,29 @@ function MotorPage() {
     );
   }
 
-  const dataCardItems = [
-    {
-      key: 'throttle',
-      label: 'Throttle',
-      value: latest?.throttle,
-      unit: '/ 255'
-    },
-    {
-      key: 'rpm',
-      label: 'RPM',
-      value: latest?.rpm,
-      unit: 'RPM'
-    },
-    {
-      key: 'controller_temperature',
-      label: '컨트롤러 온도',
-      value: latest?.controller_temperature,
-      unit: '℃'
-    }
-  ];
+  const dataCardItems =
+    // { 24:
+    [
+      {
+        key: 'THROTTLE_SIGNAL',
+        label: 'THROTTLE_SIGNAL',
+        value: latest?.throttle,
+        unit: '/ 255'
+      },
+      {
+        key: 'rpm',
+        label: 'RPM',
+        value: latest?.rpm,
+        unit: 'RPM'
+      },
+      {
+        key: 'controller_temperature',
+        label: '컨트롤러 온도',
+        value: latest?.controller_temperature,
+        unit: '℃'
+      }
+    ];
+  // };
 
   return (
     <PageLayout

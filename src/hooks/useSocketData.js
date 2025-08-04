@@ -1,27 +1,144 @@
 // 실시간 소켓 데이터 관리용 커스텀 훅(구현은 SocketContext에서 분리 예정)
+import { HistoryRounded } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import { SERVER_URL, CONTROLLER_VERSION } from '../config/envConfig';
 
-export function useSocketData(serverUrl = import.meta.env.VITE_SERVER_URL) {
+const socket = io(SERVER_URL, {
+  reconnection: true,
+  reconnectionAttempts: 20,
+  reconnectionDelay: 100,
+  reconnectionDelayMax: 5000,
+  transports: ['websocket']
+});
+
+export function useSocketData() {
+  // 설정
   const [loading, setLoading] = useState(true);
+  const [socketError, setSocketError] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [isSameControllerVersion, setIsSameControllerVersion] = useState(false);
+  // 데이터
   const [vehicleData, setVehicleData] = useState(null);
   const [hvData, setHvData] = useState(null);
   const [motorData, setMotorData] = useState(null);
   const [gpsData, setGpsData] = useState(null);
   const [realTimeClock, setRealTimeClock] = useState(null);
-  const [socketError, setSocketError] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const [isSameVersion, setIsSameVersion] = useState(false);
+
+  const onDataReceived = {
+    24: onDataReceived24Controller,
+    25: onDataReceived25Controller
+  };
+
+  // set함수 내부 순서 바꾸시려면 dataFormat 건드리셔야 합니다. 체크 후 변경해주세요.
+  function onDataReceivedTest(message) {
+    try {
+      const _data = message;
+      setVehicleData({
+        velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setHvData({
+        voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
+        current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
+        battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setMotorData({
+        throttle: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
+        rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
+        controller_temperature:
+          typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setRealTimeClock({
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setGpsData({
+        lat: typeof _data.lat === 'number' ? _data.lat : null,
+        lng: typeof _data.lng === 'number' ? _data.lng : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+
+      setLoading(false);
+      setSocketError(null);
+    } catch (error) {
+      console.error('데이터 처리 오류!!!!', error);
+    }
+  }
+
+  function onDataReceived24Controller(message) {
+    try {
+      const _data = message;
+      setVehicleData({
+        velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setHvData({
+        voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
+        current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
+        battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setMotorData({
+        THROTTLE_SIGNAL: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
+        rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
+        controller_temperature:
+          typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setRealTimeClock({
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setGpsData({
+        lat: typeof _data.lat === 'number' ? _data.lat : null,
+        lng: typeof _data.lng === 'number' ? _data.lng : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setLoading(false);
+      setSocketError(null);
+    } catch (error) {
+      console.error('데이터 처리 오류!!!!', error);
+    }
+  }
+
+  function onDataReceived25Controller(message) {
+    // console.log('서버로부터 받은 데이터 : ', message);
+    try {
+      const _data = message;
+      setVehicleData({
+        velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setHvData({
+        voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
+        current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
+        battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setMotorData({
+        throttle: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
+        rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
+        controller_temperature:
+          typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setRealTimeClock({
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setGpsData({
+        lat: typeof _data.lat === 'number' ? _data.lat : null,
+        lng: typeof _data.lng === 'number' ? _data.lng : null,
+        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+      });
+      setLoading(false);
+      setSocketError(null);
+    } catch (error) {
+      console.error('데이터 처리 오류!!!!', error);
+    }
+  }
 
   useEffect(() => {
-    const socket = io(serverUrl, {
-      reconnection: true,
-      reconnectionAttempts: 20,
-      reconnectionDelay: 100,
-      reconnectionDelayMax: 5000,
-      transports: ['websocket']
-    });
-
     socket.on('connect', function () {
       setIsConnected(true);
       setSocketError(null);
@@ -30,17 +147,19 @@ export function useSocketData(serverUrl = import.meta.env.VITE_SERVER_URL) {
     });
 
     socket.on('serverControllerVersion', function () {
-      socket.emit('clientControllerVersion', import.meta.env.VITE_CONTROLLER_VERSION);
+      socket.emit('clientControllerVersion', CONTROLLER_VERSION);
     });
 
     socket.on('controllerVersionOK', function (message) {
       console.log(message);
+      setIsSameControllerVersion(true);
     });
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function (reason) {
       setIsConnected(false);
       setSocketError('서버와 연결이 끊어졌습니다.');
       setLoading(true);
+      console.warn('Disconnected. Reason:', reason);
     });
 
     socket.on('connect_error', function (error) {
@@ -55,55 +174,22 @@ export function useSocketData(serverUrl = import.meta.env.VITE_SERVER_URL) {
       setLoading(true);
     });
 
-    socket.on('dataReceived', function (message) {
-      // console.log('서버로부터 받은 데이터 : ', message);
-      try {
-        const _data = message;
-        setVehicleData({
-          velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-        });
-        setHvData({
-          voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
-          current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
-          battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-        });
-        setMotorData({
-          throttle: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
-          rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
-          controller_temperature:
-            typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-        });
-        setRealTimeClock({
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-        });
-        setGpsData({
-          lat: typeof _data.lat === 'number' ? _data.lat : null,
-          lng: typeof _data.lng === 'number' ? _data.lng : null,
-          timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-        });
-        setLoading(false);
-        setSocketError(null);
-      } catch (error) {
-        console.error('데이터 처리 오류!!!!', error);
-      }
-    });
+    socket.on('dataReceived', onDataReceived[CONTROLLER_VERSION]);
 
     return () => {
-      socket.disconnect();
+      socket.off();
     };
-  }, [serverUrl]);
+  }, [SERVER_URL]);
 
   return {
     loading,
+    socketError,
+    isConnected,
+    isSameControllerVersion,
     vehicleData,
     hvData,
     motorData,
     gpsData,
-    realTimeClock,
-    socketError,
-    isConnected
+    realTimeClock
   };
 }

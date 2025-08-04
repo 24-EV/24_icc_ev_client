@@ -5,7 +5,7 @@ import { useSocketData } from '../hooks/useSocketData';
 export const SocketContext = createContext();
 
 export function SocketProvider({ children }) {
-  const socketData = useSocketData(import.meta.env.VITE_SERVER_URL);
+  const socketData = useSocketData();
 
   return <SocketContext.Provider value={socketData}>{children}</SocketContext.Provider>;
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { SERVER_URL } from '../../config/envConfig';
 
 // 서버로부터 Excel 파일을 다운로드하는 함수
 async function formatToExcelFile(startDate, endDate) {
@@ -7,16 +8,15 @@ async function formatToExcelFile(startDate, endDate) {
     throw new Error('시작 날짜 또는 종료 날짜 미입력.');
   }
 
-  const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:2004';
   const response = await axios.post(
-    `${serverUrl}/api/export-excel`,
+    `${SERVER_URL}/api/export-excel`,
     {
       startDate,
-      endDate,
+      endDate
     },
     {
-      responseType: 'blob', // 서버로부터 Blob 형식의 응답을 받음
-    },
+      responseType: 'blob' // 서버로부터 Blob 형식의 응답을 받음
+    }
   );
 
   const url = window.URL.createObjectURL(new Blob([response.data])); // Blob을 URL로 변환
