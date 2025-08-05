@@ -21,7 +21,7 @@
   padding-left: max(16px, 3vw);
   padding-right: max(16px, 3vw);
   padding-bottom: max(16px, 3vw);
-  overflow: hidden;
+  overflow: visible;
   /* 필요시 아래 여백/배경 등 추가 가능 */
 }
 

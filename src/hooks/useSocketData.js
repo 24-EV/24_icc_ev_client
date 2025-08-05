@@ -21,8 +21,7 @@ export function useSocketData() {
   const [isSameControllerVersion, setIsSameControllerVersion] = useState(false);
   // 데이터
   const [realTimeClock, setRealTimeClock] = useState(null);
-
-  const [totalData, settotalData] = useState(null);
+  const [totalData, setTotalData] = useState(null);
 
   function onDataReceived(message, version = CONTROLLER_VERSION) {
     try {
@@ -67,7 +66,7 @@ export function useSocketData() {
         });
       });
 
-      settotalData(newData);
+      setTotalData(newData);
     } catch (error) {
       console.error('데이터 처리 오류!!!!', error);
     }
