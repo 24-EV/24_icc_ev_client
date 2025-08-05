@@ -3,6 +3,7 @@ import { HistoryRounded } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { SERVER_URL, CONTROLLER_VERSION } from '../config/envConfig';
+import dataFormat from '../constants/DataFormat';
 
 const socket = io(SERVER_URL, {
   reconnection: true,
@@ -30,38 +31,36 @@ export function useSocketData() {
     25: onDataReceived25Controller
   };
 
-  // set함수 내부 순서 바꾸시려면 dataFormat 건드리셔야 합니다. 체크 후 변경해주세요.
-  function onDataReceivedTest(message) {
+  function onDataReceivedTest(message, version = CONTROLLER_VERSION) {
+    const setterMap = {
+      vehicle: setVehicleData,
+      hv: setHvData,
+      motor: setMotorData,
+      gps: setGpsData
+    };
+
     try {
       const _data = message;
-      setVehicleData({
-        velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setHvData({
-        voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
-        current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
-        battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setMotorData({
-        throttle: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
-        rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
-        controller_temperature:
-          typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setRealTimeClock({
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setGpsData({
-        lat: typeof _data.lat === 'number' ? _data.lat : null,
-        lng: typeof _data.lng === 'number' ? _data.lng : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
+
+      Object.entries(dataFormat[version]).forEach(([groupKey, keysObj]) => {
+        const newData = { ...dataFormat[version][groupKey] };
+        const setter = setterMap[groupKey];
+        if (!setter) {
+          throw new Error(`잘못된 groupKey : ${groupKey}`);
+        }
+
+        Object.keys(keysObj).forEach((key) => {
+          newData[key] = typeof _data[key] === 'number' ? _data[key] : null;
+        });
+
+        newData[groupKey].timestamp = typeof _data.timestamp === 'string' ? _data.timestamp : null;
+
+        setter(newData);
       });
 
-      setLoading(false);
-      setSocketError(null);
+      setGpsData({
+        lat: typeof _data.lat
+      });
     } catch (error) {
       console.error('데이터 처리 오류!!!!', error);
     }

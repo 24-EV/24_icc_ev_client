@@ -41,6 +41,18 @@ const dataFormat = {
         value: null,
         unit: '℃'
       }
+    },
+    gps: {
+      lat: {
+        label: '위도',
+        value: null,
+        unit: '°'
+      },
+      lat: {
+        label: '경도',
+        value: null,
+        unit: '°'
+      }
     }
   },
   // 25년도 컨트롤러
@@ -91,6 +103,18 @@ const dataFormat = {
       Torque_R: null,
       Torque_cmd_L: null,
       Torque_cmd_R: null
+    },
+    gps: {
+      lat: {
+        label: '위도',
+        value: null,
+        unit: '°'
+      },
+      lat: {
+        label: '경도',
+        value: null,
+        unit: '°'
+      }
     }
   }
 };
