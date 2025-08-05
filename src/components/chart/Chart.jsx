@@ -9,7 +9,7 @@ import legendStyles from '../../styles/chart/ChartLegendPanel.module.css';
 import cardPanelStyles from '../../styles/common/CardPanel.module.css';
 import styles from '../../styles/chart/Chart.module.css';
 
-function Chart({ dataKey = '', title = '' }) {
+function Chart({ dataKey = '', title = '', side = '' }) {
   const chartRef = useRef();
   const chartInstance = useRef();
   const seriesRefs = useRef([]);
@@ -24,17 +24,24 @@ function Chart({ dataKey = '', title = '' }) {
     return history
       .map((h) => {
         if (!h[dataKey]) return null;
-        return {
-          timestamp: h.timestamp,
-          ...Object.fromEntries(
-            Object.entries(h[dataKey]).map(([k, v]) => [k, v.value])
-          )
-        };
+
+        const group = {};
+        Object.entries(h[dataKey]).forEach(([k, v]) => {
+          if (v?.value && typeof v.value === 'object' && (side === 'L' || side === 'R')) {
+            // 좌/우 데이터
+            group[k] = v.value[side];
+          } else {
+            // 일반 데이터
+            group[k] = v?.value ?? null;
+          }
+        });
+
+        return { timestamp: h.timestamp, ...group };
       })
       .filter(Boolean);
-  }, [history, dataKey]);
+  }, [history, dataKey, side]);
 
-  // 데이터 키
+  // 데이터 키 추출
   const dataKeys = useMemo(() => {
     if (!groupData.length) return [];
     return Object.keys(groupData[0]).filter((k) => k !== 'timestamp');
@@ -83,12 +90,11 @@ function Chart({ dataKey = '', title = '' }) {
         priceScaleId: 'left',
         color: CHART_COLORS[idx % CHART_COLORS.length],
         lineWidth: 2,
-        title: key,
+        title: key + (side ? ` (${side})` : ''), // e.g. Current (L)
         visible: selected.includes(key)
       })
     );
 
-    // 리사이즈 대응
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         const { width, height } = entry.contentRect;
@@ -98,7 +104,7 @@ function Chart({ dataKey = '', title = '' }) {
     resizeObserver.observe(chartRef.current);
 
     return () => resizeObserver.disconnect();
-  }, [isDark, dataKeys, selected]);
+  }, [isDark, dataKeys, selected, side]);
 
   // 데이터 업데이트
   useEffect(() => {
@@ -129,7 +135,7 @@ function Chart({ dataKey = '', title = '' }) {
     } else {
       chartInstance.current.timeScale().fitContent();
     }
-  }, [slicedData, dataKeys, autoScroll]);
+  }, [slicedData, dataKeys, autoScroll, side]);
 
   return (
     <div className={cardPanelStyles.cardPanel}>

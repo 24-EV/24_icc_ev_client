@@ -30,7 +30,12 @@ function MotorPage() {
       dataCards={Object.entries(latest).map(([key, { label, value, unit }]) => (
         <DataCard key={key} label={label} value={value} unit={unit} />
       ))}
-      mainPanel={<Chart dataKey={'motor'} title="Motor 차트" />}
+      mainPanel={
+        <div>
+          <Chart dataKey={'motor'} title="Motor 차트" side="L" />
+          <Chart dataKey={'motor'} title="Motor 차트" side="R" />
+        </div>
+      }
       topRowClass={commonStyles.topRow}
       titleWrapClass={commonStyles.titleWrap}
       dataCardRowClass={commonStyles.dataCardRow}

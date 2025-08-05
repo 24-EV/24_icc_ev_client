@@ -66,116 +66,73 @@ const dataFormat = {
         unit: 'km/h'
       },
       ADC_Signal: {
-        //모름
         label: 'ADC 신호',
         value: null,
         unit: ''
       },
       Yaw_Rate: {
-        // 모름
         label: '요 속도',
         value: null,
         unit: '°/s'
       },
       Steering_angle: {
-        //모름
-        label: '스티어링 각',
+        label: '조향각',
         value: null,
         unit: '°'
       },
       Batt_percent: {
-        label: '속도',
+        label: '배터리 잔량',
         value: null,
         unit: 'km/h'
       },
       Total_power: {
-        label: '속도',
+        label: '총 출력',
         value: null,
-        unit: 'km/h'
+        unit: 'W'
       }
     },
     hv: {
-      Current_L: {
-        label: '전류 L',
+      Current: {
+        label: '전류',
         value: null,
         unit: 'A'
       },
-      Current_R: {
-        label: '전류 R',
+      Voltage: {
+        label: '전압',
         value: null,
-        unit: 'A'
-      },
-      Voltage_L: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
-      },
-      Voltage_R: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
+        unit: 'V'
       }
     },
     motor: {
-      Motor_temp_L: {
-        label: '속도',
+      Motor_temp: {
+        label: '모터 온도',
         value: null,
-        unit: 'km/h'
+        unit: '℃'
       },
-      Motor_temp_R: {
-        label: '속도',
+      Controller_temp: {
+        label: '컨트롤러 온도',
         value: null,
-        unit: 'km/h'
+        unit: '℃'
       },
-      Controller_temp_L: {
-        label: '속도',
+      Power: {
+        label: '출력',
         value: null,
-        unit: 'km/h'
+        unit: 'W'
       },
-      Controller_temp_R: {
-        label: '속도',
+      RPM: {
+        label: 'RPM',
         value: null,
-        unit: 'km/h'
+        unit: 'RPM'
       },
-      Power_L: {
-        label: '속도',
+      Torque: {
+        label: '토크',
         value: null,
-        unit: 'km/h'
+        unit: 'Nm'
       },
-      Power_R: {
-        label: '속도',
+      Torque_cmd: {
+        label: '토크 커맨드',
         value: null,
-        unit: 'km/h'
-      },
-      RPM_L: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
-      },
-      RPM_R: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
-      },
-      Torque_L: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
-      },
-      Torque_R: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
-      },
-      Torque_cmd_L: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
-      },
-      Torque_cmd_R: {
-        label: '속도',
-        value: null,
-        unit: 'km/h'
+        unit: 'Nm'
       }
     },
     gps: {

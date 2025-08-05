@@ -33,14 +33,14 @@
 }
 
 .dataCardRow {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  gap: 0.7rem;
-  justify-content: flex-end;
+  gap: 0.8rem;
+  justify-content: space-around;
   align-self: flex-end;
   width: 100%;
-  max-width: min(100vw, 1000px);
   min-width: 180px;
   box-sizing: border-box;
 }

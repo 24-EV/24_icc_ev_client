@@ -12,13 +12,11 @@ import Section from '../../../components/common/Section';
 
 function HVPage() {
   const { history } = useHistory();
-  const hvHistory = history.map((h) => h.hvData);
+  const hvHistory = history.map((h) => h.hv);
+  const latest = hvHistory[hvHistory.length - 1];
   const [isDark] = useDarkMode();
 
-  // 기존 색상만 사용
-  const colors = ['#a259ec', '#b388ff', '#7c3aed'];
-
-  if (!hvHistory.length) {
+  if (!latest || Object.keys(latest).length === 0) {
     return (
       <Section>
         <PageHeader title="HV" />
@@ -27,40 +25,17 @@ function HVPage() {
     );
   }
 
-  const dataCardItems = [
-    {
-      key: 'voltage',
-      label: '전압',
-      value: hvHistory[hvHistory.length - 1].voltage,
-      unit: 'V'
-    },
-    {
-      key: 'current',
-      label: '전류',
-      value: hvHistory[hvHistory.length - 1].current,
-      unit: 'A'
-    },
-    {
-      key: 'battery',
-      label: '배터리 잔량',
-      value: hvHistory[hvHistory.length - 1].battery_percent,
-      unit: '%'
-    }
-  ];
-
   return (
     <PageLayout
       header={<PageHeader title="HV" />}
-      dataCards={dataCardItems.map((item) => (
-        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
+      dataCards={Object.entries(latest).map(([key, { label, value, unit }]) => (
+        <DataCard key={key} label={label} value={value} unit={unit} />
       ))}
       mainPanel={
-        <Chart
-          data={hvHistory}
-          dataKeys={['voltage', 'current', 'battery_percent']}
-          colors={colors}
-          title="HV 차트"
-        />
+        <div>
+            <Chart dataKey={'hv'} title="HV 차트" side="L" />
+            <Chart dataKey={'hv'} title="HV 차트" side="R" />
+        </div>
       }
       topRowClass={commonStyles.topRow}
       titleWrapClass={commonStyles.titleWrap}

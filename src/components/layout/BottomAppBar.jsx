@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import {
-  DirectionsCar,
-  BatteryChargingFull,
-  CarRepair,
-  LocationOn,
-  Settings
-} from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { NAV_ITEMS } from '../../constants/bottomAppBarConfig';
+import styles from '../../styles/layout/BottomAppBar.module.css';
 
 function BottomAppBar() {
   const [value, setValue] = useState(0);
@@ -26,21 +20,7 @@ function BottomAppBar() {
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        maxWidth: '100vw',
-        boxSizing: 'border-box',
-        padding: 0,
-        overflowX: 'hidden',
-        height: 56,
-        background: 'var(--color-surface)',
-        borderTop: '1px solid var(--color-border)',
-        zIndex: 100
-      }}
-    >
+    <div className={styles.container}>
       <BottomNavigation
         value={value}
         onChange={handleChange}

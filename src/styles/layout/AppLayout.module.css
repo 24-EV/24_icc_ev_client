@@ -1,12 +1,12 @@
 .container {
   width: 100%;
   min-width: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--color-bg);
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .topBar {
@@ -17,6 +17,7 @@
 .main {
   flex: 1 1 0;
   overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
   padding: 0;
   box-sizing: border-box;
@@ -25,4 +26,38 @@
 .bottomBar {
   height: 56px;
   flex-shrink: 0;
+}
+
+/* Drawer 스타일 */
+.drawerPaper {
+  background: var(--color-bg) !important;
+  color: #fff !important;
+  width: 340px !important;
+  max-width: 90vw !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 0 !important;
+}
+
+.drawerContent {
+  padding: 16px;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: var(--color-bg);
+}
+
+.drawerTitle {
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 24px 0 32px 0;
+}
+
+.helpTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
 }

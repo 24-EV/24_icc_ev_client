@@ -20,114 +20,54 @@ export function useSocketData() {
   const [isConnected, setIsConnected] = useState(false);
   const [isSameControllerVersion, setIsSameControllerVersion] = useState(false);
   // 데이터
-  const [vehicleData, setVehicleData] = useState(null);
-  const [hvData, setHvData] = useState(null);
-  const [motorData, setMotorData] = useState(null);
-  const [gpsData, setGpsData] = useState(null);
   const [realTimeClock, setRealTimeClock] = useState(null);
 
   const [totalData, settotalData] = useState(null);
 
-  const onDataReceived = {
-    24: onDataReceived24Controller,
-    25: onDataReceived25Controller
-  };
-
-  function onDataReceivedTest(message, version = CONTROLLER_VERSION) {
+  function onDataReceived(message, version = CONTROLLER_VERSION) {
     try {
-      const _data = message;
-      if (!_data) {
+      if (!message) {
         throw new Error(`데이터가 없음`);
       }
 
       const newData = JSON.parse(JSON.stringify(dataFormat[version]));
+      newData.timestamp = typeof message.timestamp === 'string' ? message.timestamp : null;
+      setRealTimeClock(newData.timestamp);
 
-      Object.entries(newData).forEach(([groupKey, keysObj]) => {
-        if (groupKey === 'timestamp') {
-          newData.timestamp = typeof _data.timestamp === 'string' ? _data.timestamp : 1;
-          return;
+      // message 기준으로 loop
+      Object.entries(message).forEach(([rawKey, rawVal]) => {
+        if (rawKey === 'timestamp') return; // timestamp는 이미 처리함
+
+        // L/R 여부 확인
+        const match = rawKey.match(/(.+)_([LR])$/);
+        let baseKey = rawKey;
+        let side = null;
+        if (match) {
+          baseKey = match[1];
+          side = match[2]; // 'L' 또는 'R'
         }
 
-        Object.keys(keysObj).forEach((key) => {
-          if (!_data[key]) {
-            return;
+        // newData 안의 groupKey 탐색
+        Object.entries(newData).forEach(([groupKey, keysObj]) => {
+          if (groupKey === 'timestamp') return;
+
+          // 해당 group에 baseKey 존재하는지 확인
+          if (keysObj[baseKey]) {
+            if (side) {
+              // 좌우 값 넣기
+              if (keysObj[baseKey].value === null) {
+                keysObj[baseKey].value = { L: null, R: null };
+              }
+              keysObj[baseKey].value[side] = typeof rawVal === 'number' ? rawVal : null;
+            } else {
+              // 일반 값 넣기
+              keysObj[baseKey].value = typeof rawVal === 'number' ? rawVal : null;
+            }
           }
-          newData[groupKey][key].value = typeof _data[key] === 'number' ? _data[key] : null;
         });
       });
 
       settotalData(newData);
-    } catch (error) {
-      console.error('데이터 처리 오류!!!!', error);
-    }
-  }
-
-  function onDataReceived24Controller(message) {
-    try {
-      const _data = message;
-      setVehicleData({
-        velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setHvData({
-        voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
-        current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
-        battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setMotorData({
-        THROTTLE_SIGNAL: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
-        rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
-        controller_temperature:
-          typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setRealTimeClock({
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setGpsData({
-        lat: typeof _data.lat === 'number' ? _data.lat : null,
-        lng: typeof _data.lng === 'number' ? _data.lng : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setLoading(false);
-      setSocketError(null);
-    } catch (error) {
-      console.error('데이터 처리 오류!!!!', error);
-    }
-  }
-
-  function onDataReceived25Controller(message) {
-    // console.log('서버로부터 받은 데이터 : ', message);
-    try {
-      const _data = message;
-      setVehicleData({
-        velocity: typeof _data.SPEED === 'number' ? _data.SPEED : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setHvData({
-        voltage: typeof _data.BATTERY_VOLTAGE === 'number' ? _data.BATTERY_VOLTAGE : null,
-        current: typeof _data.MOTOR_CURRENT === 'number' ? _data.MOTOR_CURRENT : null,
-        battery_percent: typeof _data.BATTERY_PERCENT === 'number' ? _data.BATTERY_PERCENT : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setMotorData({
-        throttle: typeof _data.THROTTLE_SIGNAL === 'number' ? _data.THROTTLE_SIGNAL : null,
-        rpm: typeof _data.RPM === 'number' ? _data.RPM : null,
-        controller_temperature:
-          typeof _data.CONTROLLER_TEMPERATURE === 'number' ? _data.CONTROLLER_TEMPERATURE : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setRealTimeClock({
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setGpsData({
-        lat: typeof _data.lat === 'number' ? _data.lat : null,
-        lng: typeof _data.lng === 'number' ? _data.lng : null,
-        timestamp: typeof _data.timestamp === 'string' ? _data.timestamp : null
-      });
-      setLoading(false);
-      setSocketError(null);
     } catch (error) {
       console.error('데이터 처리 오류!!!!', error);
     }
@@ -170,7 +110,7 @@ export function useSocketData() {
     });
 
     socket.on('dataReceived', function (message) {
-      onDataReceivedTest(message);
+      onDataReceived(message);
     });
 
     return () => {
@@ -183,11 +123,6 @@ export function useSocketData() {
     socketError,
     isConnected,
     isSameControllerVersion,
-    vehicleData,
-    hvData,
-    motorData,
-    gpsData,
-    realTimeClock,
     totalData
   };
 }

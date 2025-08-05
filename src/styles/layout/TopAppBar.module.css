@@ -1,0 +1,16 @@
+.menuBtn {
+  margin-left: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  transition:
+    transform 0.15s,
+    background 0.15s;
+  padding: 4px;
+}
+
+.menuActive {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.1);
+}

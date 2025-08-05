@@ -12,14 +12,12 @@ import Section from '../../../components/common/Section';
 
 function VehiclePage() {
   const { history } = useHistory();
-  const vehicleHistory = history.map((h) => h.vehicleData);
+  const vehicleHistory = history.map((h) => h.vehicle);
+  const latest = vehicleHistory[vehicleHistory.length - 1];
   const { realTimeClock } = useContext(SocketContext);
   const [isDark] = useDarkMode();
 
-  // 기존 색상만 사용
-  const colors = ['#a259ec'];
-
-  if (!vehicleHistory.length) {
+  if (!latest || Object.keys(latest).length === 0) {
     return (
       <Section>
         <PageHeader title="차량" />
@@ -28,29 +26,16 @@ function VehiclePage() {
     );
   }
 
-  const dataCardItems = [
-    {
-      key: 'velocity',
-      label: '속력',
-      value: vehicleHistory[vehicleHistory.length - 1].velocity,
-      unit: 'km/h'
-    },
-    {
-      key: 'rtc',
-      label: 'RTC Module',
-      value: realTimeClock?.timestamp,
-      unit: ''
-    }
-  ];
-
   return (
     <PageLayout
       header={<PageHeader title="차량" />}
-      dataCards={dataCardItems.map((item) => (
-        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
+      dataCards={Object.entries(latest).map(([key, { label, value, unit }]) => (
+        <DataCard key={key} label={label} value={value} unit={unit} />
       ))}
       mainPanel={
-        <Chart data={vehicleHistory} dataKeys={['velocity']} colors={colors} title="속도 차트" />
+        <div>
+          <Chart dataKey={'vehicle'} title="차량 차트" side="" />
+        </div>
       }
       topRowClass={commonStyles.topRow}
       titleWrapClass={commonStyles.titleWrap}

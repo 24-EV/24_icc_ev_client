@@ -6,6 +6,7 @@ import SensorsIcon from '@mui/icons-material/Sensors';
 import SensorsOffIcon from '@mui/icons-material/SensorsOff';
 import MenuIcon from '@mui/icons-material/Menu';
 import React from 'react';
+import styles from '../../styles/layout/TopAppBar.module.css';
 
 export default function TopAppBar({ rtc, isConnected, lastReceived, onMenuClick }) {
   return (
@@ -55,20 +56,11 @@ export default function TopAppBar({ rtc, isConnected, lastReceived, onMenuClick 
             (최근 수신 : {lastReceived || '없음'})
           </Typography>
           <span
-            className="menu-btn"
-            style={{
-              marginLeft: 16,
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              borderRadius: 8,
-              transition: 'transform 0.15s, background 0.15s',
-              padding: 4
-            }}
+            className={styles.menuBtn}
             onClick={onMenuClick}
-            onMouseDown={(e) => e.currentTarget.classList.add('menu-active')}
-            onMouseUp={(e) => e.currentTarget.classList.remove('menu-active')}
-            onMouseLeave={(e) => e.currentTarget.classList.remove('menu-active')}
+            onMouseDown={(e) => e.currentTarget.classList.add(styles.menuActive)}
+            onMouseUp={(e) => e.currentTarget.classList.remove(styles.menuActive)}
+            onMouseLeave={(e) => e.currentTarget.classList.remove(styles.menuActive)}
           >
             <MenuIcon sx={{ color: '#fff', fontSize: 28, transition: 'color 0.15s' }} />
           </span>
