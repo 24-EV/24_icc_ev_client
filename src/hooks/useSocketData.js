@@ -26,41 +26,37 @@ export function useSocketData() {
   const [gpsData, setGpsData] = useState(null);
   const [realTimeClock, setRealTimeClock] = useState(null);
 
+  const [totalData, settotalData] = useState(null);
+
   const onDataReceived = {
     24: onDataReceived24Controller,
     25: onDataReceived25Controller
   };
 
   function onDataReceivedTest(message, version = CONTROLLER_VERSION) {
-    const setterMap = {
-      vehicle: setVehicleData,
-      hv: setHvData,
-      motor: setMotorData,
-      gps: setGpsData
-    };
-
     try {
       const _data = message;
+      if (!_data) {
+        throw new Error(`데이터가 없음`);
+      }
 
-      Object.entries(dataFormat[version]).forEach(([groupKey, keysObj]) => {
-        const newData = { ...dataFormat[version][groupKey] };
-        const setter = setterMap[groupKey];
-        if (!setter) {
-          throw new Error(`잘못된 groupKey : ${groupKey}`);
+      const newData = JSON.parse(JSON.stringify(dataFormat[version]));
+
+      Object.entries(newData).forEach(([groupKey, keysObj]) => {
+        if (groupKey === 'timestamp') {
+          newData.timestamp = typeof _data.timestamp === 'string' ? _data.timestamp : 1;
+          return;
         }
 
         Object.keys(keysObj).forEach((key) => {
-          newData[key] = typeof _data[key] === 'number' ? _data[key] : null;
+          if (!_data[key]) {
+            return;
+          }
+          newData[groupKey][key].value = typeof _data[key] === 'number' ? _data[key] : null;
         });
-
-        newData[groupKey].timestamp = typeof _data.timestamp === 'string' ? _data.timestamp : null;
-
-        setter(newData);
       });
 
-      setGpsData({
-        lat: typeof _data.lat
-      });
+      settotalData(newData);
     } catch (error) {
       console.error('데이터 처리 오류!!!!', error);
     }
@@ -173,7 +169,9 @@ export function useSocketData() {
       setLoading(true);
     });
 
-    socket.on('dataReceived', onDataReceived[CONTROLLER_VERSION]);
+    socket.on('dataReceived', function (message) {
+      onDataReceivedTest(message);
+    });
 
     return () => {
       socket.off();
@@ -189,6 +187,7 @@ export function useSocketData() {
     hvData,
     motorData,
     gpsData,
-    realTimeClock
+    realTimeClock,
+    totalData
   };
 }

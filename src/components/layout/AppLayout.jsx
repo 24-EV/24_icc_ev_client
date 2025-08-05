@@ -11,32 +11,27 @@ import useHistory from '../../hooks/useHistory';
 
 function AppLayout({ children }) {
   const ctx = useContext(SocketContext);
-  const { realTimeClock, isConnected, vehicleData, hvData, motorData, gpsData } = ctx;
+  const { realTimeClock, isConnected, vehicleData, hvData, motorData, gpsData, totalData } = ctx;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { addHistory } = useHistory();
   // 최근 데이터 수신 시간(몇 초 전)
   const lastReceived = useMemo(() => {
-    if (!vehicleData || !vehicleData.timestamp) return null;
-    const now = Date.now();
-    const t = new Date(vehicleData.timestamp).getTime();
-    const diffSec = Math.floor((now - t) / 1000);
+    if (!totalData?.timestamp) {
+      return null;
+    }
+    const t = new Date(totalData.timestamp).getTime();
+    const diffSec = Math.floor((Date.now() - t) / 1000);
     if (diffSec < 2) return '방금 전';
     if (diffSec < 60) return `${diffSec}초 전`;
     return `${Math.floor(diffSec / 60)}분 전`;
-  }, [vehicleData]);
+  }, [totalData]);
 
   // 실시간 데이터가 들어올 때마다 history에 추가
   useEffect(() => {
-    if (vehicleData && vehicleData.timestamp) {
-      addHistory({
-        vehicleData,
-        hvData,
-        motorData,
-        gpsData,
-        realTimeClock
-      });
+    if (totalData?.timestamp !== null) {
+      addHistory(totalData);
     }
-  }, [vehicleData, hvData, motorData, gpsData, realTimeClock, addHistory]);
+  }, [totalData]);
 
   return (
     <div className={styles.container}>

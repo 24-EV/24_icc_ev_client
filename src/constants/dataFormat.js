@@ -1,6 +1,7 @@
 const dataFormat = {
   // 24년도 컨트롤러
   24: {
+    timestamp: null,
     vehicle: {
       SPEED: {
         label: '속도',
@@ -48,7 +49,7 @@ const dataFormat = {
         value: null,
         unit: '°'
       },
-      lat: {
+      lng: {
         label: '경도',
         value: null,
         unit: '°'
@@ -57,6 +58,7 @@ const dataFormat = {
   },
   // 25년도 컨트롤러
   25: {
+    timestamp: null,
     vehicle: {
       Speed: {
         label: '속도',
@@ -81,28 +83,100 @@ const dataFormat = {
         value: null,
         unit: '°'
       },
-      Batt_percent: null,
-      Total_power: null
+      Batt_percent: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Total_power: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      }
     },
     hv: {
-      Current_L: null,
-      Current_R: null,
-      Voltage_L: null,
-      Voltage_R: null
+      Current_L: {
+        label: '전류 L',
+        value: null,
+        unit: 'A'
+      },
+      Current_R: {
+        label: '전류 R',
+        value: null,
+        unit: 'A'
+      },
+      Voltage_L: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Voltage_R: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      }
     },
     motor: {
-      Motor_temp_L: null,
-      Motor_temp_R: null,
-      Controller_temp_L: null,
-      Controller_temp_R: null,
-      Power_L: null,
-      Power_R: null,
-      RPM_L: null,
-      RPM_R: null,
-      Torque_L: null,
-      Torque_R: null,
-      Torque_cmd_L: null,
-      Torque_cmd_R: null
+      Motor_temp_L: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Motor_temp_R: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Controller_temp_L: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Controller_temp_R: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Power_L: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Power_R: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      RPM_L: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      RPM_R: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Torque_L: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Torque_R: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Torque_cmd_L: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      Torque_cmd_R: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      }
     },
     gps: {
       lat: {
@@ -110,7 +184,7 @@ const dataFormat = {
         value: null,
         unit: '°'
       },
-      lat: {
+      lng: {
         label: '경도',
         value: null,
         unit: '°'

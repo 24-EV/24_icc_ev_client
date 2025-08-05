@@ -9,21 +9,13 @@ import PageLayout from '../../../components/layout/PageLayout';
 import commonStyles from '../../../styles/layout/PageLayout.module.css';
 import Section from '../../../components/common/Section';
 
-const chartOptions = [
-  { key: 'THROTTLE_SIGNAL', color: '#a259ec' },
-  { key: 'rpm', color: '#b388ff' },
-  { key: 'controller_temperature', color: '#7c3aed' }
-];
-
-const colors = ['#a259ec', '#b388ff', '#7c3aed'];
-
 function MotorPage() {
   const { history } = useHistory();
-  const motorHistory = history.map((h) => h.motorData);
+  const motorHistory = history.map((h) => h.motor);
   const latest = motorHistory[motorHistory.length - 1];
   const [isDark] = useDarkMode();
 
-  if (!motorHistory.length) {
+  if (!latest || Object.keys(latest).length === 0) {
     return (
       <Section>
         <PageHeader title="모터" />
@@ -32,44 +24,13 @@ function MotorPage() {
     );
   }
 
-  const dataCardItems =
-    // { 24:
-    [
-      {
-        key: 'THROTTLE_SIGNAL',
-        label: 'THROTTLE_SIGNAL',
-        value: latest?.throttle,
-        unit: '/ 255'
-      },
-      {
-        key: 'rpm',
-        label: 'RPM',
-        value: latest?.rpm,
-        unit: 'RPM'
-      },
-      {
-        key: 'controller_temperature',
-        label: '컨트롤러 온도',
-        value: latest?.controller_temperature,
-        unit: '℃'
-      }
-    ];
-  // };
-
   return (
     <PageLayout
       header={<PageHeader title="모터" />}
-      dataCards={dataCardItems.map((item) => (
-        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
+      dataCards={Object.entries(latest).map(([key, { label, value, unit }]) => (
+        <DataCard key={key} label={label} value={value} unit={unit} />
       ))}
-      mainPanel={
-        <Chart
-          data={motorHistory}
-          dataKeys={chartOptions.map((opt) => opt.key)}
-          colors={colors}
-          title="Motor 차트"
-        />
-      }
+      mainPanel={<Chart dataKey={'motor'} title="Motor 차트" />}
       topRowClass={commonStyles.topRow}
       titleWrapClass={commonStyles.titleWrap}
       dataCardRowClass={commonStyles.dataCardRow}
