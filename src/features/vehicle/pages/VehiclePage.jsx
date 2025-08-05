@@ -34,7 +34,9 @@ function VehiclePage() {
       ))}
       mainPanel={
         <div>
-          <Chart dataKey={'vehicle'} title="차량 차트" side="" />
+          <div>
+            <Chart dataKey={'vehicle'} title="차량 차트" side="" />
+          </div>
         </div>
       }
       topRowClass={commonStyles.topRow}

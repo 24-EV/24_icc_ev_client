@@ -33,8 +33,10 @@ function HVPage() {
       ))}
       mainPanel={
         <div>
+          <div>
             <Chart dataKey={'hv'} title="HV 차트" side="L" />
             <Chart dataKey={'hv'} title="HV 차트" side="R" />
+          </div>
         </div>
       }
       topRowClass={commonStyles.topRow}

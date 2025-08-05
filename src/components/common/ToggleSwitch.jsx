@@ -6,8 +6,8 @@ function ToggleSwitch({ checked, onChange, label }) {
     <label className={styles.toggleLabel}>
       {label && <span className={styles.labelText}>{label}</span>}
       <input type="checkbox" className={styles.toggleInput} checked={checked} onChange={onChange} />
-      <span className={styles.toggleTrack} data-checked={checked}>
-        <span className={styles.toggleThumb} data-checked={checked} />
+      <span className={styles.toggleTrack}>
+        <span className={styles.toggleThumb} />
       </span>
     </label>
   );

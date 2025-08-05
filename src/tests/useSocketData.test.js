@@ -9,8 +9,8 @@ vi.mock('socket.io-client', () => ({
   io: () => ({
     on: vi.fn(),
     emit: vi.fn(),
-    close: vi.fn(),
-  }),
+    close: vi.fn()
+  })
 }));
 
 describe('useSocketData', () => {
@@ -22,7 +22,6 @@ describe('useSocketData', () => {
     expect(result.current).toHaveProperty('motorData', null);
     expect(result.current).toHaveProperty('gpsData', null);
     expect(result.current).toHaveProperty('realTimeClock', null);
-    expect(result.current).toHaveProperty('socketError', null);
     expect(result.current).toHaveProperty('isConnected', false);
   });
 });

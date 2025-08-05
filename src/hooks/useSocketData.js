@@ -20,7 +20,6 @@ export function useSocketData() {
   const [isConnected, setIsConnected] = useState(false);
   const [isSameControllerVersion, setIsSameControllerVersion] = useState(false);
   // 데이터
-  const [realTimeClock, setRealTimeClock] = useState(null);
   const [totalData, setTotalData] = useState(null);
 
   function onDataReceived(message, version = CONTROLLER_VERSION) {
@@ -31,7 +30,6 @@ export function useSocketData() {
 
       const newData = JSON.parse(JSON.stringify(dataFormat[version]));
       newData.timestamp = typeof message.timestamp === 'string' ? message.timestamp : null;
-      setRealTimeClock(newData.timestamp);
 
       // message 기준으로 loop
       Object.entries(message).forEach(([rawKey, rawVal]) => {
@@ -110,6 +108,7 @@ export function useSocketData() {
 
     socket.on('dataReceived', function (message) {
       onDataReceived(message);
+      setIsConnected(true);
     });
 
     return () => {
@@ -119,7 +118,6 @@ export function useSocketData() {
 
   return {
     loading,
-    socketError,
     isConnected,
     isSameControllerVersion,
     totalData

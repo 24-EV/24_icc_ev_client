@@ -32,8 +32,10 @@ function MotorPage() {
       ))}
       mainPanel={
         <div>
-          <Chart dataKey={'motor'} title="Motor 차트" side="L" />
-          <Chart dataKey={'motor'} title="Motor 차트" side="R" />
+          <div>
+            <Chart dataKey={'motor'} title="Motor 차트" side="L" />
+            <Chart dataKey={'motor'} title="Motor 차트" side="R" />
+          </div>
         </div>
       }
       topRowClass={commonStyles.topRow}
