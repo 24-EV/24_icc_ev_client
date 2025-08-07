@@ -14,7 +14,6 @@ function HVPage() {
   const { history } = useHistory();
   const hvHistory = history.map((h) => h.hv);
   const latest = hvHistory[hvHistory.length - 1];
-  const [isDark] = useDarkMode();
 
   if (!latest || Object.keys(latest).length === 0) {
     return (
@@ -28,21 +27,15 @@ function HVPage() {
   return (
     <PageLayout
       header={<PageHeader title="HV" />}
-      dataCards={Object.entries(latest).map(([key, { label, value, unit }]) => (
-        <DataCard key={key} label={label} value={value} unit={unit} />
-      ))}
+      data={latest}
       mainPanel={
         <div>
           <div>
-            <Chart dataKey={'hv'} title="HV 차트" side="L" />
-            <Chart dataKey={'hv'} title="HV 차트" side="R" />
+            <Chart dataKey={'hv'} title="HV 차트 L" side="L" />
+            <Chart dataKey={'hv'} title="HV 차트 R" side="R" />
           </div>
         </div>
       }
-      topRowClass={commonStyles.topRow}
-      titleWrapClass={commonStyles.titleWrap}
-      dataCardRowClass={commonStyles.dataCardRow}
-      panelRowClass={commonStyles.panelRow}
     />
   );
 }

@@ -89,6 +89,11 @@ const dataFormat = {
         label: '총 출력',
         value: null,
         unit: 'W'
+      },
+      Delta_T: {
+        label: '샘플링 타임',
+        value: null,
+        unit: 's'
       }
     },
     hv: {

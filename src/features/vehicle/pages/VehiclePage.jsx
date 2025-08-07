@@ -14,8 +14,6 @@ function VehiclePage() {
   const { history } = useHistory();
   const vehicleHistory = history.map((h) => h.vehicle);
   const latest = vehicleHistory[vehicleHistory.length - 1];
-  const { realTimeClock } = useContext(SocketContext);
-  const [isDark] = useDarkMode();
 
   if (!latest || Object.keys(latest).length === 0) {
     return (
@@ -29,9 +27,7 @@ function VehiclePage() {
   return (
     <PageLayout
       header={<PageHeader title="차량" />}
-      dataCards={Object.entries(latest).map(([key, { label, value, unit }]) => (
-        <DataCard key={key} label={label} value={value} unit={unit} />
-      ))}
+      data={latest}
       mainPanel={
         <div>
           <div>
@@ -39,10 +35,6 @@ function VehiclePage() {
           </div>
         </div>
       }
-      topRowClass={commonStyles.topRow}
-      titleWrapClass={commonStyles.titleWrap}
-      dataCardRowClass={commonStyles.dataCardRow}
-      panelRowClass={commonStyles.panelRow}
     />
   );
 }

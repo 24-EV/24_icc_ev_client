@@ -1,30 +1,32 @@
 import React from 'react';
 import Section from '../common/Section';
-import styles from '../../styles/layout/PageLayout.module.css';
+import pageLayoutStyles from '../../styles/layout/PageLayout.module.css';
+import DataCard from '../common/DataCard';
 
-function PageLayout({
-  header,
-  dataCards,
-  mainPanel,
-  topRowClass = '',
-  titleWrapClass = '',
-  dataCardRowClass = '',
-  panelRowClass = '',
-  ...rest
-}) {
+function PageLayout({ header, data, mainPanel }) {
   return (
-    <Section {...rest}>
-      <div className={topRowClass}>
-        <div className={titleWrapClass}>{header}</div>
-        <div className={dataCardRowClass}>
-          {Array.isArray(dataCards)
-            ? dataCards.map((card, idx) => <React.Fragment key={idx}>{card}</React.Fragment>)
-            : dataCards}
-        </div>
-      </div>
-      <div className={panelRowClass}>{mainPanel}</div>
+    <Section>
+      <DataCards header={header} data={data} />
+      <MainPanel mainPanel={mainPanel} />
     </Section>
   );
+}
+
+export function DataCards({ header = '', data }) {
+  return (
+    <div className={pageLayoutStyles.topRow}>
+      <div className={pageLayoutStyles.titleWrap}>{header}</div>
+      <div className={pageLayoutStyles.dataCardRow}>
+        {Object.entries(data || {}).map(([key, { label, value, unit }]) => (
+          <DataCard key={key} label={label} value={value} unit={unit} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function MainPanel({ mainPanel }) {
+  return <div className={pageLayoutStyles.panelRow}>{mainPanel}</div>;
 }
 
 export default PageLayout;

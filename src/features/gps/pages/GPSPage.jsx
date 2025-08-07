@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { SocketContext } from '../../../context/SocketContext';
 import DataCard from '../../../components/common/DataCard';
 import PageHeader from '../../../components/layout/PageHeader';
-import styles from '../styles/GPSPage.module.css';
-import cardPanelStyles from '../../../styles/common/CardPanel.module.css';
 import {
   loadKakaoMap,
   updateMarkerPosition,
@@ -12,111 +10,87 @@ import {
 } from '../utils/kakaoMapUtils';
 import useHistory from '../../../hooks/useHistory';
 import { useLocation } from 'react-router-dom';
-import ToggleSwitch from '../../../components/common/ToggleSwitch';
 import KakaoMapPanel from '../components/KakaoMapPanel';
 import PageLayout from '../../../components/layout/PageLayout';
-import commonStyles from '../../../styles/layout/PageLayout.module.css';
+
+// latest에서 숫자 좌표만 안전 추출
+function pickLatestCoords(latest) {
+  const lat = latest?.lat?.value;
+  const lng = latest?.lng?.value;
+  const ok =
+    typeof lat === 'number' &&
+    typeof lng === 'number' &&
+    Number.isFinite(lat) &&
+    Number.isFinite(lng);
+  return ok ? { lat, lng } : { lat: null, lng: null };
+}
 
 function GPSPage() {
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
   const [dragState, setDragState] = useState(true);
-  const { gpsData } = useContext(SocketContext);
-  const [path, setPath] = useState([]); // 경로 좌표 배열
-  const [polyline, setPolyline] = useState(null); // 폴리라인 객체
-  const [isPressed, setIsPressed] = useState(false);
+  const [path, setPath] = useState([]);
+  const [polyline, setPolyline] = useState(null);
+
   const { history } = useHistory();
-  const gpsHistory = history.map((h) => h.gpsData);
   const location = useLocation();
-  const DEFAULT_COORDS = { lat: 37.01219267534181, lng: 127.08870196277597 };
+  const gpsHistory = Array.isArray(history) ? history.map((h) => h.gps) : [];
+  const latest = gpsHistory[gpsHistory.length - 1];
 
-  const dataCardItems = [
-    {
-      key: 'gps-status',
-      label: 'GPS 데이터 상태',
-      value:
-        gpsData && gpsData.lat !== null && gpsData.lng !== null
-          ? `위도: ${gpsData.lat}, 경도: ${gpsData.lng}`
-          : 'GPS 데이터 없음',
-      unit: ''
+  const { lat: latestLat, lng: latestLng } = pickLatestCoords(latest);
+  const hasValidLatest = latestLat != null && latestLng != null;
+
+  // StrictMode에서 최초 마운트 시 이펙트 2회 호출 방지
+  const didInitRef = useRef(false);
+
+  // 라우트 변경 시 지도 컨테이너 정리 + 1회만 초기화
+  useEffect(() => {
+    if (didInitRef.current) return;
+    didInitRef.current = true;
+
+    const container = document.getElementById('map');
+    if (container) while (container.firstChild) container.removeChild(container.firstChild);
+
+    (async () => {
+      try {
+        const initCoords = hasValidLatest ? { lat: latestLat, lng: latestLng } : undefined;
+        const { kakaoMap, newMarker } = await loadKakaoMap(initCoords, dragState);
+        setMap(kakaoMap);
+        setMarker(newMarker);
+      } catch (e) {
+        console.error('카카오맵 로드 실패:', e);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
+  // latest 좌표로 마커 위치 업데이트
+  useEffect(() => {
+    if (map && marker && hasValidLatest) {
+      updateMarkerPosition(map, marker, { lat: latestLat, lng: latestLng }, dragState);
     }
-  ];
+  }, [map, marker, dragState, hasValidLatest, latestLat, latestLng]);
 
-  async function initMap() {
-    try {
-      const { kakaoMap, newMarker } = await loadKakaoMap(gpsData, dragState);
-      setMap(kakaoMap);
-      setMarker(newMarker);
-    } catch (error) {
-      console.error('카카오맵 로드 실패 : ', error);
+  // 경로 누적
+  useEffect(() => {
+    if (hasValidLatest) {
+      setPath((prev) => addMarkerPath({ lat: latestLat, lng: latestLng }, prev));
     }
-  }
+  }, [hasValidLatest, latestLat, latestLng]);
 
-  useEffect(
-    function () {
-      const container = document.getElementById('map');
-      if (container) {
-        // 모든 자식 노드 완전 제거
-        while (container.firstChild) container.removeChild(container.firstChild);
-      }
-      initMap();
-    },
-    [location.pathname]
-  );
-
-  // GPS 데이터로 마커 위치 업데이트
-  useEffect(
-    function () {
-      if (map && marker) {
-        updateMarkerPosition(map, marker, gpsData, dragState);
-      }
-    },
-    [gpsData, map, marker, dragState]
-  );
-
-  // gpsData 들어올 때마다 path에 추가
-  useEffect(
-    function () {
-      if (gpsData && gpsData.lat && gpsData.lng) {
-        setPath((prevPath) => addMarkerPath(gpsData, prevPath));
-      }
-    },
-    [gpsData]
-  );
-
-  // path가 바뀔 때마다 폴리라인 그리기
-  useEffect(
-    function () {
-      if (!map || path.length < 2) return;
-      const newPolyline = drawPolyline(map, path, polyline);
-      if (newPolyline) {
-        setPolyline(newPolyline);
-      }
-    },
-    [map, path]
-  );
-
-  // 버튼 클릭시 마커 드래그 상태 변경
-  function handleButtonClick() {
-    if (map && marker) {
-      const newDragState = !dragState;
-      setDragState(newDragState);
-      marker.setDraggable(newDragState);
-      map.setDraggable(newDragState);
-    }
-  }
+  // 폴리라인 갱신
+  useEffect(() => {
+    if (!map || path.length < 2) return;
+    const newPolyline = drawPolyline(map, path, polyline);
+    if (newPolyline) setPolyline(newPolyline);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, path]);
 
   return (
     <PageLayout
       header={<PageHeader title="GPS" />}
-      dataCards={dataCardItems.map((item) => (
-        <DataCard key={item.key} label={item.label} value={item.value} unit={item.unit} />
-      ))}
-      mainPanel={<KakaoMapPanel title={'Map'} />}
-      topRowClass={commonStyles.topRow}
-      titleWrapClass={commonStyles.titleWrap}
-      dataCardRowClass={commonStyles.dataCardRow}
-      panelRowClass={commonStyles.panelRow}
+      data={latest}
+      mainPanel={<KakaoMapPanel title="지도" />}
     />
   );
 }

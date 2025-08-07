@@ -9,10 +9,10 @@ function DataCard({ label, value, unit }) {
     displayValue = (
       <div className={styles.lrContainer}>
         <span className={styles.leftValue}>
-          {value.L !== null && value.L !== undefined ? `${value.L}${unit}` : '-'}
+          {value.L !== null && value.L !== undefined ? `${value.L} ${unit}` : '-'}
         </span>
         <span className={styles.rightValue}>
-          {value.R !== null && value.R !== undefined ? `${value.R}${unit}` : '-'}
+          {value.R !== null && value.R !== undefined ? `${value.R} ${unit}` : '-'}
         </span>
       </div>
     );

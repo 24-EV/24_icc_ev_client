@@ -2,7 +2,6 @@ import React from 'react';
 import Chart from '../../../components/chart/Chart';
 import DataCard from '../../../components/common/DataCard';
 import PageHeader from '../../../components/layout/PageHeader';
-import styles from '../styles/MotorPage.module.css';
 import useHistory from '../../../hooks/useHistory';
 import useDarkMode from '../../../hooks/useDarkMode';
 import PageLayout from '../../../components/layout/PageLayout';
@@ -13,7 +12,6 @@ function MotorPage() {
   const { history } = useHistory();
   const motorHistory = history.map((h) => h.motor);
   const latest = motorHistory[motorHistory.length - 1];
-  const [isDark] = useDarkMode();
 
   if (!latest || Object.keys(latest).length === 0) {
     return (
@@ -27,21 +25,15 @@ function MotorPage() {
   return (
     <PageLayout
       header={<PageHeader title="모터" />}
-      dataCards={Object.entries(latest).map(([key, { label, value, unit }]) => (
-        <DataCard key={key} label={label} value={value} unit={unit} />
-      ))}
+      data={latest}
       mainPanel={
         <div>
           <div>
-            <Chart dataKey={'motor'} title="Motor 차트" side="L" />
-            <Chart dataKey={'motor'} title="Motor 차트" side="R" />
+            <Chart dataKey={'motor'} title="Motor 차트 L" side="L" />
+            <Chart dataKey={'motor'} title="Motor 차트 R" side="R" />
           </div>
         </div>
       }
-      topRowClass={commonStyles.topRow}
-      titleWrapClass={commonStyles.titleWrap}
-      dataCardRowClass={commonStyles.dataCardRow}
-      panelRowClass={commonStyles.panelRow}
     />
   );
 }
