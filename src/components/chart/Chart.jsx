@@ -5,7 +5,6 @@ import useDarkMode from '../../hooks/useDarkMode';
 import useHistory from '../../hooks/useHistory';
 import PanelHeader from './PanelHeader';
 import ChartLegend from './ChartLegend';
-import legendStyles from '../../styles/chart/ChartLegendPanel.module.css';
 import cardPanelStyles from '../../styles/common/CardPanel.module.css';
 import styles from '../../styles/chart/Chart.module.css';
 
@@ -17,7 +16,7 @@ function Chart({ dataKey = '', title = '', side = '' }) {
   const [isDark] = useDarkMode();
   const { history } = useHistory();
 
-  // 그룹 데이터 변환
+  // ---------- 데이터 가공 ----------
   const groupData = useMemo(() => {
     if (!Array.isArray(history)) return [];
     return history
@@ -36,14 +35,36 @@ function Chart({ dataKey = '', title = '', side = '' }) {
       .filter(Boolean);
   }, [history, dataKey, side]);
 
-  // 데이터 키 추출
+  // 키 목록
   const dataKeys = useMemo(() => {
     if (!groupData.length) return [];
-    return Object.keys(groupData[0]).filter((k) => k !== 'timestamp');
+    return Object.keys(groupData[0])
+      .filter((k) => k !== 'timestamp')
+      .sort();
   }, [groupData]);
 
-  const [selected, setSelected] = useState(dataKeys);
-  useEffect(() => setSelected(dataKeys), [dataKeys]);
+  // ---------- 선택 상태 ----------
+  const [selected, setSelected] = useState([]);
+  const initialized = useRef(false);
+
+  // ✅ 최초 도착했을 때만 전체 ON
+  useEffect(() => {
+    if (!initialized.current && dataKeys.length) {
+      setSelected(dataKeys);
+      initialized.current = true;
+    }
+  }, [dataKeys]);
+
+  // ✅ 이후 dataKeys가 변해도, 사용자가 꺼둔 건 건드리지 말고
+  //    "새로 생긴 키"만 ON으로 합쳐주기
+  useEffect(() => {
+    if (!initialized.current) return;
+    setSelected((prev) => {
+      if (!prev.length) return dataKeys; // 비정상 초기화 보호
+      const newOnes = dataKeys.filter((k) => !prev.includes(k));
+      return newOnes.length ? [...prev, ...newOnes] : prev;
+    });
+  }, [dataKeys]);
 
   const MAX_POINTS = 500;
   const slicedData = useMemo(() => groupData.slice(-MAX_POINTS), [groupData]);
@@ -54,7 +75,7 @@ function Chart({ dataKey = '', title = '', side = '' }) {
     return Math.floor(d.getTime() / 1000);
   };
 
-  // 차트 생성
+  // ---------- 차트 1회 생성 ----------
   useEffect(() => {
     if (!chartRef.current || chartInstance.current) return;
 
@@ -62,7 +83,7 @@ function Chart({ dataKey = '', title = '', side = '' }) {
     const chartGridColor = isDark ? '#393552' : '#bdbdbd';
 
     chartInstance.current = createChart(chartRef.current, {
-      autoSize: true, // ✅ 자동 반응형
+      autoSize: true,
       layout: { background: { color: 'transparent' }, textColor: chartTextColor },
       grid: {
         vertLines: { visible: false, color: chartGridColor },
@@ -77,20 +98,45 @@ function Chart({ dataKey = '', title = '', side = '' }) {
       },
       timeScale: { borderColor: '#71649C', timeVisible: true, secondsVisible: true }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    // 시리즈 추가
+  // ---------- 테마 변경 시 색상만 갱신 ----------
+  useEffect(() => {
+    if (!chartInstance.current) return;
+    const chartTextColor = isDark ? '#f3f0ff' : '#181825';
+    const chartGridColor = isDark ? '#393552' : '#bdbdbd';
+    chartInstance.current.applyOptions({
+      layout: { background: { color: 'transparent' }, textColor: chartTextColor },
+      grid: {
+        vertLines: { visible: false, color: chartGridColor },
+        horzLines: { visible: false, color: chartGridColor }
+      },
+      leftPriceScale: { textColor: chartTextColor, borderColor: '#71649C' },
+      timeScale: { borderColor: '#71649C' }
+    });
+  }, [isDark]);
+
+  // ---------- dataKeys/side 변경 시에만 시리즈 재구성 (selected에 의존하지 않음) ----------
+  useEffect(() => {
+    if (!chartInstance.current) return;
+
+    // 기존 제거
+    seriesRefs.current.forEach((s) => s && chartInstance.current.removeSeries(s));
+    seriesRefs.current = [];
+
+    // 새로 추가
     seriesRefs.current = dataKeys.map((key, idx) =>
       chartInstance.current.addLineSeries({
         priceScaleId: 'left',
         color: CHART_COLORS[idx % CHART_COLORS.length],
         lineWidth: 2,
-        title: key + (side ? ` (${side})` : ''),
-        visible: selected.includes(key)
+        title: key + (side ? ` (${side})` : '')
       })
     );
-  }, [isDark, dataKeys, selected, side]);
+  }, [dataKeys, side]);
 
-  // 데이터 업데이트
+  // ---------- 데이터 업데이트 ----------
   useEffect(() => {
     if (!chartInstance.current || !slicedData.length) return;
 
@@ -114,16 +160,24 @@ function Chart({ dataKey = '', title = '', side = '' }) {
       series.setData(seriesData);
     });
 
-    if (autoScroll) {
-      chartInstance.current.timeScale().scrollToRealTime();
-    }
+    if (autoScroll) chartInstance.current.timeScale().scrollToRealTime();
   }, [slicedData, dataKeys, autoScroll, side]);
+
+  // ---------- 선택 상태 → 시리즈 가시성 반영 ----------
+  useEffect(() => {
+    if (!chartInstance.current || !seriesRefs.current.length) return;
+    dataKeys.forEach((key, idx) => {
+      const s = seriesRefs.current[idx];
+      if (!s) return;
+      const visible = selected.includes(key);
+      if (typeof s.setVisible === 'function') s.setVisible(visible);
+      else s.applyOptions({ visible });
+    });
+  }, [selected, dataKeys]);
 
   const toggleScroll = () => {
     setAutoScroll((prev) => {
-      if (!prev) {
-        chartInstance.current?.timeScale().scrollToRealTime();
-      }
+      if (!prev) chartInstance.current?.timeScale().scrollToRealTime();
       return !prev;
     });
   };
@@ -141,14 +195,11 @@ function Chart({ dataKey = '', title = '', side = '' }) {
         <ChartLegend
           dataKeys={dataKeys}
           selected={selected}
-          onClick={(key) =>
+          onToggle={(key) =>
             setSelected((prev) =>
               prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
             )
           }
-          onKeyDown={() => {}}
-          colors={dataKeys.map((_, idx) => CHART_COLORS[idx % CHART_COLORS.length])}
-          legendStyles={legendStyles}
         />
       </div>
     </div>

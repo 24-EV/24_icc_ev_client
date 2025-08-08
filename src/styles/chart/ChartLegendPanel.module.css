@@ -1,86 +1,75 @@
-.legendPanel {
+/* x축에 거의 붙게: 위 여백 최소화 */
+.legendList {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.7em;
+  gap: 0.45rem;
   justify-content: center;
   align-items: center;
-  margin-top: 0.5em;
-  margin-bottom: 0;
-  padding: 0;
-  width: 100%;
+  margin: 0.12rem 0 0; /* 더 붙이려면 0 또는 -0.05rem */
+  padding: 0 0.2rem;
+  list-style: none;
 }
 
-.legendItem {
+.legendItemLi {
+  display: inline-flex;
+}
+
+/* 텍스트 버튼: 평소엔 완전 투명, 호버에서만 pill */
+.itemButton {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  min-width: unset;
-  width: auto;
-  padding: 0.3em 1em;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 8px;
-  background: none;
-  color: var(--color-primary-dark);
+  justify-content: center;
+
+  padding: 0.08rem 0.28rem; /* 글자만 보이게 최소 여백 */
+  border: 0;
+  background: transparent; /* 기본 배경 없음 */
+  font: inherit;
+  font-weight: 500; /* 축 레이블 느낌 */
+  line-height: 1.35;
   cursor: pointer;
-  transition:
-    background 0.15s,
-    color 0.15s;
+  border-radius: 999px; /* 호버 시만 보일 pill */
+  transition: background-color 120ms ease, color 120ms ease;
   outline: none;
-  border: none;
-  margin: 0;
-  box-sizing: border-box;
+
+  /* ✅ 브라우저/모바일 기본 클릭 하이라이트 제거 */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.legendItem:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 2px var(--color-primary-light);
-  background: var(--color-primary-light);
-  color: #fff;
+/* 비활성은 JS에서 color만 관리 */
+.itemButton[data-active='false'] {}
+
+/* ✅ 호버에서만 둥근 배경 */
+.itemButton:hover {
+  background-color: rgba(124, 58, 237, 0.12);
 }
 
-.legendItemActive {
-  color: var(--color-primary);
-  background: var(--color-primary-light);
+/* ❌ 포커스/액티브에서도 배경/링 절대 남기지 않음 */
+.itemButton:focus,
+.itemButton:focus-visible,
+.itemButton:active {
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: none !important;
 }
 
-.legendItemInactive {
-  color: #bdbdbd;
-  opacity: 0.6;
-}
-
-.legendItem:hover,
-.legendItem:focus-visible {
-  background: var(--color-primary-light);
-  color: #fff;
-}
-
-/* Ripple 효과용 */
-.legendItem .ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 0.4s linear;
-  background: rgba(124, 58, 237, 0.18);
+/* 실제 텍스트 라벨 */
+.itemLabel {
+  white-space: nowrap;
+  user-select: none;
   pointer-events: none;
-  z-index: 1;
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(2.5);
-    opacity: 0;
-  }
 }
 
 @media (max-width: 600px) {
-  .legendPanel {
-    gap: 0.5em;
-    padding: 0 0.2em;
+  .legendList {
+    gap: 0.3rem;
+    margin-top: 0.08rem;
   }
-  .legendItem {
-    font-size: 0.98rem;
-    padding: 0.2em 0.7em;
-    border-radius: 6px;
+  .itemButton {
+    padding: 0.05rem 0.24rem;
+    font-weight: 700;
   }
 }

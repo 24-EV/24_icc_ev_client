@@ -18,7 +18,7 @@ function Drawer({ open, onClose, onOpen }) {
       <div className={styles.drawerContent}>
         <h2 className={styles.drawerTitle}>설정</h2>
         <DarkModeCard />
-        <DownloadExcelForm />\
+        <DownloadExcelForm />
         <div>
           <h1>도움말</h1>
         </div>
