@@ -74,17 +74,11 @@
 
    3. VS 코드를 열어 왼쪽 메뉴바의 Extension → Korean 검색하여 Korean Language Pack for Visual 인스톨
 
-4. 프론트엔드, 백엔드 레포지토리 포크
+4. 프론트엔드, 백엔드 레포지토리
 
-   1. 현재 문서 상단에 기재되어 있는 프론트엔드, 백엔드의 깃허브 레포지토리 링크로 각각 접속 → 우측 상단의 Fork 버튼 클릭
+   1. 현재 문서 상단에 기재되어 있는 프론트엔드, 백엔드의 깃허브 레포지토리 링크로 각각 접속
 
       ![Image](https://github.com/user-attachments/assets/5d70b468-3c6c-47d6-ae72-d00f895edbbf)
-
-   2. Owner : 자신 계정, Repository name : 원하는 대로
-
-      ![Image](https://github.com/user-attachments/assets/764a0d09-5010-47f1-bfcc-c2e1e4bc7bda)
-
-   3. 자신의 깃허브 레포지토리에 포크된 레포지토리가 잘 생성되었나 체크
 
 5. 카카오맵 API 키 발급
    1. 카카오맵 API 접속 : https://apis.map.kakao.com/ → 우측 상단 APP KEY 발급 → 로그인
@@ -142,7 +136,7 @@
       1. terminal이라고 컴퓨터에 검색 후 뜨는 명령 프롬프트 열기
       2. 검은 바탕에 커서 깜빡거리는 프로그램입니다.
    2. 컴퓨터에 자신이 원하는 디렉토리에 폴더 생성 후 경로 복사
-      1. 바탕화면에 "25ev클라이언트들어올자리" 라는 폴더 만든 후 우클릭하여 경로로 복사
+      1. 원하는 디렉토리(바탕화면 etc.) "icc_motor" 라는 폴더 만든 후 우클릭하여 경로로 복사
    3. 이때 복사된 경로를 다음과 같이 변경
       1. "C:\Users\sondh\.ssh" → C:/Users/sondh/.ssh
       2. 쌍따옴표를 지우고 역슬래시를 슬래시로 바꾸기
@@ -151,20 +145,21 @@
    5. 아래의 명령어를 입력하여 프로젝트 클론
 
       ```nasm
-      git clone 포크한레포지토리
+      git clone 레포지토리
       ```
 
-      1. 포크 레포지토리 → 초록색 code 버튼 눌러 바로 뜨는 주소 복사하시면 됩니다.
+      1. 레포지토리 → 초록색 code 버튼 눌러 바로 뜨는 주소 복사하시면 됩니다. (HTTPS 탭 주소 복사)
 
    6. VS 코드를 열어 왼쪽 상단의 File → Open Folder → 클론한 프로젝트 폴더 찾아 선택
    7. .env 파일 생성
 
       1. 이때 생성되는 디렉토리는 프로젝트의 가장 최상위 디렉토리여야 한다.
-      2. 때문에 저 폴더들이 나열된 화면의 빈 공간을 클릭하여 어떠한 항목도 선택되지 않게 한 후에 우클릭 → New File → .env 입력.
+      2. 때문에 저 폴더들이 나열된 화면의 빈 공간을 클릭하여 어떠한 항목도 선택되지 않게 한 후에 우클릭 → New File → .env 입력. (env파일 내의 변수들은 업데이트에 따라 변할 수 있습니다. config 디렉토리에 있는 envConfig.js 내부의 코드를 참고하여 주세요)
 
          ```cpp
          VITE_KAKAO_MAP_API_KEY=여기에_카카오맵_키_입력
          VITE_SERVER_URL=http://localhost:2004
+         VITE_CONTROLLER_VERSION=25
          ```
 
       3. 가장 왼쪽 메뉴들의 모양과 개수는 저와 달라도 상관 없습니다
@@ -217,29 +212,8 @@
 
 7. 서버와의 연결은 원활한지 등의 테스트 진행해보면 좋습니다.
 
-## 환경변수(.env) 설정 예시
-
-루트 디렉토리에 `.env` 파일을 생성하고 아래와 같이 작성하세요:
-
-```
-VITE_SERVER_URL=http://localhost:2004
-VITE_KAKAO_MAP_API_KEY=여기에_카카오맵_키_입력
-```
-
-- 서버 주소, API 키 등은 반드시 .env로 관리하세요.
-- 코드 내 하드코딩된 주소/키는 제거하고, 반드시 `import.meta.env.VITE_...`로 불러오세요.
-
----
-
-## 실무적 개선점/운영 가이드 (2024)
-
-- 공통 컴포넌트: src/components/common (DataCard, StatusBanner 등)
-- 커스텀 훅: src/hooks (useSocketData 등)
-- 공통 함수/상수: src/utils, src/constants
-- 코드 스타일 자동화: .eslintrc.js, .prettierrc
-- 테스트: src/components/common/_.test.jsx, src/hooks/_.test.js (Jest, React Testing Library)
-- 환경변수 예시: .env.example
-- 배포/운영: Vercel 등 CI/CD, 환경별 분리, Sentry 등 에러 모니터링
-- 문서/주석: 주요 함수/컴포넌트에 JSDoc, README에 구조/실행/운영 가이드
-
----
+   1. 서버 주소가 정해졌다면 .env파일의 VITE_SERVER_URL=서버주소 로 교체
+      -  (AWS EC2 or 포트포워딩으로 도메인 or 퍼블릭 IP:포트. 도메인 : naver.com 같은 주소 / 퍼블릭 IP : 111.xxx.xxx.xxx 등의 IP. 가장 앞이 10, 172, 16이 아닌 모든 IP)
+      - VITE_SERVER_URL=http://test.com/ 또는 VITE_SERVER_URL=http://123.123.123.123:2004
+   2. package.json 파일 -> Ctrl + F로 "scripts" 찾기.
+   3. "dev" : 어쩌고저쩌고를 통째로
