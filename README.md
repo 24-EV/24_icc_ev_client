@@ -2,43 +2,52 @@
 
 ### 완성도를 높이기 위하여 조금씩 수정 예정입니다. 업데이트 날짜 확인하여 이전의 코드, 방식과의 차이점 파악 후 진행해주세요.
 
-### 깃허브 레포지토리 주소
+### 또한 잘못되거나 예전 버전의 설명이 남아있을 수 있습니다. 양해부탁드립니다.
 
-클라이언트 : https://github.com/nitepp04/24_icc_ev_client
+<br/>
+<br/>
+<br/>
 
-서버 : https://github.com/nitepp04/24_icc_ev_server
+## 업데이트 적용방법 (간단)
 
-펌웨어 : https://github.com/nitepp04/24_icc_ev_firmware
+1. VS 코드 열기 -> 터미널 -> git pull 해서 빨간글씨 없으면 에러 안 나고 잘 된 거에요.
+
+<br/>
+
+## 깃허브 레포지토리 주소
+
+클라이언트 : https://github.com/24-EV/24_icc_ev_client
+
+서버 : https://github.com/24-EV/24_icc_ev_server
+
+펌웨어 : https://github.com/24-EV/24_icc_ev_firmware
+
+<br/>
+<br/>
+<br/>
 
 ## 주요 기능
 
 - 차량의 컨트롤러 및 모듈에서 오는 데이터 값을 시각화
-  - 현재 받는 데이터
-    - timestamp
-      - Real TIme Clock 모듈
-      - 당시 RTC 모듈 고장으로 인하여 서버의 시간으로 대체함
-      - 복구 원할 시 서버 코드 수정 필요
-    - RPM
-    - MOTOR_CURRENT
-    - BATTERY_VOLTAGE
-    - THROTTLE_SIGNAL
-    - CONTROLLER_TEMPERATURE
-    - SPEED
-      - 클라이언트에선 velocity라는 키값으로 사용됨
-    - BATTERY_PERCENT
-    - lat, lng
-      - GPS 모듈 고장
-      - 클라이언트 코드에는 구현되어 있으나, 서버 코드에서 삭제함.
-      - 복구 원할 시 서버 코드 수정 필요
+  - 데이터 카드로 대시보드와 차트로 값을 시각화함.
+  - lat, lng
+    - GPS 모듈 고장
+    - 클라이언트 코드에는 구현되어 있으나, 서버 코드에서 삭제함.
+    - 복구 원할 시 서버 코드 수정 필요
 - 차량 현재 위치 시각화
   - 카카오맵 API를 통하여 차량의 현재 위치를 시각화한다.
 - Excel 데이터 다운로드
   - 원하는 시간대의 데이터를 DB에서 불러와 액셀 파일로 다운로드
 
+<br/>
+<br/>
+<br/>
+
 ## 용어 정리
 
 - JavaScript : 프로그래밍 언어
 - React : JavaScript 기반 UI 라이브러리
+- Vite : React 빌드 툴. 기존보다 더 좋음
 - Node.js : JavaScript 실행 환경
   - 브라우저에서만 실행 가능했던 JavaScript를 서버에서도 실행 가능하도록 해줌
 - Express : Node.js의 프레임워크. Express 는 Node.js 위에서 동작하는 웹 프레임 워크
@@ -53,8 +62,13 @@
   - 코드를 수정할 때마다 git에 업데이트 하거나, 예전 코드로 다시 돌아갈 수 있고, 이를 github에 올려 온라인으로 저장하고 협업할 수 있습니다.
 - 터미널 명령어(CLI) : 터미널에서 사용하는 명령어
   - 이제 등장할 cd, chmod, ls 등이 있다.
+- 포트포워딩 : 포트 열어주기
 
 프로그램 개선을 원할 때, 어떠한 용어가 있는지 알면 도움이 될 거라 생각하여 검색하기 난감할 것 같은 용어들 몇개만 짧게 적어둡니다.
+
+<br/>
+<br/>
+<br/>
 
 ## 설치 및 실행 방법
 
@@ -83,50 +97,34 @@
 5. 카카오맵 API 키 발급
    1. 카카오맵 API 접속 : https://apis.map.kakao.com/ → 우측 상단 APP KEY 발급 → 로그인
    2. 상단 메뉴의 내 애플리케이션 → 애플리케이션 추가하기 → 앱 이름 원하는 거, 나머지 아무거나, → 정책 동의 후 저장
-   3. 만들어진 앱 들어가서 왼쪽 메뉴바의 플랫폼 → 웹 플랫폼 등록 → 버셀 도메인 주소 붙여넣기 → 저장
-      1. 로컬에서도 원한다면 엔터 눌러서 localhost:포트번호
+   3. 만들어진 앱 들어가서 왼쪽 메뉴바의 플랫폼 → 웹 플랫폼 등록 → 클라이언트 주소 붙여넣기 → 저장
+      1. localhost:포트번호
+      2. 클라이언트 주소도 완성되었다면 바로 밑에줄에 클라이언트 주소 추가.
    4. 왼쪽 메뉴바의 앱 권한 신청 → 앱 권한 → 카카오맵 권한 신청
       1. 신청 불필요 뜨면 넘어가기
    5. 왼쪽 메뉴바의 엡 키 → JavaScript 키 복사
+6. 원하는 디렉토리에 폴더 만들기
+   - 원하는 디렉토리 (바탕화면, 문서 etc.) 에 "icc_motor" 라는 이름의 폴더 만들기
+7. 환경변수 및 데이터 포맷 관련 설명은 문서 하단에 기재되어 있습니다.
 
----
+<br/>
+<br/>
+<br/>
 
-### 프론트엔드 (단순 배포)
+## 프론트엔드
 
-1. Vercel 배포
+프론트엔드를 실행시킬 두가지 방법
 
-   1. [Vercel.com](http://Vercel.com) 가입 후 Add New Project
-   2. Import Git Repository
-   3. Continue with GitHub → Import Git Repository → 포크한 레포지토리 선택 → Import
+- 포트포워딩
+- AWS EC2
+- Vercel (비추)
+  - 버셀은 배포는 정말 쉽지만, https 통신 어쩌구저쩌구 해서 인증서라는 거 발급해갖고 서버에 넣어주고 하여튼 복잡합니다. 여건 되면 포트포워딩 추천드려요.
 
-      ![image](https://github.com/user-attachments/assets/6f613039-7a24-486c-a57a-930b10b3f3b3)
+<br/>
+<br/>
+<br/>
 
-   4. 원하는 프로젝트 명 입력, Framework Preset → Create React App 선택 → Deploy
-      ![image](https://github.com/user-attachments/assets/e1cb14b4-94b4-4885-a81f-2534003a732d)
-   5. 배포 완료
-
-      1. Domains의 주소들이 배포된 프론트엔드 주소임
-
-      ![image](https://github.com/user-attachments/assets/b36e2046-ee4a-45bb-b8c9-1166da900471)
-
-2. 버셀 환경변수 설정
-
-   1. 버셀에서 이전에 배포한 프로젝트로 들어와 상단의 Settings → Environment Variables → Key - Value 항목에 다음과 같이 입력
-
-      ```nasm
-      KEY | VALUE
-      REACT_APP_KAKAO | 앱 키 입력
-      REACT_APP_SERVER_URL | 서버 주소 입력
-      ```
-
-      ![image](https://github.com/user-attachments/assets/8c894b38-8b28-445d-9d9b-a32741dad5c3)
-
-   2. KEY 값은 임의로 바꾸면 안 됨. 바꾸려면 코드를 수정해야 함.
-   3. 정상 동작하는지 확인
-
----
-
-### 프론트엔드 (포트포워딩)
+### 포트포워딩
 
 1. git 설치 https://sfida.tistory.com/46
 2. node.js 설치 [https://velog.io/@ljs923/Node.js-다운로드-및-설치하기https://velog.io/@ljs923/Node.js-다운로드-및-설치하기](https://velog.io/@ljs923/Node.js-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-%EB%B0%8F-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0)
@@ -145,7 +143,7 @@
    5. 아래의 명령어를 입력하여 프로젝트 클론
 
       ```nasm
-      git clone 레포지토리
+      git clone 클라이언트레포지토리
       ```
 
       1. 레포지토리 → 초록색 code 버튼 눌러 바로 뜨는 주소 복사하시면 됩니다. (HTTPS 탭 주소 복사)
@@ -212,8 +210,465 @@
 
 7. 서버와의 연결은 원활한지 등의 테스트 진행해보면 좋습니다.
 
-   1. 서버 주소가 정해졌다면 .env파일의 VITE_SERVER_URL=서버주소 로 교체
-      -  (AWS EC2 or 포트포워딩으로 도메인 or 퍼블릭 IP:포트. 도메인 : naver.com 같은 주소 / 퍼블릭 IP : 111.xxx.xxx.xxx 등의 IP. 가장 앞이 10, 172, 16이 아닌 모든 IP)
-      - VITE_SERVER_URL=http://test.com/ 또는 VITE_SERVER_URL=http://123.123.123.123:2004
-   2. package.json 파일 -> Ctrl + F로 "scripts" 찾기.
-   3. "dev" : 어쩌고저쩌고를 통째로
+<br/>
+<br/>
+<br/>
+
+### AWS EC2에서 구동
+
+1. AWS EC2 인스턴스 생성
+
+   1. AWS EC2 검색
+   2. 인스턴스 → 인스턴스 시작
+   3. Amazon Linux 또는 Ubuntu 선택
+
+      ![Image](https://github.com/user-attachments/assets/679b38f1-3a9a-4686-8295-611a5054f2bb)
+
+   4. 인스턴스 유형 [t3.mini](http://t3.mini) 이상 추천
+      1. t3.micro (프리티어 인스턴스 구동 시 인스턴스 사양 한계치 바로 넘어섬)
+         ![image](https://github.com/user-attachments/assets/2b145e2f-5ad9-4d12-af5e-e13db31749e5)
+   5. 키페어 생성 후 선택 (키페어 잘 갖고 계세요)
+      ![image](https://github.com/user-attachments/assets/b1404ab5-1e59-4cf2-b24b-d6e121221ca7)
+   6. 인스턴스 생성
+   7. EC2 탄력적 IP 설정
+      1. EC2 → 탄력적 IP → 탄력적 IP 주소 할당 → 별다른 설정 없이 할당
+      2. 탄력적 IP 페이지에서 생성된 탄력적 IP의 주소를 클릭 → 탄력적 IP 주소 연결 → 이전에 생성한 EC2 인스턴스 선택 → 연결
+   8. 생성된 인스턴스의 인스턴스 ID 클릭 → 상단의 연결 클릭 후 SSH 클아이언트
+
+      ![image](https://github.com/user-attachments/assets/58d81d53-2904-4df7-8456-9e55f69439d2)
+
+   9. 이 창 닫지 않고 VS 코드 열기
+
+2. VS 코드에 EC2 SSH 연결하기
+
+   1. VS 코드 왼쪽 메뉴바 → Extensions → Remote Development 설치
+
+      ![image](https://github.com/user-attachments/assets/ce4dfeac-124b-41ca-ad01-71a3e262ef6c)
+
+   2. Ctrl + Shift + ` 눌러 터미널 열기
+   3. 키페어 우클릭 후 경로 복사
+      1. Ctrl + V 대신 우클릭 사용
+   4. 이때 복사된 경로를 다음과 같은 형식으로 변경 후 아래의 명령어 입력
+      1. "C:\Users\sondh\.ssh\키페어.pem" → C:/Users/sondh/.ssh
+
+   ```nasm
+   cd C:/Users/.ssh/sondh
+   chmod 400 키페어.pem
+   ```
+
+   1. 이전에 EC2 연결 창으로 이동하여 하단의 예시 복사
+
+      ![image](https://github.com/user-attachments/assets/46e5012f-94e2-4635-b877-4ec0fbb92b3b)
+
+   2. 다시 VS 코드로 돌아와 Ctrl +Shift + p → Add New SSH Host… → 붙여넣기 → 경로 마지막에 \config 되어 있는 거 클릭.
+
+      ![image](https://github.com/user-attachments/assets/12e14f57-eafa-47e9-8a1b-7e49b78adaec)
+
+   3. 우측 하단 알림창의 Open Config 버튼 또는 Ctrl + Shift + p → Open SSH Configuration File...
+   4. 다음 설명에 맞게 변경
+
+      1. Host 뒤에는 원하는 이름 아무거나 ex) happy
+      2. HostName 뒤에는 인스턴스 ID 클릭했을 때 뜨는 인스턴스 요약 창에서 다음의 것들 중 원하는 것을 선택하여 입력. 순서대로 진행했다면 IPv4 DNS가 입력되어 있을 것임
+         1. 퍼블릭 IPv4 주소
+         2. 퍼블릭 IPv4 DNS
+      3. User 뒤에는 그대로 두거나 자신이 선택한 os에 맞게 변경. ex) ubuntu 선택 시 ubuntu
+      4. IdentityFile 뒤에는 키페어 주소
+      5. 변경 완료 시 Ctrl + S 저장
+
+         ![Image](https://github.com/user-attachments/assets/aa6d1a39-a9dc-4599-975f-f6de39358a1a)
+
+   5. Ctrl + Shift + p → Connect to Host… → Linux
+   6. VS 코드 좌측 하단에 다음과 같이 표시되면 연결 성공
+
+      ![image](https://github.com/user-attachments/assets/30a7259f-121c-4154-a62e-431741ecd409)
+
+3. EC2 설정
+
+   1. node.js 설치
+
+      1. Ctrl + Shift + ` 로 터미널창을 열어 명령어 차례로 입력
+
+         1. Ubuntu 기준 :
+
+            ```nasm
+            sudo apt-get update
+            sudo apt-get install -y build-essential
+            sudo apt-get install curl
+            curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash --
+            sudo apt-get install -y nodejs
+            sudo apt install npm
+            ```
+
+            1. 한번에 복사 후 터미널창에 우클릭하면 됨
+            2. Amazon Linux 경우, apt-get 대신 yum 입력
+
+         2. node -v로 설치 완료됐는지 체크 (버전이 뜨면 설치 완료)
+
+   2. 아래의 명령어를 입력하여 프로젝트 클론
+
+      ```nasm
+      git clone 클라이언트레포지토리
+      ```
+
+      1. 클라이언트 레포지토리 → 초록색 code 버튼 눌러 바로 뜨는 주소 복사하시면 됩니다. git clone 클라이언트주소
+
+   3. ls → 폴더 이름 파악 후 cd 폴더 이름
+      1. ex) ls → cd 24_icc_ev
+   4. npm i로 모듈 다운로드
+   5. touch .env로 .env파일 만들기.
+   6. nano .env로 .env 내부 변수 입력하기.
+      - Ctrl + O : 저장. Ctrl + X : 종료
+   7. node index_role.js 입력 → 백엔드 서버 실행됨.
+      1. 서버 끄고 싶으면 Ctrl + C
+      2. 이거로 서버 크고 껐다 가능. 디버깅 이거로
+   8. npm i pm2 -g
+      1. ssh 꺼도 서버 계속 돌아가게 해주는 pm2 모듈 설치
+   9. pm2 start 파일명
+      1. 현재 EC2 상에서의 프로젝트는 index_role.js 가 서버 실행 파일임
+      2. 따라서 pm2 start index_role.js 명령어 입력
+      3. 이렇게 되면 EC2 ssh 연결이 끊어져도 EC2 상에서 계속 index_role.js 서버를 돌리게 됨
+
+4. 프론트엔드와의 연결은 원활한지 등의 테스트 진행해보면 좋습니다.
+   - 위에 서버 모드에 관한 설명 기재되어 있음.
+
+### Vercel
+
+1. Vercel 배포
+
+   1. [Vercel.com](http://Vercel.com) 가입 후 Add New Project
+   2. Import Git Repository
+   3. Continue with GitHub → Import Git Repository → 포크한 레포지토리 선택 → Import
+
+      ![image](https://github.com/user-attachments/assets/6f613039-7a24-486c-a57a-930b10b3f3b3)
+
+   4. 원하는 프로젝트 명 입력, Framework Preset → Create React App 선택 → Deploy
+      ![image](https://github.com/user-attachments/assets/e1cb14b4-94b4-4885-a81f-2534003a732d)
+   5. 배포 완료
+
+      1. Domains의 주소들이 배포된 프론트엔드 주소임
+
+      ![image](https://github.com/user-attachments/assets/b36e2046-ee4a-45bb-b8c9-1166da900471)
+
+2. 버셀 환경변수 설정
+
+   1. 버셀에서 이전에 배포한 프로젝트로 들어와 상단의 Settings → Environment Variables → Key - Value 항목에 다음과 같이 입력
+
+      ```nasm
+      KEY | VALUE
+      VITE_APP_KAKAO_MAP_API | 앱 키 입력
+      VITE_APP_SERVER_URL | 서버 주소 입력
+      VITE_APP_CONTROLLER_VERSION | 컨트롤러 버전
+      VITE_PORT | 클라이언트 포트
+      ```
+
+      ![image](https://github.com/user-attachments/assets/8c894b38-8b28-445d-9d9b-a32741dad5c3)
+
+   2. KEY 값은 임의로 바꾸면 안 됨. 바꾸려면 코드를 수정해야 함.
+   3. 정상 동작하는지 확인
+
+---
+
+### 여기까지 완료했고, 서버가 포트포워딩 또는 AWS EC2까지 완료했다면
+
+1.  서버 주소가 정해을 겁니다 .env파일의 VITE_SERVER_URL=서버주소 로 교체
+    - (서버주소 -----> AWS EC2 or 포트포워딩으로 도메인 or 퍼블릭 IP:포트. 도메인 : naver.com 같은 주소 / 퍼블릭 IP : 111.xxx.xxx.xxx 등의 IP. 가장 앞이 10, 172, 16이 아닌 모든 IP)
+    - VITE_SERVER_URL=http://test.com/ 또는 VITE_SERVER_URL=http://123.123.123.123:2004
+2.  카카오맵 API에 클라이언트 주소 추가하기. 문서 상단 기본 설정 챕터에서 설명함.
+3.  실행해보기. (서버도 동일 부분 설명 찾아서 클라이언트 주소 세팅)
+
+## 정상 실행된다면 끝입니다.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+# 기타
+
+<br/>
+
+## .env 파일 구조 설명
+
+- .env파일은 보안 상의 이유로 github에 올라가 있지 않습니다. 때문에 앞으로의 설명에 따라 .env을 만들어 변수를 만들어 값을 직접 입력해주셔야 합니다.
+- 이때, 서버와 클라이언트 각각 envConfig.js 파일이 존재합니다. 이 파일에서의 키값이 .env의 변수명입니다.
+- .env파일을 루트 디렉토리에 만든 후, 키=밸류 로 설정해주시기 바랍니다.
+  - envConfig에서 PORT: process.env.PORT || 2004 -> .env에서 PORT=2004 이런 식으로 변경하기.
+
+<br/>
+
+### 서버
+
+- DYNAMODB_ACCESS_KEY : 다이나모디비 엑세스 키. 밑에 설명 있음.
+- DYNAMODB_SECRET_ACCESS_KEY : 다이나모디비 비밀 액세스 키. 밑에 설명 있음.
+- PORT : 현재 서버는 2004번 포트가 기본으로 설정되어 있음. 바꾸어도 무방하나, 혹시 모를 오류를 생각하여 바꾸지 않는 것을 권장함.
+- SERVER_MODE : development, test, production 세가지 모드가 있음.
+  - development : 개발 모드. ESP32에서 데이터를 받아오지 않고, 서버에서 가상 더미 데이터를 만들어 클라이언트에 보내며 통신함. 이땐 DynamoDB에 데이터를 올리지 않음.
+  - production : 배포 모드. ESP32와 통신함. development 모드와 달리, 가상 더미 데이터를 만들지 않고, ESP32에서 받는 데이터를 처리함. 이땐 DynamoDB에 데이터를 올림.
+- CONTROLLER_VERSION : 현재 24, 25 버전 두가지가 있음. 데이터 포맷 형식에 직접 쓰이는 변수임.
+- CLIENT_URL : 클라이언트 주소. 기본적으로는 http://localhost:1101로 되어 있음. 이는 개발이나 테스트 시에 쓰일 로컬 환경에서의 테스트 주소. 밑에 설명된 것과 같이, 서버와 클라이언트 모두 외부에서 접근 가능한 주소가 정해졌다면, 이를 그 주소로 변경해야 함.
+
+- <img width="336" height="147" alt="Image" src="https://github.com/user-attachments/assets/4fd1c41e-d896-48b5-b319-56dba76d987c" />
+- <img width="712" height="313" alt="Image" src="https://github.com/user-attachments/assets/78e9cc8b-1d9d-4580-89a8-a96d8abc3a58" />
+
+### 클라이언트
+
+클라이언트는 .env에 추가할 떄 VITE\_ 붙이기.
+
+- envConfig의 PORT -> .env의 VITE_PORT
+
+<br/>
+
+- VITE_SERVER_URL : 서버 주소. 기본적으로는 http://localhost:2004로 되어 있음. 이는 개발이나 테스트 시에 쓰일 로컬 환경에서의 테스트 주소. 밑에 설명된 것과 같이, 서버와 클라이언트 모두 외부에서 접근 가능한 주소가 정해졌다면, 이를 그 주소로 변경해야 함.
+- VITE_KAKAO_MAP_API_KEY : 카카오맵 API 키. 밑에 설명 있음.
+- VITE_CONTROLLER_VERSION : 현재 24, 25 버전 두가지가 있음. 데이터 포맷 형식에 직접 쓰이는 변수임.
+- VITE_PORT : 현재 클라이언트는 1101번 포트가 기본으로 설정되어 있음. 바꾸어도 무방하나, 혹시 모를 오류를 생각하여 바꾸지 않는 것을 권장함.
+
+  - <img width="438" height="155" alt="Image" src="https://github.com/user-attachments/assets/3520139d-87f9-4f41-aa0a-d908d59168b0" />
+  - <img width="898" height="342" alt="Image" src="https://github.com/user-attachments/assets/1d75ccd8-e065-4cf4-aeb1-777189fd2ff1" />
+
+<br/>
+<br/>
+<br/>
+
+## 데이터 포맷
+
+<br/>
+<br/>
+<br/>
+
+### 서버
+
+서버 데이터 포맷입니다.
+
+- constants 디렉토리의 dataFormat.js
+- JSON 형식
+  24, 25 키를 가진 객체 내부에 컨트롤러 버전 별 데이터가 있음.
+
+- 만약 현재 25년도 컨트롤러 버전의 데이터를 추가하거나 삭제, 값의 변경이 필요하다면 여기서 찾아서 변경하면 됨.
+- 다만 이에 맞게 클라이언트쪽 코드도 수정해야 함.
+
+```
+// 데이터 파싱 함수 관련
+const dataFormat = {
+  // 24년도 컨트롤러
+  24: {
+    RPM: null,
+    MOTOR_CURRENT: null,
+    BATTERY_VOLTAGE: null,
+    THROTTLE_SIGNAL: null,
+    CONTROLLER_TEMPERATURE: null,
+    SPEED: null,
+    BATTERY_PERCENT: null,
+  },
+  // 25년도 컨트롤러
+  25: {
+    // Controller L
+    Motor_temp_L: null,
+    Controller_temp_L: null,
+    Current_L: null,
+    Voltage_L: null,
+    Power_L: null,
+    RPM_L: null,
+    Torque_L: null,
+    Torque_cmd_L: null,
+    // Controller_R
+    Motor_temp_R: null,
+    Controller_temp_R: null,
+    Current_R: null,
+    Voltage_R: null,
+    Power_R: null,
+    RPM_R: null,
+    Torque_R: null,
+    Torque_cmd_R: null,
+    // Car_State
+    ADC_Signal: null,
+    Speed: null,
+    Yaw_Rate: null,
+    Steering_angle: null,
+    Batt_percent: null,
+    Total_power: null,
+    Delta_T: null,
+  },
+};
+
+module.exports = dataFormat;
+```
+
+<br/>
+<br/>
+<br/>
+
+### 클라이언트
+
+클라이언트 데이터 포맷입니다.
+
+- constants 디렉토리의 dataFormat.js
+- JSON 형식
+  24, 25 키를 가진 객체 내부에 컨트롤러 버전 별 데이터가 있음.
+
+- 만약 현재 25년도 컨트롤러 버전의 데이터를 추가하거나 삭제, 값의 변경이 필요하다면 여기서 찾아서 변경하면 됨.
+- 다만 이에 맞게 서버쪽 코드도 수정해야 함.
+
+```
+const dataFormat = {
+  // 24년도 컨트롤러
+  24: {
+    timestamp: null,
+    vehicle: {
+      SPEED: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      }
+    },
+    hv: {
+      BATTERY_VOLTAGE: {
+        label: '전압',
+        value: null,
+        unit: 'V'
+      },
+      MOTOR_CURRENT: {
+        label: '전류',
+        value: null,
+        unit: 'A'
+      },
+      BATTERY_PERCENT: {
+        label: '배터리 잔량',
+        value: null,
+        unit: '%'
+      }
+    },
+    motor: {
+      RPM: {
+        label: 'RPM',
+        value: null,
+        unit: 'RPM'
+      },
+      THROTTLE_SIGNAL: {
+        label: 'Throttle',
+        value: null,
+        unit: '/ 255'
+      },
+      CONTROLLER_TEMPERATURE: {
+        label: '컨트롤러 온도',
+        value: null,
+        unit: '℃'
+      }
+    },
+    gps: {
+      lat: {
+        label: '위도',
+        value: null,
+        unit: '°'
+      },
+      lng: {
+        label: '경도',
+        value: null,
+        unit: '°'
+      }
+    }
+  },
+  // 25년도 컨트롤러
+  25: {
+    timestamp: null,
+    vehicle: {
+      Speed: {
+        label: '속도',
+        value: null,
+        unit: 'km/h'
+      },
+      ADC_Signal: {
+        label: 'ADC 신호',
+        value: null,
+        unit: ''
+      },
+      Yaw_Rate: {
+        label: '요 속도',
+        value: null,
+        unit: '°/s'
+      },
+      Steering_angle: {
+        label: '조향각',
+        value: null,
+        unit: '°'
+      },
+      Batt_percent: {
+        label: '배터리 잔량',
+        value: null,
+        unit: 'km/h'
+      },
+      Total_power: {
+        label: '총 출력',
+        value: null,
+        unit: 'W'
+      },
+      Delta_T: {
+        label: '샘플링 타임',
+        value: null,
+        unit: 's'
+      }
+    },
+    hv: {
+      Current: {
+        label: '전류',
+        value: null,
+        unit: 'A'
+      },
+      Voltage: {
+        label: '전압',
+        value: null,
+        unit: 'V'
+      }
+    },
+    motor: {
+      Motor_temp: {
+        label: '모터 온도',
+        value: null,
+        unit: '℃'
+      },
+      Controller_temp: {
+        label: '컨트롤러 온도',
+        value: null,
+        unit: '℃'
+      },
+      Power: {
+        label: '출력',
+        value: null,
+        unit: 'W'
+      },
+      RPM: {
+        label: 'RPM',
+        value: null,
+        unit: 'RPM'
+      },
+      Torque: {
+        label: '토크',
+        value: null,
+        unit: 'Nm'
+      },
+      Torque_cmd: {
+        label: '토크 커맨드',
+        value: null,
+        unit: 'Nm'
+      }
+    },
+    gps: {
+      lat: {
+        label: '위도',
+        value: null,
+        unit: '°'
+      },
+      lng: {
+        label: '경도',
+        value: null,
+        unit: '°'
+      }
+    }
+  }
+};
+
+export default dataFormat;
+
+```
