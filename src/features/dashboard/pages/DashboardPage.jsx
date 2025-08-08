@@ -4,11 +4,13 @@ import Section from '../../../components/common/Section';
 import PageHeader from '../../../components/layout/PageHeader';
 import { useSocketData } from '../../../hooks/useSocketData';
 import PageLayout, { DataCards } from '../../../components/layout/PageLayout';
+import useHistory from '../../../hooks/useHistory';
 
 function DashboardPage() {
-  const { totalData } = useSocketData(SocketContext);
+  const { history } = useHistory();
+  const latest = { ...history[history.length - 1] };
 
-  if (!totalData) {
+  if (!latest || Object.keys(latest).length === 0) {
     return (
       <Section>
         <PageHeader title="대시보드" />
@@ -22,12 +24,12 @@ function DashboardPage() {
   return (
     <PageLayout
       header={<PageHeader title={'대시보드'} />}
-      mainPanel={Object.entries(totalData)
+      mainPanel={Object.entries(latest)
         .filter(([key]) => key !== 'timestamp')
         .map(([groupKey]) => (
           <DataCards
             header={<PageHeader title={`${partsKeyName[groupKey]}`} />}
-            data={totalData[groupKey]}
+            data={latest[groupKey]}
           />
         ))}
     ></PageLayout>
