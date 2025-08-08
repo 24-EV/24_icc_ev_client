@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, useMediaQuery } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { NAV_ITEMS } from '../../constants/bottomAppBarConfig';
 import styles from '../../styles/layout/BottomAppBar.module.css';
+import { useTheme } from '@mui/material/styles';
 
 function BottomAppBar() {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const idx = NAV_ITEMS.findIndex((item) => item.path === location.pathname);
@@ -45,7 +49,15 @@ function BottomAppBar() {
           <BottomNavigationAction
             key={item.label}
             label={item.label}
-            icon={<item.icon />}
+            icon={
+              <item.icon
+                sx={{
+                  width: isMobile ? 16 : 24,
+                  height: isMobile ? 16 : 24,
+                  padding: 0
+                }}
+              />
+            }
             showLabel={value === idx}
           />
         ))}

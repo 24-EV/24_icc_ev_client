@@ -15,7 +15,6 @@ function Chart({ dataKey = '', title = '', side = '' }) {
   const seriesRefs = useRef([]);
   const [autoScroll, setAutoScroll] = useState(true);
   const [isDark] = useDarkMode();
-
   const { history } = useHistory();
 
   // 그룹 데이터 변환
@@ -24,18 +23,14 @@ function Chart({ dataKey = '', title = '', side = '' }) {
     return history
       .map((h) => {
         if (!h[dataKey]) return null;
-
         const group = {};
         Object.entries(h[dataKey]).forEach(([k, v]) => {
           if (v?.value && typeof v.value === 'object' && (side === 'L' || side === 'R')) {
-            // 좌/우 데이터
             group[k] = v.value[side];
           } else {
-            // 일반 데이터
             group[k] = v?.value ?? null;
           }
         });
-
         return { timestamp: h.timestamp, ...group };
       })
       .filter(Boolean);
@@ -59,7 +54,7 @@ function Chart({ dataKey = '', title = '', side = '' }) {
     return Math.floor(d.getTime() / 1000);
   };
 
-  // 차트 최초 생성
+  // 차트 생성
   useEffect(() => {
     if (!chartRef.current || chartInstance.current) return;
 
@@ -67,8 +62,7 @@ function Chart({ dataKey = '', title = '', side = '' }) {
     const chartGridColor = isDark ? '#393552' : '#bdbdbd';
 
     chartInstance.current = createChart(chartRef.current, {
-      width: chartRef.current.clientWidth,
-      height: 340,
+      autoSize: true, // ✅ 자동 반응형
       layout: { background: { color: 'transparent' }, textColor: chartTextColor },
       grid: {
         vertLines: { visible: false, color: chartGridColor },
@@ -90,20 +84,10 @@ function Chart({ dataKey = '', title = '', side = '' }) {
         priceScaleId: 'left',
         color: CHART_COLORS[idx % CHART_COLORS.length],
         lineWidth: 2,
-        title: key + (side ? ` (${side})` : ''), // e.g. Current (L)
+        title: key + (side ? ` (${side})` : ''),
         visible: selected.includes(key)
       })
     );
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        const { width, height } = entry.contentRect;
-        chartInstance.current.resize(width, height);
-      }
-    });
-    resizeObserver.observe(chartRef.current);
-
-    return () => resizeObserver.disconnect();
   }, [isDark, dataKeys, selected, side]);
 
   // 데이터 업데이트
@@ -115,7 +99,7 @@ function Chart({ dataKey = '', title = '', side = '' }) {
       if (!series) return;
 
       const seen = new Set();
-      const seriesData = [...slicedData]
+      const seriesData = slicedData
         .map((d, i) => ({
           time: toEpochSeconds(d.timestamp, i),
           value: typeof d[key] === 'number' && !isNaN(d[key]) ? d[key] : 0
@@ -132,21 +116,28 @@ function Chart({ dataKey = '', title = '', side = '' }) {
 
     if (autoScroll) {
       chartInstance.current.timeScale().scrollToRealTime();
-    } else {
-      chartInstance.current.timeScale().fitContent();
     }
   }, [slicedData, dataKeys, autoScroll, side]);
+
+  const toggleScroll = () => {
+    setAutoScroll((prev) => {
+      if (!prev) {
+        chartInstance.current?.timeScale().scrollToRealTime();
+      }
+      return !prev;
+    });
+  };
 
   return (
     <div className={cardPanelStyles.cardPanel}>
       <PanelHeader
         title={title}
         toggleChecked={autoScroll}
-        onToggleChange={() => setAutoScroll((v) => !v)}
+        onToggleChange={toggleScroll}
         toggleSwitchLabel="스크롤 잠금"
       />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <div ref={chartRef} className={styles.chartArea} style={{ flex: 1 }} />
+        <div ref={chartRef} className={styles.chartArea} />
         <ChartLegend
           dataKeys={dataKeys}
           selected={selected}
@@ -155,6 +146,7 @@ function Chart({ dataKey = '', title = '', side = '' }) {
               prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
             )
           }
+          onKeyDown={() => {}}
           colors={dataKeys.map((_, idx) => CHART_COLORS[idx % CHART_COLORS.length])}
           legendStyles={legendStyles}
         />

@@ -19,7 +19,9 @@ function ChartLegend({ dataKeys, selected, onClick, onKeyDown, colors }) {
             tabIndex={0}
             aria-pressed={isActive}
             onClick={() => onClick(key)}
-            onKeyDown={(e) => onKeyDown(key, e)}
+            onKeyDown={(e) => {
+              if (onKeyDown) onKeyDown(key, e);
+            }}
           >
             {key}
           </button>
